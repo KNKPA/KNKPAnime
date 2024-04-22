@@ -40,6 +40,7 @@ class _PlayPageState extends State<PlayPage> {
   Timer danmakuTimer = Timer.periodic(Duration(days: 1), (timer) {});
   Map<int, List<Danmaku>> danmakus = {};
   bool danmakuEnabled = true;
+  bool playStateInitialized = true;
 
   @override
   void initState() {
@@ -64,7 +65,19 @@ class _PlayPageState extends State<PlayPage> {
     play(animeSeriesInfo[progress?.episode.episode ?? 0]);
   }
 
-  void play(Episode episode) async {
+  Future play(Episode episode) async {
+    if (playStateInitialized == false) return;
+    try {
+      playStateInitialized = false;
+      await _play(episode);
+    } catch (e) {
+      logger.w(e);
+    } finally {
+      playStateInitialized = true;
+    }
+  }
+
+  Future _play(Episode episode) async {
     // This function will be called when entering video page or change to another episode
     updateHistoryTimer.cancel();
     danmakuTimer.cancel();
