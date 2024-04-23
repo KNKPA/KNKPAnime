@@ -52,7 +52,15 @@ class _PlayPageState extends State<PlayPage> {
     Modular.get<Logger>().i('Video play page info:');
     Modular.get<Logger>().i('Adapter: ${widget.adapter.toString()}');
     Modular.get<Logger>().i('Source anime info:  ${widget.series.toString()}');
-    var temp = await widget.adapter.getEpisodes(widget.series.seriesId);
+    List<Episode> temp = [];
+    try {
+      temp = await widget.adapter.getEpisodes(widget.series.seriesId);
+      logger.i(temp);
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('剧集信息获取失败\n$e'),
+      ));
+    }
     temp.sort(
       (a, b) => a.episode - b.episode,
     );
@@ -71,6 +79,9 @@ class _PlayPageState extends State<PlayPage> {
       playStateInitialized = false;
       await _play(episode);
     } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('播放信息获取失败\n$e'),
+      ));
       logger.w(e);
     } finally {
       playStateInitialized = true;
