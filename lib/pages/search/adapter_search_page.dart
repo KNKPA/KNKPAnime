@@ -81,23 +81,23 @@ class _AdapterSearchPageState extends State<AdapterSearchPage>
                   if (adapterSearchController.statuses[index] ==
                       SearchStatus.success) {
                     return ListView(
-                      children: results
-                          .map(
-                            (searchResult) => SeriesCard(
-                                searchResult,
-                                Modular.get<HistoryController>().lastWatching(
-                                    searchResult, adapters[index].name),
-                                (anime) {
-                              Modular.get<Logger>().i(
-                                  'Selected anime:\n${searchResult.toString()}');
+                      children: [
+                        Text(adapters[index].description ?? ''),
+                        ...results.map(
+                          (searchResult) => SeriesCard(
+                              searchResult,
+                              Modular.get<HistoryController>().lastWatching(
+                                  searchResult, adapters[index].name), (anime) {
+                            Modular.get<Logger>().i(
+                                'Selected anime:\n${searchResult.toString()}');
 
-                              Modular.to.pushNamed('/play/', arguments: {
-                                'adapter': adapters[index],
-                                'series': searchResult,
-                              }).then((_) => setState(() {}));
-                            }, adapters[index].name),
-                          )
-                          .toList(),
+                            Modular.to.pushNamed('/play/', arguments: {
+                              'adapter': adapters[index],
+                              'series': searchResult,
+                            }).then((_) => setState(() {}));
+                          }, adapters[index].name),
+                        )
+                      ],
                     );
                   } else {
                     if (adapterSearchController.statuses[index] ==
