@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart' hide SearchController;
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:knkpanime/pages/calendar/calendar_module.dart';
 import 'package:knkpanime/pages/favorite/favorite_controller.dart';
 import 'package:knkpanime/pages/favorite/favorite_module.dart';
 import 'package:knkpanime/pages/history/history_controller.dart';
@@ -8,7 +9,7 @@ import 'package:knkpanime/pages/play/play_module.dart';
 import 'package:knkpanime/pages/search/adapter_search_controller.dart';
 import 'package:knkpanime/pages/search/search_module.dart';
 import 'package:knkpanime/pages/settings/settings_page.dart';
-import 'package:knkpanime/pages/today/today_controller.dart';
+import 'package:knkpanime/pages/calendar/calendar_controller.dart';
 import 'package:knkpanime/pages/search/bangumi_search_controller.dart';
 import 'package:logger/logger.dart';
 
@@ -16,7 +17,7 @@ class AppModule extends Module {
   @override
   void binds(i) {
     i.addInstance(Logger());
-    i.addSingleton(TodayController.new);
+    i.addSingleton(CalendarController.new);
     i.addSingleton(BangumiSearchController.new);
     i.addSingleton(HistoryController.new);
     i.addSingleton(FavoriteController.new);
@@ -35,6 +36,8 @@ class AppModule extends Module {
         module: HistoryModule(), transition: TransitionType.noTransition);
     r.module('/favorite/',
         module: FavoriteModule(), transition: TransitionType.noTransition);
+    r.module('/calendar/',
+        module: CalendarModule(), transition: TransitionType.noTransition);
     r.child('/settings',
         child: (context) => SettingsPage(),
         transition: TransitionType.noTransition);
@@ -67,9 +70,15 @@ const routes = [
     'bottom': false,
   },
   {
-    'path': '/settings',
-    'name': '设置',
-    'icon': Icon(Icons.settings),
-    'bottom': true,
+    'path': '/calendar/',
+    'name': '新番日历',
+    'icon': Icon(Icons.calendar_month),
+    'bottom': false,
   },
+  //{
+  //  'path': '/settings',
+  //  'name': '设置',
+  //  'icon': Icon(Icons.settings),
+  //  'bottom': true,
+  //},
 ];

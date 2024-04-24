@@ -44,7 +44,7 @@ class _SourceSelectionWindowState extends State<SourceSelectionWindow>
         selectedSource = _tabController.index;
       });
     });
-    adapterSearchController.search(widget.searchKeyword);
+    adapterSearchController.search(widget.anime.name, widget.searchKeyword);
   }
 
   @override

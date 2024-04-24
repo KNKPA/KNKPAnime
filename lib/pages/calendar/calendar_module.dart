@@ -1,7 +1,7 @@
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:knkpanime/pages/today/today_page.dart';
+import 'package:knkpanime/pages/calendar/calendar_page.dart';
 
-class TodayModule extends Module {
+class CalendarModule extends Module {
   @override
   void binds(Injector i) {}
 
