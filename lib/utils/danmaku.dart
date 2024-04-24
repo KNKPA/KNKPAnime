@@ -8,8 +8,7 @@ class DanmakuRequest {
   static var _cachedAnimeId = 0;
   static var _cachedEpisodes = <int>[];
   static final _dio = Dio(BaseOptions(headers: {
-    "User-Agent":
-        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.3',
+    "User-Agent": 'KNKPA/KNKPAnime',
   }));
 
   static const _searchAnimeApi =

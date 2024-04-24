@@ -7,8 +7,7 @@ class Bangumi {
   static const _todayBangumiApi = '/calendar';
   static const _searchApi = '/search/subject/';
   static final _dio = Dio(BaseOptions(baseUrl: 'https://api.bgm.tv', headers: {
-    'User-Agent':
-        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.3',
+    'User-Agent': 'KNKPA/KNKPAnime',
   }));
 
   static Future<List<List<AnimeInfo>>> fetchTodayAnime() async {
