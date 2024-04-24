@@ -29,7 +29,7 @@ class IyfAdapter extends AdapterBase {
   @override
   Future<List<Episode>> getEpisodes(String seriesId) async {
     if (!cachedPlaylist.containsKey(seriesId)) {
-      await updateKeys(playPageUrl + seriesId);
+      //await updateKeys(playPageUrl + seriesId);
       var queryParameters = {
         'cinema': 1,
         'vid': seriesId,
