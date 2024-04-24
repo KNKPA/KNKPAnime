@@ -36,4 +36,9 @@ abstract class _AdapterSearchController with Store {
       statuses[idx] = adapter.status;
     });
   }
+
+  void clear() {
+    searchResults.clear();
+    searchResults = ObservableList.of(_adapters.map((e) => <Series>[]));
+  }
 }
