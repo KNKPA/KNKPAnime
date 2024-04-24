@@ -19,15 +19,15 @@ abstract class _AdapterSearchController with Store {
 
   final _adapters = adapters;
 
-  void search(String keyword) {
-    if (keyword.isEmpty) {
+  void search(String bangumiName, String keyword) {
+    if (bangumiName.isEmpty && keyword.isEmpty) {
       searchResults.clear();
       searchResults = ObservableList.of(_adapters.map((e) => <Series>[]));
       return;
     }
     _adapters.asMap().forEach((idx, adapter) async {
       try {
-        var future = adapter.search('', keyword);
+        var future = adapter.search(bangumiName, keyword);
         statuses[idx] = adapter.status;
         searchResults[idx] = await future;
       } catch (e) {

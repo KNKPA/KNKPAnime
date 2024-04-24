@@ -41,7 +41,7 @@ class _AdapterSearchPageState extends State<AdapterSearchPage>
             border: InputBorder.none,
           ),
           onSubmitted: (value) {
-            adapterSearchController.search(value);
+            adapterSearchController.search('', value);
           },
         ),
       ),
