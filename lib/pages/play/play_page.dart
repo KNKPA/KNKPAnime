@@ -34,7 +34,7 @@ class _PlayPageState extends State<PlayPage> {
   late final historyController = Modular.get<HistoryController>();
   late DanmakuController danmakuController;
   late final logger = Modular.get<Logger>();
-  List<Episode> animeSeriesInfo = [];
+  List<Episode> episodes = [];
   late Episode playingEpisode = Episode('', 0);
   Timer updateHistoryTimer = Timer.periodic(Duration(days: 1), (timer) {});
   Timer danmakuTimer = Timer.periodic(Duration(days: 1), (timer) {});
@@ -65,12 +65,18 @@ class _PlayPageState extends State<PlayPage> {
       (a, b) => a.episode - b.episode,
     );
     setState(() {
-      animeSeriesInfo = temp;
+      episodes = temp;
+    });
+    player.stream.completed.listen((event) {
+      if (event == true && playingEpisode != episodes.last) {
+        var idx = episodes.indexOf(playingEpisode);
+        play(episodes[idx + 1]);
+      }
     });
 
     var progress =
         historyController.lastWatching(widget.series, widget.adapter.name);
-    play(animeSeriesInfo[progress?.episode.episode ?? 0]);
+    play(episodes[progress?.episode.episode ?? 0]);
   }
 
   Future play(Episode episode) async {
@@ -92,6 +98,7 @@ class _PlayPageState extends State<PlayPage> {
     // This function will be called when entering video page or change to another episode
     updateHistoryTimer.cancel();
     danmakuTimer.cancel();
+    danmakuController.clear();
     setState(() {
       playingEpisode = episode;
     });
@@ -190,11 +197,17 @@ class _PlayPageState extends State<PlayPage> {
             Utils.isDesktop()
                 ? DesktopPlayer(
                     playerController: playerController,
-                    toggleDanmaku: () => danmakuEnabled = !danmakuEnabled,
+                    toggleDanmaku: () {
+                      danmakuController.clear();
+                      danmakuEnabled = !danmakuEnabled;
+                    },
                   )
                 : MobilePlayer(
                     playerController: playerController,
-                    toggleDanmaku: () => danmakuEnabled = !danmakuEnabled,
+                    toggleDanmaku: () {
+                      danmakuController.clear();
+                      danmakuEnabled = !danmakuEnabled;
+                    },
                   ),
             DanmakuView(
                 createdController: (e) {
@@ -228,7 +241,7 @@ class _PlayPageState extends State<PlayPage> {
 
   Widget buildPlaylistWidget() {
     return ListView(
-      children: animeSeriesInfo
+      children: episodes
           .map((episode) => Container(
                 margin: const EdgeInsets.all(8.0),
                 padding: const EdgeInsets.all(4.0),
