@@ -4,7 +4,7 @@
 
 支持多番剧源（虽然现在只适配了两个）和弹幕的看番软件。
 
-（虽然说理论上甚至能接入电视剧的网站）
+（~~虽然说理论上甚至能已经接入电视剧的网站~~ 甚至已经接入了电视剧网站）
 
 关于平台：开发过程中只在Windows上测试过，也对安卓做了一点适配，但由于没有安卓设备，所以不知道能跑成什么样。欢迎安卓用户测试。
 
@@ -16,9 +16,9 @@
 
 ### Windows 报毒
 
-目前下载Windows版可能在一些设备上会被Windows Defender报毒。经过我二十分钟的调查只能发现还有一些flutter项目也有同样问题，但没有找到解决方案。We are actively working on it.
+目前下载Windows版可能在一些设备上会被Windows Defender报毒。经过我二十分钟的调查只能发现还有一些flutter项目也有同样问题，但没有找到解决方案。~~We are actively working on it~~.
 
-## Acknowledgement:
+## Acknowledgement
 
 本项目受[oneAnime](https://github.com/Predidit/oneAnime)启发，并在Anime1的适配器中借用了其代码。
 
