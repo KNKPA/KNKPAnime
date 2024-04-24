@@ -126,8 +126,10 @@ class _PlayPageState extends State<PlayPage> {
     // The timer have to be defined here since if we define it in init(), it would
     // overwrite progress before we can seek to it.
     updateHistoryTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      historyController.updateHistory(playingEpisode, widget.adapter.name,
-          widget.series, player.state.position);
+      if (player.state.playing) {
+        historyController.updateHistory(playingEpisode, widget.adapter.name,
+            widget.series, player.state.position);
+      }
     });
 
     try {
