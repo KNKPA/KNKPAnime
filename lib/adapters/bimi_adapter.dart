@@ -126,6 +126,7 @@ class BimiAdapter extends AdapterBase {
       </li>
     */
     List<Episode> ret = [];
+    var count = 0;
     doc.querySelector('#tab')!.querySelectorAll('a').asMap().forEach((idx, a) {
       var sourceName = a.text;
       doc
@@ -135,7 +136,8 @@ class BimiAdapter extends AdapterBase {
           .forEach((idx, li) {
         var href = li.querySelector('a')!.attributes['href']!;
         var name = li.querySelector('a')!.text;
-        ret.add(Episode(href, idx, '$sourceName $name'));
+        ret.add(Episode(href, count, '$sourceName-$name'));
+        count++;
       });
     });
     return ret;
