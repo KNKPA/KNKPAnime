@@ -39,6 +39,10 @@ class _HistoryPageState extends State<HistoryPage> {
                 }).then((_) => setState(() {}));
               },
               history.adapterName,
+              onDelete: () {
+                historyController.deleteHistory(history);
+                setState(() {});
+              },
             );
           },
         ),

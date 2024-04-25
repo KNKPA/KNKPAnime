@@ -10,9 +10,10 @@ class SeriesCard extends StatelessWidget {
   final Progress? progress;
   final Function(Series) onTap;
   final String sourceName;
+  final Function()? onDelete;
 
   const SeriesCard(this.series, this.progress, this.onTap, this.sourceName,
-      {super.key});
+      {super.key, this.onDelete});
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +70,13 @@ class SeriesCard extends StatelessWidget {
                   ),
                 ],
               ),
-            )
+            ),
+            onDelete == null
+                ? Container()
+                : IconButton(
+                    icon: const Icon(Icons.delete),
+                    onPressed: onDelete!,
+                  ),
           ],
         ),
       ),

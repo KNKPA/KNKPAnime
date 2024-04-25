@@ -45,4 +45,8 @@ class HistoryController {
     var history = storedHistories.get(History.getKey(adapterName, series));
     return history?.progresses[episode];
   }
+
+  void deleteHistory(History history) {
+    storedHistories.delete(history.key);
+  }
 }
