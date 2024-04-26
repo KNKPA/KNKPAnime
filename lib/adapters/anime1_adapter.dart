@@ -30,7 +30,7 @@ class Anime1Adapter extends AdapterBase {
   final String tokenApi = 'https://anime1.me/?cat=';
   final String videoApi = 'https://v.anime1.me/api';
   static const String desc =
-      'Anime1番剧源，源网址anime1.me\n本番剧源获取的番剧有时会出现集数颠倒（如最后一集显示为第一集）的情况。';
+      'Anime1番剧源，源网址anime1.me，建议使用繁体搜索该源。\n本番剧源获取的番剧有时会出现集数颠倒（如最后一集显示为第一集）的情况。';
   final initialized = Completer<bool>();
 
   late List<String> _tokens;
