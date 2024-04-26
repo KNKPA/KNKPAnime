@@ -50,5 +50,5 @@ jobs:
           prerelease: true
           title: "不稳定版本"
           files: |
-            build/windows/x64/runner/knkpanime-windows.zip
+            knkpanime-windows.zip
             build/app/outputs/flutter-apk/knkpanime-android.apk
