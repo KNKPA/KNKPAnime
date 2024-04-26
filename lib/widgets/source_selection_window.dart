@@ -62,6 +62,8 @@ class _SourceSelectionWindowState extends State<SourceSelectionWindow>
           _buildAnimeInfo(widget.anime),
           const Divider(),
           TabBar(
+            isScrollable: true,
+            tabAlignment: TabAlignment.center,
             controller: _tabController,
             tabs: adapters
                 .map((adapter) => Observer(

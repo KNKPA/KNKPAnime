@@ -49,13 +49,18 @@ class _AdapterSearchPageState extends State<AdapterSearchPage>
       body: Column(
         children: [
           TabBar(
+            isScrollable: true,
+            tabAlignment: TabAlignment.center,
             controller: _tabController,
             tabs: adapters
                 .map((adapter) => Observer(
                       builder: (context) => Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Text(adapter.name),
+                          Text(
+                            adapter.name,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                           const SizedBox(width: 5.0),
                           Container(
                             width: 8.0,
