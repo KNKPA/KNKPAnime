@@ -16,6 +16,7 @@ jobs:
   flutter-build:
     name: "Pre Release"
     runs-on: "windows-latest"
+    permissions: write-all
 
     steps:
       - name: Clone repository
