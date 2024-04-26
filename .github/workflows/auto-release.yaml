@@ -1,0 +1,60 @@
+---
+name: "pre-release"
+
+on:
+  push:
+    tags:
+      - "1.*"
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log level'     
+        required: true
+        default: 'warning'
+
+jobs:
+  flutter-build:
+    name: "Release"
+    runs-on: "windows-latest"
+    permissions: write-all
+
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v4
+      - run: choco install yq
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version-file: pubspec.yaml
+          cache-key: "flutter-:os:-:channel:-:version:-:arch:-:hash:" # optional, change this to force refresh cache
+          cache-path: "${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:" # optional, change this to specify the cache path
+          pub-cache-key: "flutter-pub:os:-:channel:-:version:-:arch:-:hash:" # optional, change this to force refresh cache of dart pub get dependencies
+          pub-cache-path: "${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:" # optional, change this to specify the cache path
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '18'
+      - run: flutter pub get
+      - run: flutter build apk
+      - run: flutter build windows
+
+
+      - run: Compress-Archive build/windows/x64/runner/Release knkpanime-windows.zip
+      - run: Ren build/app/outputs/flutter-apk/app-release.apk knkpanime-android.apk
+      - uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest"
+          prerelease: true
+          files: |
+            knkpanime-windows.zip
+            build/app/outputs/flutter-apk/knkpanime-android.apk
+      - name: Upload outputs
+        uses: actions/upload-artifact@v4
+        with:
+          name: outputs
+          path: |
+            knkpanime-windows.zip
+            build/app/outputs/flutter-apk/knkpanime-android.apk
