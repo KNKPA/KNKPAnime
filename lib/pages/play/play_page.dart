@@ -15,8 +15,7 @@ import 'package:logger/logger.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:media_kit_video/media_kit_video.dart';
 import 'package:ns_danmaku/ns_danmaku.dart';
-
-// TODO: Use custom control to synchronize player and danmaku behaviors.
+import 'package:window_manager/window_manager.dart';
 
 class PlayPage extends StatefulWidget {
   final AdapterBase adapter;
@@ -28,7 +27,7 @@ class PlayPage extends StatefulWidget {
   State<PlayPage> createState() => _PlayPageState();
 }
 
-class _PlayPageState extends State<PlayPage> {
+class _PlayPageState extends State<PlayPage> with WindowListener {
   late final player = _IntegratedPlayer();
   late final playerController = VideoController(player);
   late final historyController = Modular.get<HistoryController>();
@@ -41,10 +40,12 @@ class _PlayPageState extends State<PlayPage> {
   Map<int, List<Danmaku>> danmakus = {};
   bool danmakuEnabled = true;
   bool playStateInitialized = true;
+  bool isFullScreen = false;
 
   @override
   void initState() {
     super.initState();
+    windowManager.addListener(this);
     init();
   }
 
@@ -186,6 +187,23 @@ class _PlayPageState extends State<PlayPage> {
     player.dispose();
     updateHistoryTimer.cancel();
     danmakuTimer.cancel();
+    windowManager.removeListener(this);
+  }
+
+  @override
+  void onWindowEnterFullScreen() {
+    setState(() {
+      isFullScreen = true;
+    });
+    super.onWindowEnterFullScreen();
+  }
+
+  @override
+  void onWindowLeaveFullScreen() {
+    setState(() {
+      isFullScreen = false;
+    });
+    super.onWindowLeaveFullScreen();
   }
 
   @override
@@ -224,7 +242,9 @@ class _PlayPageState extends State<PlayPage> {
           ? Row(
               children: [
                 playerWidget,
-                Expanded(child: buildPlaylistWidget()),
+                isFullScreen
+                    ? Container()
+                    : Expanded(child: buildPlaylistWidget()),
               ],
             )
           : Column(

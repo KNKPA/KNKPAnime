@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:media_kit_video/media_kit_video.dart';
+import 'package:window_manager/window_manager.dart';
 
 class DesktopPlayer extends StatefulWidget {
   final VideoController playerController;
@@ -18,9 +19,13 @@ class _DesktopPlayerState extends State<DesktopPlayer> {
   Widget build(BuildContext context) {
     return MaterialDesktopVideoControlsTheme(
       normal: MaterialDesktopVideoControlsThemeData(
+        toggleFullscreenOnDoublePress: false,
         topButtonBar: [
           MaterialCustomButton(
-            onPressed: () => Modular.to.pop(),
+            onPressed: () {
+              windowManager.setFullScreen(false);
+              Modular.to.pop();
+            },
             icon: const Icon(Icons.arrow_back),
           ),
         ],
@@ -35,26 +40,15 @@ class _DesktopPlayerState extends State<DesktopPlayer> {
             icon: const Icon(Icons.comment),
             onPressed: widget.toggleDanmaku,
           ),
-          const MaterialDesktopFullscreenButton()
-        ],
-        keyboardShortcuts: _playerShortcuts,
-      ),
-      fullscreen: MaterialDesktopVideoControlsThemeData(
-        bottomButtonBar: [
-          const MaterialDesktopSkipPreviousButton(),
-          const MaterialDesktopPlayOrPauseButton(),
-          const MaterialDesktopSkipNextButton(),
-          const MaterialDesktopVolumeButton(),
-          const MaterialDesktopPositionIndicator(),
-          const Spacer(),
           MaterialDesktopCustomButton(
-            icon: const Icon(Icons.comment),
-            onPressed: widget.toggleDanmaku,
+            icon: const Icon(Icons.fullscreen),
+            onPressed: () async => windowManager
+                .setFullScreen(!(await windowManager.isFullScreen())),
           ),
-          const MaterialDesktopFullscreenButton()
         ],
         keyboardShortcuts: _playerShortcuts,
       ),
+      fullscreen: const MaterialDesktopVideoControlsThemeData(),
       child: Scaffold(
         body: Video(
           controller: widget.playerController,
@@ -109,9 +103,7 @@ class _DesktopPlayerState extends State<DesktopPlayer> {
       final volume = widget.playerController.player.state.volume - 5.0;
       widget.playerController.player.setVolume(volume.clamp(0.0, 100.0));
     },
-    const SingleActivator(LogicalKeyboardKey.keyF): () =>
-        toggleFullscreen(context),
     const SingleActivator(LogicalKeyboardKey.escape): () =>
-        exitFullscreen(context),
+        windowManager.setFullScreen(false),
   };
 }
