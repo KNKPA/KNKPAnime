@@ -150,11 +150,11 @@ class _PlayPageState extends State<PlayPage> with WindowListener {
       logger.i('Getting danmaku for ${widget.series.name}');
       var matchingAnimes =
           await DanmakuRequest.getMatchingAnimes(widget.series.name);
-      logger.i(matchingAnimes.length);
+      logger.i('Found ${matchingAnimes.length} matchings');
       if (matchingAnimes.isNotEmpty) {
         var dmks = await DanmakuRequest.getDanmakus(
             matchingAnimes[0].id, playingEpisode.episode);
-        logger.i('Danmaku count: ${danmakus.length}');
+        logger.i('Danmaku count: ${dmks.length}');
         danmakus.clear();
         dmks.forEach((element) {
           danmakus[element.offset.floor()] == null
