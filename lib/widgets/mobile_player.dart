@@ -26,7 +26,10 @@ class _MobilePlayerState extends State<MobilePlayer> {
         bottomButtonBar: [
           const MaterialPositionIndicator(),
           const Spacer(),
-          MaterialCustomButton(onPressed: widget.toggleDanmaku),
+          MaterialCustomButton(
+            icon: const Icon(Icons.comment),
+            onPressed: widget.toggleDanmaku,
+          ),
           const MaterialFullscreenButton()
         ],
       ),
@@ -34,7 +37,10 @@ class _MobilePlayerState extends State<MobilePlayer> {
         bottomButtonBar: [
           const MaterialPositionIndicator(),
           const Spacer(),
-          MaterialCustomButton(onPressed: widget.toggleDanmaku),
+          MaterialCustomButton(
+            icon: const Icon(Icons.comment),
+            onPressed: widget.toggleDanmaku,
+          ),
           const MaterialFullscreenButton()
         ],
       ),
