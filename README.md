@@ -10,6 +10,8 @@
 
 有问题或建议可以通过issue反馈。~~我真的想要issue到不行了，有没有好心人能给我提一个issue啊~~
 
+[下载链接](https://github.com/KNKPA/KNKPAnime/releases/latest)
+
 ## 介绍
 
 最重要的当然就是搜索啦。作为一个支持多番剧源的软件，你可以先在Bangumi上搜索想看的番剧，再选择可用的源观看：
