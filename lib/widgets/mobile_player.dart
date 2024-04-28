@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:knkpanime/pages/play/player_controller.dart';
 import 'package:media_kit_video/media_kit_video.dart';
 
 class MobilePlayer extends StatefulWidget {
-  final VideoController playerController;
-  final Function() toggleDanmaku;
-  const MobilePlayer(
-      {super.key, required this.playerController, required this.toggleDanmaku});
+  final PlayerController playerController;
+  const MobilePlayer({super.key, required this.playerController});
 
   @override
   State<MobilePlayer> createState() => _MobilePlayerState();
@@ -28,25 +27,18 @@ class _MobilePlayerState extends State<MobilePlayer> {
           const Spacer(),
           MaterialCustomButton(
             icon: const Icon(Icons.comment),
-            onPressed: widget.toggleDanmaku,
+            onPressed: widget.playerController.toggleDanmaku,
           ),
-          const MaterialFullscreenButton()
-        ],
-      ),
-      fullscreen: MaterialVideoControlsThemeData(
-        bottomButtonBar: [
-          const MaterialPositionIndicator(),
-          const Spacer(),
           MaterialCustomButton(
-            icon: const Icon(Icons.comment),
-            onPressed: widget.toggleDanmaku,
+            icon: const Icon(Icons.fullscreen),
+            onPressed: widget.playerController.toggleFullscreen,
           ),
-          const MaterialFullscreenButton()
         ],
       ),
+      fullscreen: const MaterialVideoControlsThemeData(),
       child: Scaffold(
         body: Video(
-          controller: widget.playerController,
+          controller: widget.playerController.playerController,
           subtitleViewConfiguration:
               const SubtitleViewConfiguration(visible: false),
         ),
