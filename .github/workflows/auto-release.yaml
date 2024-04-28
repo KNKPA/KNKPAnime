@@ -46,8 +46,7 @@ jobs:
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "latest"
-          prerelease: true
+          prerelease: false
           files: |
             knkpanime-windows.zip
             build/app/outputs/flutter-apk/knkpanime-android.apk
