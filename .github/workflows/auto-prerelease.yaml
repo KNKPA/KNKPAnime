@@ -40,8 +40,8 @@ jobs:
       - run: flutter build apk
       - run: flutter build windows
 
-
-      - run: Compress-Archive build/windows/x64/runner/Release knkpanime-windows.zip
+      - run: ./windows/create_shortcut.bat
+      - run: Compress-Archive build/windows/x64/runner/Release build/windows/x64/runner/knkpanime.lnk knkpanime-windows.zip
       - run: Ren build/app/outputs/flutter-apk/app-release.apk knkpanime-android.apk
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
