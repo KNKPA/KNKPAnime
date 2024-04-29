@@ -103,9 +103,19 @@ abstract class _PlayerController with Store {
     );
     episodes.addAll(temp);
     player.stream.completed.listen((event) {
-      if (event == true && playingEpisode != episodes.last) {
-        var idx = episodes.indexOf(playingEpisode);
-        play(episodes[idx + 1]);
+      if (event == true) {
+        logger.i(
+            'Playback completed, clearing progress for episode ${playingEpisode.name}');
+        try {
+          historyController.clearProgress(
+              series, adapter.name, playingEpisode.episode);
+        } catch (e) {
+          logger.w(e);
+        }
+        if (playingEpisode != episodes.last) {
+          var idx = episodes.indexOf(playingEpisode);
+          play(episodes[idx + 1]);
+        }
       }
     });
 

@@ -49,4 +49,9 @@ class HistoryController {
   void deleteHistory(History history) {
     storedHistories.delete(history.key);
   }
+
+  void clearProgress(Series series, String adapterName, int episode) {
+    var history = storedHistories.get(History.getKey(adapterName, series));
+    history!.progresses[episode]!.progress = Duration.zero;
+  }
 }

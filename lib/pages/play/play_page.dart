@@ -114,7 +114,9 @@ class _PlayPageState extends State<PlayPage> {
                 child: ListTile(
                   title: Text(episode.name),
                   onTap: () {
-                    playerController.play(episode);
+                    if (episode != playerController.playingEpisode) {
+                      playerController.play(episode);
+                    }
                   },
                 ),
               ))
