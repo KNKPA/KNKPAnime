@@ -18,8 +18,20 @@ void checkForUpdate(BuildContext context) async {
   // This function can't be written at a higher level of the widget tree since
   // some context problem...
   if (_checkedForUpdate) return;
-  var resp = await Dio().get<Map<String, dynamic>>(
-      'https://api.github.com/repos/KNKPA/KNKPAnime/releases/latest');
+  Response resp;
+  try {
+    resp = await Dio().get<Map<String, dynamic>>(
+        'https://api.github.com/repos/KNKPA/KNKPAnime/releases/latest');
+  } catch (e) {
+    Modular.get<Logger>().w(e);
+    try {
+      resp = await Dio()
+          .get<Map<String, dynamic>>('https://api.withit.live/latest');
+    } catch (e) {
+      Modular.get<Logger>().w(e);
+      return;
+    }
+  }
   var localVersion = (await PackageInfo.fromPlatform()).version;
   Modular.get<Logger>().i(localVersion);
   if (resp.data!['tag_name'] != localVersion) {
