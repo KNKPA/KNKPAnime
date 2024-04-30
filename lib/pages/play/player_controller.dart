@@ -26,6 +26,8 @@ abstract class _PlayerController with Store {
   bool isFullscreen = false;
   @observable
   late Episode playingEpisode = Episode('', 0);
+  @observable
+  bool danmakuEnabled = true;
 
   late final logger = Modular.get<Logger>();
   late final historyController = Modular.get<HistoryController>();
@@ -34,7 +36,6 @@ abstract class _PlayerController with Store {
   late DanmakuController danmakuController;
   final episodes = ObservableList<Episode>();
   bool _playStateInitialized = true;
-  bool danmakuEnabled = true;
   Map<int, List<Danmaku>> danmakus = {};
   Timer updateHistoryTimer = Timer.periodic(Duration(days: 1), (timer) {});
   Timer danmakuTimer = Timer.periodic(Duration(days: 1), (timer) {});
@@ -54,6 +55,10 @@ abstract class _PlayerController with Store {
     player.dispose();
     updateHistoryTimer.cancel();
     danmakuTimer.cancel();
+  }
+
+  void setPlaybackSpeed(double rate) {
+    player.setRate(rate);
   }
 
   void enterFullscreen() {

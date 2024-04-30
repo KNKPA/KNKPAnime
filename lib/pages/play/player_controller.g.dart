@@ -45,11 +45,28 @@ mixin _$PlayerController on _PlayerController, Store {
     });
   }
 
+  late final _$danmakuEnabledAtom =
+      Atom(name: '_PlayerController.danmakuEnabled', context: context);
+
+  @override
+  bool get danmakuEnabled {
+    _$danmakuEnabledAtom.reportRead();
+    return super.danmakuEnabled;
+  }
+
+  @override
+  set danmakuEnabled(bool value) {
+    _$danmakuEnabledAtom.reportWrite(value, super.danmakuEnabled, () {
+      super.danmakuEnabled = value;
+    });
+  }
+
   @override
   String toString() {
     return '''
 isFullscreen: ${isFullscreen},
-playingEpisode: ${playingEpisode}
+playingEpisode: ${playingEpisode},
+danmakuEnabled: ${danmakuEnabled}
     ''';
   }
 }

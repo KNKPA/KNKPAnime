@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:knkpanime/pages/play/player_controller.dart';
 import 'package:media_kit_video/media_kit_video.dart';
@@ -35,14 +36,65 @@ class _DesktopPlayerState extends State<DesktopPlayer> {
           const MaterialDesktopVolumeButton(),
           const MaterialDesktopPositionIndicator(),
           const Spacer(),
-          MaterialDesktopCustomButton(
-            icon: const Icon(Icons.comment),
-            onPressed: widget.playerController.toggleDanmaku,
-          ),
-          MaterialDesktopCustomButton(
-            icon: const Icon(Icons.fullscreen),
-            onPressed: widget.playerController.toggleFullscreen,
-          ),
+          MaterialCustomButton(
+              icon: const Icon(Icons.speed),
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: const Text('选择播放速度'),
+                    content: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        ListTile(
+                          title: const Text('0.5x'),
+                          onTap: () =>
+                              widget.playerController.setPlaybackSpeed(0.5),
+                        ),
+                        ListTile(
+                          title: const Text('0.75x'),
+                          onTap: () =>
+                              widget.playerController.setPlaybackSpeed(0.75),
+                        ),
+                        ListTile(
+                          title: const Text('1.0x'),
+                          onTap: () =>
+                              widget.playerController.setPlaybackSpeed(1.0),
+                        ),
+                        ListTile(
+                          title: const Text('1.5x'),
+                          onTap: () =>
+                              widget.playerController.setPlaybackSpeed(1.5),
+                        ),
+                        ListTile(
+                          title: const Text('2.0x'),
+                          onTap: () =>
+                              widget.playerController.setPlaybackSpeed(2.0),
+                        ),
+                        ListTile(
+                          title: const Text('3.0x'),
+                          onTap: () =>
+                              widget.playerController.setPlaybackSpeed(3.0),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }),
+          Observer(
+              builder: (_) => MaterialDesktopCustomButton(
+                    icon: widget.playerController.danmakuEnabled
+                        ? const Icon(Icons.comment)
+                        : const Icon(Icons.comments_disabled),
+                    onPressed: widget.playerController.toggleDanmaku,
+                  )),
+          Observer(
+              builder: (_) => MaterialDesktopCustomButton(
+                    icon: widget.playerController.isFullscreen
+                        ? const Icon(Icons.fullscreen_exit)
+                        : const Icon(Icons.fullscreen),
+                    onPressed: widget.playerController.toggleFullscreen,
+                  )),
         ],
         keyboardShortcuts: _playerShortcuts,
       ),
