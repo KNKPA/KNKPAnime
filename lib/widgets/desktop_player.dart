@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:knkpanime/pages/play/player_controller.dart';
+import 'package:knkpanime/widgets/danmaku_settings_window.dart';
 import 'package:media_kit_video/media_kit_video.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -36,6 +37,13 @@ class _DesktopPlayerState extends State<DesktopPlayer> {
           const MaterialDesktopVolumeButton(),
           const MaterialDesktopPositionIndicator(),
           const Spacer(),
+          MaterialCustomButton(
+            onPressed: () => showDialog(
+              context: context,
+              builder: (context) => DanmakuSettingsWindow(
+                  playerController: widget.playerController),
+            ),
+          ),
           MaterialCustomButton(
               icon: const Icon(Icons.speed),
               onPressed: () {

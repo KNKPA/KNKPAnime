@@ -4,6 +4,8 @@ import 'package:dio/dio.dart';
 import 'package:knkpanime/models/danmaku.dart';
 import 'package:knkpanime/utils/utils.dart';
 
+import '../models/danmaku.dart';
+
 class DanmakuRequest {
   static var _cachedAnimeId = 0;
   static var _cachedEpisodes = <int>[];
@@ -71,12 +73,4 @@ class DanmakuRequest {
   }
 
   DanmakuRequest._();
-}
-
-class DanmakuAnimeInfo {
-  int id;
-  String name;
-  int episodeCount;
-
-  DanmakuAnimeInfo(this.id, this.name, this.episodeCount);
 }

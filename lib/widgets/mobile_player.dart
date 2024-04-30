@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:knkpanime/pages/play/player_controller.dart';
+import 'package:knkpanime/widgets/danmaku_settings_window.dart';
 import 'package:media_kit_video/media_kit_video.dart';
 
 class MobilePlayer extends StatefulWidget {
@@ -27,6 +28,13 @@ class _MobilePlayerState extends State<MobilePlayer> {
         bottomButtonBar: [
           const MaterialPositionIndicator(),
           const Spacer(),
+          MaterialCustomButton(
+            onPressed: () => showDialog(
+              context: context,
+              builder: (context) => DanmakuSettingsWindow(
+                  playerController: widget.playerController),
+            ),
+          ),
           MaterialCustomButton(
               icon: const Icon(Icons.speed),
               onPressed: () {

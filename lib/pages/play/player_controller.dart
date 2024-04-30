@@ -17,6 +17,8 @@ import 'package:mobx/mobx.dart';
 import 'package:ns_danmaku/ns_danmaku.dart';
 import 'package:window_manager/window_manager.dart';
 
+import '../../models/danmaku.dart';
+
 part 'player_controller.g.dart';
 
 class PlayerController = _PlayerController with _$PlayerController;
@@ -28,6 +30,20 @@ abstract class _PlayerController with Store {
   late Episode playingEpisode = Episode('', 0);
   @observable
   bool danmakuEnabled = true;
+  @computed
+  List<DanmakuAnimeInfo> get danmakuCandidates {
+    var temp = (selectedDanmakuSource == null
+        ? <DanmakuAnimeInfo>[]
+        : [selectedDanmakuSource!]);
+    temp.addAll(matchingAnimes
+        .where((element) => element.id != selectedDanmakuSource?.id));
+    return temp;
+  }
+
+  @observable
+  DanmakuAnimeInfo? selectedDanmakuSource;
+  @observable
+  List<DanmakuAnimeInfo> matchingAnimes = [];
 
   late final logger = Modular.get<Logger>();
   late final historyController = Modular.get<HistoryController>();
@@ -107,6 +123,9 @@ abstract class _PlayerController with Store {
       (a, b) => a.episode - b.episode,
     );
     episodes.addAll(temp);
+
+    await searchDanmaku(series.name);
+
     player.stream.completed.listen((event) {
       if (event == true) {
         logger.i(
@@ -195,19 +214,8 @@ abstract class _PlayerController with Store {
       // but this may involve adding a AnimeInfo to the History class.
       // TODO: Danmaku source selection
       // Maybe this can't be done unless we define our own video controls.
-      logger.i('Getting danmaku for ${series.name}');
-      var matchingAnimes = await DanmakuRequest.getMatchingAnimes(series.name);
-      logger.i('Found ${matchingAnimes.length} matchings');
       if (matchingAnimes.isNotEmpty) {
-        var dmks = await DanmakuRequest.getDanmakus(
-            matchingAnimes[0].id, playingEpisode.episode);
-        logger.i('Danmaku count: ${dmks.length}');
-        danmakus.clear();
-        dmks.forEach((element) {
-          danmakus[element.offset.floor()] == null
-              ? danmakus[element.offset.floor()] = [element]
-              : danmakus[element.offset.floor()]?.add(element);
-        });
+        await loadDanmakus(matchingAnimes[0].id);
         danmakuTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
           danmakus[player.state.position.inSeconds]
               ?.asMap()
@@ -228,6 +236,30 @@ abstract class _PlayerController with Store {
     } catch (e) {
       logger.w(e);
     }
+  }
+
+  Future loadDanmakus(int id) async {
+    logger.i('Loading danmaku with id $id');
+    danmakus.clear();
+    selectedDanmakuSource =
+        danmakuCandidates.firstWhere((element) => element.id == id);
+    try {
+      var dmks = await DanmakuRequest.getDanmakus(id, playingEpisode.episode);
+      logger.i('Danmaku count: ${dmks.length}');
+      dmks.forEach((element) {
+        danmakus[element.offset.floor()] == null
+            ? danmakus[element.offset.floor()] = [element]
+            : danmakus[element.offset.floor()]?.add(element);
+      });
+    } catch (e) {
+      logger.w(e);
+    }
+  }
+
+  Future searchDanmaku(String keyword) async {
+    logger.i('Getting danmaku for ${keyword}');
+    matchingAnimes = await DanmakuRequest.getMatchingAnimes(keyword);
+    logger.i('Found ${matchingAnimes.length} matchings');
   }
 
   void toggleDanmaku() {

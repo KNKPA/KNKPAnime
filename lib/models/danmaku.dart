@@ -5,3 +5,11 @@ class Danmaku {
 
   Danmaku(this.offset, this.content);
 }
+
+class DanmakuAnimeInfo {
+  int id;
+  String name;
+  int episodeCount;
+
+  DanmakuAnimeInfo(this.id, this.name, this.episodeCount);
+}
