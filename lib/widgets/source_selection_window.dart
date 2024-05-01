@@ -7,6 +7,7 @@ import 'package:knkpanime/models/series.dart';
 import 'package:knkpanime/models/anime_info.dart';
 import 'package:knkpanime/pages/search/adapter_search_controller.dart';
 import 'package:knkpanime/utils/utils.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:logger/logger.dart';
 
 class SourceSelectionWindow extends StatefulWidget {
@@ -145,13 +146,21 @@ class _SourceSelectionWindowState extends State<SourceSelectionWindow>
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(8.0),
-              child: FadeInImage.assetNetwork(
-                placeholder: 'assets/images/placeholder.jpg',
-                image: anime.images?['large'] ?? '',
+              child: CachedNetworkImage(
+                placeholder: (context, url) => Image.asset(
+                    width: 100.0,
+                    height: 150.0,
+                    fit: BoxFit.cover,
+                    'assets/images/placeholder.jpg',
+                  ),
+                imageUrl: anime.images?['large'] ?? '',
                 width: 100.0,
                 height: 150.0,
                 fit: BoxFit.cover,
-                imageErrorBuilder: (context, error, stackTrace) {
+                fadeOutDuration: const Duration(milliseconds: 120),
+                fadeInDuration: const Duration(milliseconds: 120),
+                // filterQuality: FilterQuality.low,
+                errorWidget: (context, error, stackTrace) {
                   Modular.get<Logger>().w(error);
                   return Image.asset(
                     width: 100.0,
