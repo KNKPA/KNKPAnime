@@ -3,6 +3,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:knkpanime/models/history.dart';
 import 'package:knkpanime/models/series.dart';
 import 'package:knkpanime/utils/utils.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:logger/logger.dart';
 
 class SeriesCard extends StatelessWidget {
@@ -25,13 +26,21 @@ class SeriesCard extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(8.0),
-              child: FadeInImage.assetNetwork(
-                placeholder: 'assets/images/placeholder.jpg',
-                image: series.image ?? '',
+              child: CachedNetworkImage(
+                placeholder: (context, url) => Image.asset(
+                    width: 100.0,
+                    height: 150.0,
+                    fit: BoxFit.cover,
+                    'assets/images/placeholder.jpg',
+                  ),
+                imageUrl: series.image ?? '',
                 width: 100.0,
                 height: 150.0,
                 fit: BoxFit.cover,
-                imageErrorBuilder: (context, error, stackTrace) {
+                fadeOutDuration: const Duration(milliseconds: 120),
+                fadeInDuration: const Duration(milliseconds: 120),
+                // filterQuality: FilterQuality.low,
+                errorWidget: (context, error, stackTrace) {
                   Modular.get<Logger>().w(error);
                   return Image.asset(
                     width: 100.0,

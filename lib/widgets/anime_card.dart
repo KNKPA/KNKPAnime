@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:knkpanime/models/anime_info.dart';
 import 'package:knkpanime/pages/favorite/favorite_controller.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:logger/logger.dart';
 
 class AnimeCard extends StatefulWidget {
@@ -27,13 +28,21 @@ class _AnimeCardState extends State<AnimeCard> {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(8.0),
-              child: FadeInImage.assetNetwork(
-                placeholder: 'assets/images/placeholder.jpg',
-                image: widget.anime.images?['large'] ?? '',
+              child: CachedNetworkImage(
+                placeholder: (context, url) => Image.asset(
+                  width: 100.0,
+                  height: 150.0,
+                  fit: BoxFit.cover,
+                  'assets/images/placeholder.jpg',
+                ),
+                imageUrl: widget.anime.images?['large'] ?? '',
                 width: 100.0,
                 height: 150.0,
                 fit: BoxFit.cover,
-                imageErrorBuilder: (context, error, stackTrace) {
+                fadeOutDuration: const Duration(milliseconds: 120),
+                fadeInDuration: const Duration(milliseconds: 120),
+                // filterQuality: FilterQuality.low,
+                errorWidget: (context, error, stackTrace) {
                   Modular.get<Logger>().w(error);
                   return Image.asset(
                     width: 100.0,
