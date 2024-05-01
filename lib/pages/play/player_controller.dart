@@ -54,7 +54,7 @@ abstract class _PlayerController with Store {
   bool _playStateInitialized = true;
   Map<int, List<Danmaku>> danmakus = {};
   Timer updateHistoryTimer = Timer.periodic(Duration(days: 1), (timer) {});
-  Timer danmakuTimer = Timer.periodic(Duration(days: 1), (timer) {});
+  late Timer danmakuTimer;
   final AdapterBase adapter;
   final Series series;
   final BuildContext buildContext;
@@ -125,6 +125,20 @@ abstract class _PlayerController with Store {
     episodes.addAll(temp);
 
     await searchDanmaku(series.name);
+    danmakuTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      danmakus[player.state.position.inSeconds]
+          ?.asMap()
+          .forEach((idx, danmaku) async {
+        await Future.delayed(
+            Duration(
+                milliseconds: idx *
+                    1000 ~/
+                    danmakus[player.state.position.inSeconds]!.length),
+            () => danmakuEnabled && buildContext.mounted && player.state.playing
+                ? danmakuController.addItems([DanmakuItem(danmaku.content)])
+                : null);
+      });
+    });
 
     player.stream.completed.listen((event) {
       if (event == true) {
@@ -167,7 +181,6 @@ abstract class _PlayerController with Store {
   Future _play(Episode episode) async {
     // This function will be called when entering video page or change to another episode
     updateHistoryTimer.cancel();
-    danmakuTimer.cancel();
     danmakuController.clear();
     playingEpisode = episode;
 
@@ -215,36 +228,20 @@ abstract class _PlayerController with Store {
       // TODO: Danmaku source selection
       // Maybe this can't be done unless we define our own video controls.
       if (matchingAnimes.isNotEmpty) {
-        await loadDanmakus(matchingAnimes[0].id);
-        danmakuTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
-          danmakus[player.state.position.inSeconds]
-              ?.asMap()
-              .forEach((idx, danmaku) async {
-            await Future.delayed(
-                Duration(
-                    milliseconds: idx *
-                        1000 ~/
-                        danmakus[player.state.position.inSeconds]!.length),
-                () => danmakuEnabled &&
-                        buildContext.mounted &&
-                        player.state.playing
-                    ? danmakuController.addItems([DanmakuItem(danmaku.content)])
-                    : null);
-          });
-        });
+        await loadDanmakus(matchingAnimes[0]);
       }
     } catch (e) {
       logger.w(e);
     }
   }
 
-  Future loadDanmakus(int id) async {
-    logger.i('Loading danmaku with id $id');
+  Future loadDanmakus(DanmakuAnimeInfo info) async {
+    logger.i('Loading danmaku with id ${info.id}');
     danmakus.clear();
-    selectedDanmakuSource =
-        danmakuCandidates.firstWhere((element) => element.id == id);
+    selectedDanmakuSource = info;
     try {
-      var dmks = await DanmakuRequest.getDanmakus(id, playingEpisode.episode);
+      var dmks =
+          await DanmakuRequest.getDanmakus(info.id, playingEpisode.episode);
       logger.i('Danmaku count: ${dmks.length}');
       dmks.forEach((element) {
         danmakus[element.offset.floor()] == null
