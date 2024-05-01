@@ -186,6 +186,9 @@ abstract class _PlayerController with Store {
     updateHistoryTimer.cancel();
     danmakuController.clear();
     playingEpisode = episode;
+    if (selectedDanmakuSource != null) {
+      loadDanmakus(selectedDanmakuSource!);
+    }
 
     try {
       await adapter.play(episode.episodeId, playerController);
