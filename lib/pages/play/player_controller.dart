@@ -125,6 +125,9 @@ abstract class _PlayerController with Store {
     episodes.addAll(temp);
 
     await searchDanmaku(series.name);
+    if (matchingAnimes.isNotEmpty) {
+      loadDanmakus(matchingAnimes[0]);
+    }
     danmakuTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       danmakus[player.state.position.inSeconds]
           ?.asMap()
@@ -219,20 +222,6 @@ abstract class _PlayerController with Store {
             playingEpisode, adapter.name, series, player.state.position);
       }
     });
-
-    try {
-      // TODO: Get danmakus using `anime.name`
-      // Currently we use only `series.name` to get danmakus.
-      // We can consider to use `anime.name` to match danmakus as fallback,
-      // but this may involve adding a AnimeInfo to the History class.
-      // TODO: Danmaku source selection
-      // Maybe this can't be done unless we define our own video controls.
-      if (matchingAnimes.isNotEmpty) {
-        await loadDanmakus(matchingAnimes[0]);
-      }
-    } catch (e) {
-      logger.w(e);
-    }
   }
 
   Future loadDanmakus(DanmakuAnimeInfo info) async {
