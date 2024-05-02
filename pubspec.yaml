@@ -46,6 +46,7 @@ dependencies:
   package_info_plus: "^7.0.0"
   window_manager: ^0.3.8
   cached_network_image: ^3.3.1
+  flutter_displaymode: ^0.6.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

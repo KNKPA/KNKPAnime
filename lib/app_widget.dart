@@ -1,8 +1,10 @@
+import 'dart:io';
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:knkpanime/navigation.dart';
 import 'package:knkpanime/utils/utils.dart';
+import 'package:flutter_displaymode/flutter_displaymode.dart';
 
 class AppWidget extends StatefulWidget {
   const AppWidget({super.key});
@@ -14,6 +16,18 @@ class AppWidget extends StatefulWidget {
 class _AppWidgetState extends State<AppWidget> {
   @override
   Widget build(BuildContext context) {
+    // 设置高帧率
+    if (Platform.isAndroid) {
+      try {
+        late List modes;
+        FlutterDisplayMode.supported.then((value) {
+          modes = value;
+          DisplayMode f = DisplayMode.auto;
+          DisplayMode preferred = modes.toList().firstWhere((el) => el == f);
+          FlutterDisplayMode.setPreferredMode(preferred);
+        });
+      } catch (_) {}
+    }
     return AdaptiveTheme(
         light: ThemeData.light(useMaterial3: true),
         dark: ThemeData.dark(useMaterial3: true),
