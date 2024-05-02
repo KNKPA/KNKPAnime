@@ -130,7 +130,8 @@ class _SourceSelectionWindowState extends State<SourceSelectionWindow>
                 }).toList(),
               ),
             ),
-          )
+          ),
+          Container(height: 20), // 添加下边距以解决 overflow
         ],
       ),
     );
