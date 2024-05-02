@@ -171,5 +171,7 @@ class _DesktopPlayerState extends State<DesktopPlayer> {
     },
     const SingleActivator(LogicalKeyboardKey.escape):
         widget.playerController.exitFullscreen,
+    const SingleActivator(LogicalKeyboardKey.keyD):
+        widget.playerController.toggleDanmaku,
   };
 }
