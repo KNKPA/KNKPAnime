@@ -56,33 +56,45 @@ class _DesktopPlayerState extends State<DesktopPlayer> {
                       children: [
                         ListTile(
                           title: const Text('0.5x'),
-                          onTap: () =>
-                              widget.playerController.setPlaybackSpeed(0.5),
+                          onTap: () {
+                            widget.playerController.setPlaybackSpeed(0.5);
+                            Navigator.pop(context);
+                          },
                         ),
                         ListTile(
                           title: const Text('0.75x'),
-                          onTap: () =>
-                              widget.playerController.setPlaybackSpeed(0.75),
+                          onTap: () {
+                            widget.playerController.setPlaybackSpeed(0.75);
+                            Navigator.pop(context);
+                          },
                         ),
                         ListTile(
                           title: const Text('1.0x'),
-                          onTap: () =>
-                              widget.playerController.setPlaybackSpeed(1.0),
+                          onTap: () {
+                            widget.playerController.setPlaybackSpeed(1);
+                            Navigator.pop(context);
+                          },
                         ),
                         ListTile(
                           title: const Text('1.5x'),
-                          onTap: () =>
-                              widget.playerController.setPlaybackSpeed(1.5),
+                          onTap: () {
+                            widget.playerController.setPlaybackSpeed(1.5);
+                            Navigator.pop(context);
+                          },
                         ),
                         ListTile(
                           title: const Text('2.0x'),
-                          onTap: () =>
-                              widget.playerController.setPlaybackSpeed(2.0),
+                          onTap: () {
+                            widget.playerController.setPlaybackSpeed(2);
+                            Navigator.pop(context);
+                          },
                         ),
                         ListTile(
                           title: const Text('3.0x'),
-                          onTap: () =>
-                              widget.playerController.setPlaybackSpeed(3.0),
+                          onTap: () {
+                            widget.playerController.setPlaybackSpeed(3);
+                            Navigator.pop(context);
+                          },
                         ),
                       ],
                     ),
