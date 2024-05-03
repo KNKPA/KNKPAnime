@@ -28,11 +28,11 @@ class SeriesCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(8.0),
               child: CachedNetworkImage(
                 placeholder: (context, url) => Image.asset(
-                    width: 100.0,
-                    height: 150.0,
-                    fit: BoxFit.cover,
-                    'assets/images/placeholder.jpg',
-                  ),
+                  width: 100.0,
+                  height: 150.0,
+                  fit: BoxFit.cover,
+                  'assets/images/placeholder.jpg',
+                ),
                 imageUrl: series.image ?? '',
                 width: 100.0,
                 height: 150.0,
