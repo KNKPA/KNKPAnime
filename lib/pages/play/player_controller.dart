@@ -54,7 +54,8 @@ abstract class _PlayerController with Store {
   bool _playStateInitialized = true;
   Map<int, List<Danmaku>> danmakus = {};
   Timer updateHistoryTimer = Timer.periodic(Duration(days: 1), (timer) {});
-  late Timer danmakuTimer;
+  int danmakuPosition = -1;
+  double playbackSpeed = 1;
   final AdapterBase adapter;
   final Series series;
   final BuildContext buildContext;
@@ -70,10 +71,10 @@ abstract class _PlayerController with Store {
     exitFullscreen();
     player.dispose();
     updateHistoryTimer.cancel();
-    danmakuTimer.cancel();
   }
 
   void setPlaybackSpeed(double rate) {
+    playbackSpeed = rate;
     player.setRate(rate);
   }
 
@@ -108,6 +109,26 @@ abstract class _PlayerController with Store {
     Modular.get<Logger>().i('Video play page info:');
     Modular.get<Logger>().i('Adapter: ${adapter.toString()}');
     Modular.get<Logger>().i('Source anime info: ${series.toString()}');
+
+    player.stream.position.listen((event) {
+      if (event.inSeconds != danmakuPosition) {
+        danmakuPosition = event.inSeconds;
+        danmakus[danmakuPosition]?.asMap().forEach((idx, danmaku) async {
+          await Future.delayed(
+              Duration(
+                  milliseconds: idx *
+                      1000 /
+                      playbackSpeed ~/
+                      danmakus[danmakuPosition]!.length),
+              () => danmakuEnabled &&
+                      buildContext.mounted &&
+                      player.state.playing
+                  ? danmakuController.addItems([DanmakuItem(danmaku.content)])
+                  : null);
+        });
+      }
+    });
+
     List<Episode> temp = [];
     try {
       temp = await adapter.getEpisodes(series.seriesId);
@@ -128,20 +149,6 @@ abstract class _PlayerController with Store {
     if (matchingAnimes.isNotEmpty) {
       loadDanmakus(matchingAnimes[0]);
     }
-    danmakuTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      danmakus[player.state.position.inSeconds]
-          ?.asMap()
-          .forEach((idx, danmaku) async {
-        await Future.delayed(
-            Duration(
-                milliseconds: idx *
-                    1000 ~/
-                    danmakus[player.state.position.inSeconds]!.length),
-            () => danmakuEnabled && buildContext.mounted && player.state.playing
-                ? danmakuController.addItems([DanmakuItem(danmaku.content)])
-                : null);
-      });
-    });
 
     player.stream.completed.listen((event) {
       if (event == true) {
