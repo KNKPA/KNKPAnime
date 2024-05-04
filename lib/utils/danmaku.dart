@@ -1,8 +1,10 @@
 import 'dart:ffi';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:knkpanime/models/danmaku.dart';
 import 'package:knkpanime/utils/utils.dart';
+import 'package:ns_danmaku/ns_danmaku.dart';
 
 import '../models/danmaku.dart';
 
@@ -61,8 +63,16 @@ class DanmakuRequest {
         'withRelated': true,
       });
       var ret = <Danmaku>[];
-      resp.data['comments'].forEach(
-          (e) => ret.add(Danmaku(double.parse(e['p'].split(',')[0]), e['m'])));
+      resp.data['comments'].forEach((e) {
+        final info = e['p'].split(',');
+        final offset = double.parse(info[0]);
+        final pos = info[1] == '1'
+            ? DanmakuItemType.scroll
+            : (info[1] == '4' ? DanmakuItemType.bottom : DanmakuItemType.top);
+        final color = Color(int.parse(info[2]) | 0xFF000000);
+
+        ret.add(Danmaku(offset, e['m'], pos, color));
+      });
       //return Utils.cast<List<Danmaku>>(resp.data['comments']
       //    .map((e) => Danmaku(double.parse(e['p'].split(',')[0]), e['m']))
       //    .toList())!;

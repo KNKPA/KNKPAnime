@@ -120,11 +120,13 @@ abstract class _PlayerController with Store {
                       1000 /
                       playbackSpeed ~/
                       danmakus[danmakuPosition]!.length),
-              () => danmakuEnabled &&
-                      buildContext.mounted &&
-                      player.state.playing
-                  ? danmakuController.addItems([DanmakuItem(danmaku.content)])
-                  : null);
+              () =>
+                  danmakuEnabled && buildContext.mounted && player.state.playing
+                      ? danmakuController.addItems([
+                          DanmakuItem(danmaku.content,
+                              color: danmaku.color, type: danmaku.position)
+                        ])
+                      : null);
         });
       }
     });
