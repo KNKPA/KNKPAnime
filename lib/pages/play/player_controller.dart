@@ -151,7 +151,7 @@ abstract class _PlayerController with Store {
 
     await searchDanmaku(series.name);
     if (matchingAnimes.isNotEmpty) {
-      loadDanmakus(matchingAnimes[0]);
+      selectedDanmakuSource = matchingAnimes[0];
     }
 
     player.stream.completed.listen((event) {
