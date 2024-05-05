@@ -8,16 +8,44 @@ on:
   workflow_dispatch:
     inputs:
       logLevel:
-        description: 'Log level'     
+        description: "Log level"
         required: true
-        default: 'warning'
+        default: "warning"
 
 jobs:
-  flutter-build:
+  flutter-build-macos:
+    name: "Build MacOS"
+    runs-on: "macos-latest"
+    permissions: write-all
+
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v4
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version-file: pubspec.yaml
+          cache-key: "flutter-:os:-:channel:-:version:-:arch:-:hash:" # optional, change this to force refresh cache
+          cache-path: "${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:" # optional, change this to specify the cache path
+          pub-cache-key: "flutter-pub:os:-:channel:-:version:-:arch:-:hash:" # optional, change this to force refresh cache of dart pub get dependencies
+          pub-cache-path: "${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:" # optional, change this to specify the cache path
+      - run: flutter pub get
+      - run: flutter build macos
+      - run: mkdir upload
+      - run: mv build/macos/Build/Products/Release/knkpanime.app upload/knkpanime-macOS.app
+      - run: ls
+      - name: Upload MacOS build
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-build
+          path: upload
+
+  flutter-build-windows-android:
     name: "Pre Release"
     runs-on: "windows-latest"
     permissions: write-all
-
+    needs: flutter-build-macos
     steps:
       - name: Clone repository
         uses: actions/checkout@v4
@@ -34,14 +62,19 @@ jobs:
       - name: Set up Java
         uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
-          java-version: '18'
+          distribution: "temurin"
+          java-version: "18"
       - run: flutter pub get
       - run: flutter build apk
       - run: flutter build windows
 
       - run: Compress-Archive -Path build/windows/x64/runner/Release -DestinationPath knkpanime-windows.zip
       - run: Ren build/app/outputs/flutter-apk/app-release.apk knkpanime-android.apk
+      - name: Download MacOS build
+        uses: actions/download-artifact@v4
+        with:
+          name: macos-build
+      - run: Compress-Archive -Path knkpanime-macOS.app -DestinationPath knkpanime-macOS.zip
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
@@ -51,6 +84,7 @@ jobs:
           files: |
             knkpanime-windows.zip
             build/app/outputs/flutter-apk/knkpanime-android.apk
+            knkpanime-macOS.zip
       - name: Upload outputs
         uses: actions/upload-artifact@v4
         with:
@@ -58,3 +92,4 @@ jobs:
           path: |
             knkpanime-windows.zip
             build/app/outputs/flutter-apk/knkpanime-android.apk
+            knkpanime-macOS.zip
