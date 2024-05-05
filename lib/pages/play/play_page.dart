@@ -79,7 +79,8 @@ class _PlayPageState extends State<PlayPage> {
             ? Row(
                 children: [
                   playerWidget,
-                  playerController.isFullscreen
+                  playerController.isFullscreen ||
+                          !playerController.showPlaylist
                       ? Container()
                       : Expanded(child: buildPlaylistWidget()),
                 ],

@@ -44,6 +44,8 @@ abstract class _PlayerController with Store {
   DanmakuAnimeInfo? selectedDanmakuSource;
   @observable
   List<DanmakuAnimeInfo> matchingAnimes = [];
+  @observable
+  bool showPlaylist = true;
 
   late final logger = Modular.get<Logger>();
   late final historyController = Modular.get<HistoryController>();

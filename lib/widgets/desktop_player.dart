@@ -107,6 +107,10 @@ class _DesktopPlayerState extends State<DesktopPlayer> {
                         : const Icon(Icons.comments_disabled),
                     onPressed: widget.playerController.toggleDanmaku,
                   )),
+          MaterialCustomButton(
+              icon: const Icon(Icons.list),
+              onPressed: () => widget.playerController.showPlaylist =
+                  !widget.playerController.showPlaylist),
           Observer(
               builder: (_) => MaterialDesktopCustomButton(
                     icon: widget.playerController.isFullscreen
