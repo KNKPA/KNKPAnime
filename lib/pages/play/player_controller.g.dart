@@ -103,6 +103,22 @@ mixin _$PlayerController on _PlayerController, Store {
     });
   }
 
+  late final _$showPlaylistAtom =
+      Atom(name: '_PlayerController.showPlaylist', context: context);
+
+  @override
+  bool get showPlaylist {
+    _$showPlaylistAtom.reportRead();
+    return super.showPlaylist;
+  }
+
+  @override
+  set showPlaylist(bool value) {
+    _$showPlaylistAtom.reportWrite(value, super.showPlaylist, () {
+      super.showPlaylist = value;
+    });
+  }
+
   @override
   String toString() {
     return '''
@@ -111,6 +127,7 @@ playingEpisode: ${playingEpisode},
 danmakuEnabled: ${danmakuEnabled},
 selectedDanmakuSource: ${selectedDanmakuSource},
 matchingAnimes: ${matchingAnimes},
+showPlaylist: ${showPlaylist},
 danmakuCandidates: ${danmakuCandidates}
     ''';
   }

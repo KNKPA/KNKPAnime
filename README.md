@@ -12,6 +12,19 @@
 
 [下载链接](https://github.com/KNKPA/KNKPAnime/releases/latest)
 
+另：macOS版可以在[不稳定版本](https://github.com/KNKPA/KNKPAnime/releases/tag/latest)中下载，但不知为什么，github workflow编译的macOS版在我的mac上打开视频播放页时会崩溃（目前猜测是libmpv问题），而本地编译的则不会。如果mac用户想用但在github的release中下载的软件打不开的话，可以尝试自行编译：
+
+```
+[[ $(uname -m) == 'x86_64' ]] && wget https://storage.flutter-io.cn/flutter_infra_release/releases/stable/macos/flutter_macos_3.19.5-stable.zip -O flutter.zip || wget https://storage.flutter-io.cn/flutter_infra_release/releases/stable/macos/flutter_macos_arm64_3.19.5-stable.zip -O flutter.zip
+unzip flutter.zip
+git clone https://github.com/KNKPA/KNKPAnime.git # 如果访问github有问题可以选择国内镜像
+cd KNKPAnime
+../flutter/bin/flutter build macos --release
+mv build/macos/Build/Products/Release/knkpanime.app ../
+cd ..
+rm -rf KNKPAnime flutter flutter.zip
+```
+
 ## 介绍
 
 最重要的当然就是搜索啦。作为一个支持多番剧源的软件，你可以先在Bangumi上搜索想看的番剧，再选择可用的源观看：

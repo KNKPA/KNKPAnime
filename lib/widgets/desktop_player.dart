@@ -5,7 +5,6 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:knkpanime/pages/play/player_controller.dart';
 import 'package:knkpanime/widgets/danmaku_settings_window.dart';
 import 'package:media_kit_video/media_kit_video.dart';
-import 'package:window_manager/window_manager.dart';
 
 class DesktopPlayer extends StatefulWidget {
   final PlayerController playerController;
@@ -108,6 +107,10 @@ class _DesktopPlayerState extends State<DesktopPlayer> {
                         : const Icon(Icons.comments_disabled),
                     onPressed: widget.playerController.toggleDanmaku,
                   )),
+          MaterialCustomButton(
+              icon: const Icon(Icons.list),
+              onPressed: () => widget.playerController.showPlaylist =
+                  !widget.playerController.showPlaylist),
           Observer(
               builder: (_) => MaterialDesktopCustomButton(
                     icon: widget.playerController.isFullscreen
@@ -148,13 +151,7 @@ class _DesktopPlayerState extends State<DesktopPlayer> {
     const SingleActivator(LogicalKeyboardKey.keyJ): () {
       final rate =
           widget.playerController.playerController.player.state.position -
-              const Duration(seconds: 10);
-      widget.playerController.playerController.player.seek(rate);
-    },
-    const SingleActivator(LogicalKeyboardKey.keyI): () {
-      final rate =
-          widget.playerController.playerController.player.state.position +
-              const Duration(seconds: 10);
+              const Duration(seconds: 90);
       widget.playerController.playerController.player.seek(rate);
     },
     const SingleActivator(LogicalKeyboardKey.arrowLeft): () {

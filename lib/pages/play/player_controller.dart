@@ -44,6 +44,8 @@ abstract class _PlayerController with Store {
   DanmakuAnimeInfo? selectedDanmakuSource;
   @observable
   List<DanmakuAnimeInfo> matchingAnimes = [];
+  @observable
+  bool showPlaylist = true;
 
   late final logger = Modular.get<Logger>();
   late final historyController = Modular.get<HistoryController>();
@@ -120,11 +122,13 @@ abstract class _PlayerController with Store {
                       1000 /
                       playbackSpeed ~/
                       danmakus[danmakuPosition]!.length),
-              () => danmakuEnabled &&
-                      buildContext.mounted &&
-                      player.state.playing
-                  ? danmakuController.addItems([DanmakuItem(danmaku.content)])
-                  : null);
+              () =>
+                  danmakuEnabled && buildContext.mounted && player.state.playing
+                      ? danmakuController.addItems([
+                          DanmakuItem(danmaku.content,
+                              color: danmaku.color, type: danmaku.position)
+                        ])
+                      : null);
         });
       }
     });
@@ -147,7 +151,7 @@ abstract class _PlayerController with Store {
 
     await searchDanmaku(series.name);
     if (matchingAnimes.isNotEmpty) {
-      loadDanmakus(matchingAnimes[0]);
+      selectedDanmakuSource = matchingAnimes[0];
     }
 
     player.stream.completed.listen((event) {

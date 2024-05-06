@@ -9,6 +9,7 @@ import 'package:knkpanime/models/series.dart';
 import 'package:knkpanime/models/episode.dart';
 import 'package:knkpanime/pages/history/history_controller.dart';
 import 'package:knkpanime/pages/play/player_controller.dart';
+import 'package:knkpanime/pages/settings/settings_controller.dart';
 import 'package:knkpanime/utils/danmaku.dart';
 import 'package:knkpanime/widgets/desktop_player.dart';
 import 'package:knkpanime/widgets/mobile_player.dart';
@@ -33,6 +34,7 @@ class _PlayPageState extends State<PlayPage> {
   late final logger = Modular.get<Logger>();
   late final playerController = PlayerController(
       adapter: widget.adapter, series: widget.series, buildContext: context);
+  late final settingsController = Modular.get<SettingsController>();
 
   @override
   void initState() {
@@ -62,7 +64,12 @@ class _PlayPageState extends State<PlayPage> {
                 createdController: (e) =>
                     playerController.setDanmakuController(e),
                 option: DanmakuOption(
-                  fontSize: Utils.isDesktop() ? 25 : 16,
+                  fontSize: settingsController.fontSize,
+                  area: settingsController.danmakuArea,
+                  opacity: settingsController.danmakuOpacity,
+                  hideBottom: settingsController.hideBottomDanmakus,
+                  hideScroll: settingsController.hideScrollDanmakus,
+                  hideTop: settingsController.hideTopDanmakus,
                 )),
           ],
         ));
@@ -72,7 +79,8 @@ class _PlayPageState extends State<PlayPage> {
             ? Row(
                 children: [
                   playerWidget,
-                  playerController.isFullscreen
+                  playerController.isFullscreen ||
+                          !playerController.showPlaylist
                       ? Container()
                       : Expanded(child: buildPlaylistWidget()),
                 ],
