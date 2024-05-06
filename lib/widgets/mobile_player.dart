@@ -21,7 +21,11 @@ class _MobilePlayerState extends State<MobilePlayer> {
       normal: MaterialVideoControlsThemeData(
         topButtonBar: [
           MaterialCustomButton(
-            onPressed: () => Modular.to.pop(),
+            onPressed: () {
+              widget.playerController.isFullscreen
+                  ? widget.playerController.exitFullscreen()
+                  : Modular.to.pop();
+            },
             icon: const Icon(Icons.arrow_back),
           ),
         ],
@@ -88,6 +92,7 @@ class _MobilePlayerState extends State<MobilePlayer> {
                     onPressed: widget.playerController.toggleFullscreen,
                   )),
         ],
+        seekBarMargin: const EdgeInsets.only(bottom: 56),
       ),
       fullscreen: const MaterialVideoControlsThemeData(),
       child: Scaffold(
