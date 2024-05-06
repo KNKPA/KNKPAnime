@@ -89,6 +89,7 @@ abstract class _PlayerController with Store {
         DeviceOrientation.landscapeLeft,
         DeviceOrientation.landscapeRight,
       ]);
+      SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
     }
   }
 
@@ -100,6 +101,7 @@ abstract class _PlayerController with Store {
       SystemChrome.setPreferredOrientations([
         DeviceOrientation.portraitUp,
       ]);
+      SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     }
   }
 
