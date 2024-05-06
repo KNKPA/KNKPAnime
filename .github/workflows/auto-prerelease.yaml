@@ -80,7 +80,7 @@ jobs:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: "latest"
           prerelease: true
-          title: "不稳定版本"
+          title: "预览版"
           files: |
             knkpanime-windows.zip
             build/app/outputs/flutter-apk/knkpanime-android.apk

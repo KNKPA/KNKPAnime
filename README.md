@@ -12,7 +12,7 @@
 
 [下载链接](https://github.com/KNKPA/KNKPAnime/releases/latest)
 
-另：macOS版可以在[不稳定版本](https://github.com/KNKPA/KNKPAnime/releases/tag/latest)中下载，但不知为什么，github workflow编译的macOS版在我的mac上打开视频播放页时会崩溃（目前猜测是libmpv问题），而本地编译的则不会。如果mac用户想用但在github的release中下载的软件打不开的话，可以尝试自行编译：
+另：macOS版可以在[预览版](https://github.com/KNKPA/KNKPAnime/releases/tag/latest)中下载，但不知为什么，github workflow编译的macOS版在我的mac上打开视频播放页时会崩溃（目前猜测是libmpv问题），而本地编译的则不会。如果mac用户想用但在github的release中下载的软件打不开的话，可以尝试自行编译：
 
 ```
 [[ $(uname -m) == 'x86_64' ]] && wget https://storage.flutter-io.cn/flutter_infra_release/releases/stable/macos/flutter_macos_3.19.5-stable.zip -O flutter.zip || wget https://storage.flutter-io.cn/flutter_infra_release/releases/stable/macos/flutter_macos_arm64_3.19.5-stable.zip -O flutter.zip
