@@ -150,7 +150,7 @@ class _DesktopPlayerState extends State<DesktopPlayer> {
         widget.playerController.playerController.player.playOrPause(),
     const SingleActivator(LogicalKeyboardKey.keyJ): () {
       final rate =
-          widget.playerController.playerController.player.state.position -
+          widget.playerController.playerController.player.state.position +
               const Duration(seconds: 90);
       widget.playerController.playerController.player.seek(rate);
     },
