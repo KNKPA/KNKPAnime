@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:math';
 import 'package:dio/dio.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:html/parser.dart';
 import 'package:knkpanime/adapters/adapter_base.dart';
@@ -11,7 +10,6 @@ import 'package:media_kit/media_kit.dart';
 import 'package:media_kit_video/media_kit_video.dart';
 import 'package:knkpanime/adapters/models/yhmd_response.dart';
 import 'package:logger/logger.dart';
-import 'package:media_kit_video/media_kit_video.dart';
 
 class YhdmAdapter extends AdapterBase {
   final logger = Modular.get<Logger>();
@@ -80,7 +78,14 @@ class YhdmAdapter extends AdapterBase {
   List<Episode> _parseSeries(String html) {
     var doc = parse(html);
     // Yhdm has multiple video sources, we use the second for now.
-    var ul = doc.getElementsByClassName('movurl')[1].querySelector('ul');
+    var ul;
+    for (final div in doc.getElementsByClassName('movurl')) {
+      final temp = div.querySelector('ul');
+      if (temp?.children.isNotEmpty ?? false) {
+        ul = temp!;
+        break;
+      }
+    }
     List<Episode> ret = [];
     ul!.querySelectorAll('li').asMap().forEach((idx, li) {
       ret.add(Episode(li.querySelector('a')!.attributes['href']!, idx,
