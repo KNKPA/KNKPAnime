@@ -83,7 +83,8 @@ class YhdmAdapter extends AdapterBase {
     var ul = doc.getElementsByClassName('movurl')[1].querySelector('ul');
     List<Episode> ret = [];
     ul!.querySelectorAll('li').asMap().forEach((idx, li) {
-      ret.add(Episode(li.querySelector('a')!.attributes['href']!, idx));
+      ret.add(Episode(li.querySelector('a')!.attributes['href']!, idx,
+          li.querySelector('a')!.attributes['title']));
     });
     return ret;
   }
@@ -150,8 +151,7 @@ class YhdmAdapter extends AdapterBase {
     baseCookieString.split('; ').forEach((cookieString) {
       if (cookieString.contains('=')) {
         List<String> cookieParts = cookieString.split('=');
-        if (cookieParts[0] == 't1' ||
-            cookieParts[0] == 'k1') {
+        if (cookieParts[0] == 't1' || cookieParts[0] == 'k1') {
           finalCookie =
               finalCookie + cookieParts[0] + '=' + cookieParts[1] + '; ';
         }
