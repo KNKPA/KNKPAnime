@@ -4,7 +4,9 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:knkpanime/app_module.dart';
 import 'package:knkpanime/pages/settings/settings_controller.dart';
 import 'package:logger/logger.dart';
+import 'package:mobx/mobx.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 bool _checkedForUpdate = false;
 
@@ -19,6 +21,7 @@ void checkForUpdate(BuildContext context) async {
   // This function can't be written at a higher level of the widget tree since
   // some context problem...
   if (_checkedForUpdate) return;
+  _checkedForUpdate = true;
   Response resp;
   try {
     resp = await Dio().get<Map<String, dynamic>>(
@@ -44,11 +47,17 @@ void checkForUpdate(BuildContext context) async {
   Modular.get<Logger>().i(localVersion);
   if (resp.data!['tag_name'] != localVersion) {
     Modular.get<Logger>().i('Found new version: ${resp.data!["tag_name"]}');
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content:
-            Text('发现新版本${resp.data!["tag_name"]}\n${resp.data!["body"]}')));
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('发现新版本${resp.data!["tag_name"]}\n${resp.data!["body"]}'),
+        action: SnackBarAction(
+          label: '查看',
+          onPressed: () => launchUrlString(
+              'https://github.com/KNKPA/KNKPAnime/releases/latest'),
+        ),
+      ),
+    );
   }
-  _checkedForUpdate = true;
 }
 
 class _SideMenuState extends State<SideMenu> {
