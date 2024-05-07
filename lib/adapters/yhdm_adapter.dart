@@ -1,20 +1,30 @@
+import 'dart:convert';
+import 'dart:math';
 import 'package:dio/dio.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:html/parser.dart';
 import 'package:knkpanime/adapters/adapter_base.dart';
 import 'package:knkpanime/models/episode.dart';
 import 'package:knkpanime/models/series.dart';
+import 'package:media_kit/media_kit.dart';
+import 'package:media_kit_video/media_kit_video.dart';
+import 'package:knkpanime/adapters/models/yhmd_response.dart';
 import 'package:logger/logger.dart';
 import 'package:media_kit_video/media_kit_video.dart';
 
 class YhdmAdapter extends AdapterBase {
+  final logger = Modular.get<Logger>();
   final dio = Dio(BaseOptions(headers: {
     'User-Agent':
         'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.3',
+    'Referer': 'https://www.iyhdmm.com/',
   }));
 
   final String searchApi = 'https://www.iyhdmm.com/s_all?ex=1&kw=';
   final String seriesApi = 'https://www.iyhdmm.com/showp/';
+  // https://www.iyhdmm.com/playurl?aid=22409&playindex=1&epindex=0&r=0.7238267551203132
+  final String videoApi = 'https://www.iyhdmm.com/playurl';
 
   @override
   Future<List<Episode>> getEpisodes(String seriesId) async {
@@ -23,9 +33,27 @@ class YhdmAdapter extends AdapterBase {
   }
 
   @override
-  Future<void> play(String episodeId, VideoController controller) {
-    // I can't implement this because yhdm blocks my IP.....
-    throw UnimplementedError();
+  Future<void> play(String episodeId, VideoController controller) async {
+    Random random = Random();
+    double randomNumber = random.nextDouble(); // 生成在 0 到 1 之间的随机数
+    String randomNumberString = randomNumber.toStringAsFixed(16);
+    List<String> cookies = [];
+    YhdmResponse result = YhdmResponse.extractNumbers(episodeId);
+    var url = videoApi +
+        '?aid=${result.aid}' +
+        '&playindex=${result.playindex}' +
+        '&epindex=${result.epindex}' +
+        '&r=$randomNumberString';
+    dio.options.headers['Cookie'] = '';
+    var resp = await dio.get(url);
+    if (resp.data.toString().contains('ipchk')) {
+      cookies = resp?.headers['set-cookie'] ?? [];
+      logger.i('用于视频验权的cookie为 ${videoCookieC(cookies)}');
+      dio.options.headers['Cookie'] = videoCookieC(cookies);
+      resp = await dio.get(url);
+    }
+    await controller.player.open(Media(_parseVideoUrl(resp.data.toString())));
+    // throw UnimplementedError();
   }
 
   @override
@@ -33,10 +61,10 @@ class YhdmAdapter extends AdapterBase {
     List<Series> ret = [];
     status = SearchStatus.pending;
     try {
-      if (bangumiName.isNotEmpty) {
-        var resp = await dio.get(searchApi + bangumiName);
-        ret.addAll(_parseSearchResult(resp.data.toString()));
-      }
+      // if (bangumiName.isNotEmpty) {
+      //   var resp = await dio.get(searchApi + bangumiName);
+      //   ret.addAll(_parseSearchResult(resp.data.toString()));
+      // }
       if (searchKeyword.isNotEmpty) {
         var resp = await dio.get(searchApi + searchKeyword);
         ret.addAll(_parseSearchResult(resp.data.toString()));
@@ -51,11 +79,11 @@ class YhdmAdapter extends AdapterBase {
 
   List<Episode> _parseSeries(String html) {
     var doc = parse(html);
-    // Yhdm has multiple video sources, we use the first for now.
-    var ul = doc.getElementsByClassName('movurl').first.querySelector('ul');
+    // Yhdm has multiple video sources, we use the second for now.
+    var ul = doc.getElementsByClassName('movurl')[1].querySelector('ul');
     List<Episode> ret = [];
     ul!.querySelectorAll('li').asMap().forEach((idx, li) {
-      ret.add(Episode(li.attributes['herf']!, idx));
+      ret.add(Episode(li.querySelector('a')!.attributes['href']!, idx));
     });
     return ret;
   }
@@ -90,6 +118,47 @@ class YhdmAdapter extends AdapterBase {
       var id = link.split('/').last.split('.').first;
       return Series(id, name, description: desc, image: img);
     }).toList();
+  }
+
+// 啊啊啊，樱花的加密比B站还离谱
+  String _parseVideoUrl(String responseText) {
+    String decodeText(String text) {
+      if (!text.contains('{')) {
+        String decodedText = '';
+        int key = 1561;
+        int length = text.length;
+        for (int i = 0; i < length; i += 2) {
+          int charCode = int.parse(text[i] + text[i + 1], radix: 16);
+          charCode =
+              (charCode + 1048576 - key - (length / 2 - 1 - i / 2)).toInt() %
+                  256;
+          decodedText = String.fromCharCode(charCode) + decodedText;
+        }
+        text = decodedText;
+      }
+      return Uri.decodeFull(text);
+    }
+
+    Map<String, dynamic> videoInfo = jsonDecode(decodeText(responseText));
+    return videoInfo['vurl'];
+  }
+
+  // 啊啊啊，除了接口加密还有cookie鉴权
+  videoCookieC(List<String> baseCookies) {
+    String finalCookie = '';
+    String baseCookieString = baseCookies.join('; ');
+    baseCookieString.split('; ').forEach((cookieString) {
+      if (cookieString.contains('=')) {
+        List<String> cookieParts = cookieString.split('=');
+        if (cookieParts[0] == 't1' ||
+            cookieParts[0] == 'k1') {
+          finalCookie =
+              finalCookie + cookieParts[0] + '=' + cookieParts[1] + '; ';
+        }
+      }
+    });
+    finalCookie = finalCookie.replaceAll(RegExp(r';\s*$'), '');
+    return finalCookie;
   }
 
   YhdmAdapter()
