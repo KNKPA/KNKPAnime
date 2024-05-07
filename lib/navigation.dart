@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:knkpanime/app_module.dart';
+import 'package:knkpanime/pages/settings/settings_controller.dart';
 import 'package:logger/logger.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
@@ -24,11 +25,18 @@ void checkForUpdate(BuildContext context) async {
         'https://api.github.com/repos/KNKPA/KNKPAnime/releases/latest');
   } catch (e) {
     Modular.get<Logger>().w(e);
-    try {
-      resp = await Dio()
-          .get<Map<String, dynamic>>('https://api.withit.live/latest');
-    } catch (e) {
-      Modular.get<Logger>().w(e);
+    if (!Modular.get<SettingsController>().disableGithubProxy) {
+      try {
+        // This is a cloudflare worker defined under my domain.
+        // It serves as a proxy to the github API.
+        // You can disable this proxy in the settings page.
+        resp = await Dio()
+            .get<Map<String, dynamic>>('https://api.withit.live/latest');
+      } catch (e) {
+        Modular.get<Logger>().w(e);
+        return;
+      }
+    } else {
       return;
     }
   }

@@ -16,6 +16,7 @@ class SettingsController {
   bool get hideTopDanmakus => prefs.getBool('hideTopDanmakus') ?? false;
   bool get hideBottomDanmakus => prefs.getBool('hideBottomDanmakus') ?? false;
   bool get alwaysOnTop => prefs.getBool('alwaysOnTop') ?? false;
+  bool get disableGithubProxy => prefs.getBool('disableGithubProxy') ?? false;
 
   set fontSize(double size) {
     prefs.setDouble('fontSize', size);
@@ -51,6 +52,11 @@ class SettingsController {
     prefs.setBool('alwaysOnTop', value);
     windowManager.setAlwaysOnTop(value);
     logger.i('Always on top set to $value');
+  }
+
+  set disableGithubProxy(bool value) {
+    prefs.setBool('disableGithubProxy', value);
+    logger.i('disableGithubProxy set to $value');
   }
 
   SettingsController() {
