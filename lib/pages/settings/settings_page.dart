@@ -18,7 +18,7 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Settings')),
+      appBar: AppBar(title: const Text('设置')),
       body: SingleChildScrollView(
         // Make content scrollable
         padding: const EdgeInsets.all(16.0),
