@@ -107,7 +107,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         constraints: BoxConstraints(
                             maxWidth: MediaQuery.of(context).size.width * 0.5),
                         child: const Text(
-                            '考虑到部分用户可能存在连接GitHub不稳定，作者在Cloudflare设置了一个worker转发GitHub的请求结果。作者承诺worker不记录您的信息，但口说无凭，如果您担心使用作者的worker代理的请求可能泄露您的数据（包括ip地址、所在地区等信息），可以禁用代理。'),
+                            '考虑到部分用户可能存在连接GitHub不稳定的问题，作者在Cloudflare设置了一个worker转发GitHub的请求结果。作者承诺worker不记录您的信息，但口说无凭，如果您担心使用作者的worker代理的请求可能泄露您的数据（包括ip地址、所在地区等信息），可以禁用代理。'),
                       ),
                     ),
                     child: const Icon(Icons.info),
