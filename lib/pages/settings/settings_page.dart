@@ -115,9 +115,9 @@ class _SettingsPageState extends State<SettingsPage> {
                 ],
               ),
               trailing: Switch(
-                value: settingsController.alwaysOnTop,
-                onChanged: (value) =>
-                    setState(() => settingsController.alwaysOnTop = value),
+                value: settingsController.disableGithubProxy,
+                onChanged: (value) => setState(
+                    () => settingsController.disableGithubProxy = value),
               ),
             ),
           ],
