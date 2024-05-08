@@ -7,6 +7,7 @@ import 'package:html/parser.dart';
 import 'package:knkpanime/adapters/adapter_base.dart';
 import 'package:knkpanime/models/episode.dart';
 import 'package:knkpanime/models/series.dart';
+import 'package:knkpanime/models/source.dart';
 import 'package:logger/logger.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:media_kit_video/media_kit_video.dart';
@@ -27,11 +28,11 @@ class AntAdapter extends AdapterBase {
   final String videoApi = 'https://vip.sp-flv.com:8443/?url=';
 
   @override
-  Future<List<Episode>> getEpisodes(String seriesId) async {
+  Future<List<Source>> getSources(String seriesId) async {
     try {
       Modular.get<Logger>().i(seriesApi + seriesId + '.html');
       var resp = await dio.get(seriesApi + seriesId + '.html');
-      return _parseSeries(resp.data.toString());
+      return [Source(_parseSeries(resp.data.toString()))];
     } catch (e) {
       Modular.get<Logger>().w(e);
     }
@@ -74,15 +75,15 @@ class AntAdapter extends AdapterBase {
   Future<String> _parsePlayLink(String html, String myUrl) async {
     var doc = parse(html);
     String? url;
-    var scriptElement = doc.querySelector('.stui-player__video')!.querySelectorAll('script')[0];
+    var scriptElement =
+        doc.querySelector('.stui-player__video')!.querySelectorAll('script')[0];
     if (scriptElement.text.contains('url')) {
-        for (var line in scriptElement.text.split(',')) {
-          if (line.contains("\"url\"")) {
-            url =
-                line.split(':')[1].replaceAll("\"", '').replaceAll(',', '');
-          }
+      for (var line in scriptElement.text.split(',')) {
+        if (line.contains("\"url\"")) {
+          url = line.split(':')[1].replaceAll("\"", '').replaceAll(',', '');
         }
       }
+    }
     if (url == null) {
       debugPrint('未找到视频资源');
     } else {
@@ -100,7 +101,11 @@ class AntAdapter extends AdapterBase {
     var doc = parse(html);
     List<Episode> ret = [];
     var count = 0;
-    doc.querySelectorAll('.play_source_list_item')[0].querySelectorAll('li').asMap().forEach((idx, li) {
+    doc
+        .querySelectorAll('.play_source_list_item')[0]
+        .querySelectorAll('li')
+        .asMap()
+        .forEach((idx, li) {
       var href = li.querySelector('a')!.attributes['href']!;
       var name = '第 ${idx + 1} 话';
       ret.add(Episode(href, count, name));

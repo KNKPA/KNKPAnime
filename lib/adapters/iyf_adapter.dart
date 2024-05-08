@@ -6,6 +6,7 @@ import 'package:html/parser.dart';
 import 'package:knkpanime/adapters/adapter_base.dart';
 import 'package:knkpanime/models/episode.dart';
 import 'package:knkpanime/models/series.dart';
+import 'package:knkpanime/models/source.dart';
 import 'package:logger/logger.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:media_kit_video/media_kit_video.dart';
@@ -27,7 +28,7 @@ class IyfAdapter extends AdapterBase {
   final playLinkApi = 'https://m10.iyf.tv/v3/video/play';
 
   @override
-  Future<List<Episode>> getEpisodes(String seriesId) async {
+  Future<List<Source>> getSources(String seriesId) async {
     if (!cachedPlaylist.containsKey(seriesId)) {
       //await updateKeys(playPageUrl + seriesId);
       var queryParameters = {
@@ -51,7 +52,7 @@ class IyfAdapter extends AdapterBase {
             .add(Episode(episode['key'], idx, episode['name']));
       });
     }
-    return cachedPlaylist[seriesId]!;
+    return [Source(cachedPlaylist[seriesId]!)];
   }
 
   @override

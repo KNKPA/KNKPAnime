@@ -5,6 +5,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:knkpanime/adapters/adapter_base.dart';
 import 'package:knkpanime/models/series.dart';
 import 'package:knkpanime/models/episode.dart';
+import 'package:knkpanime/models/source.dart';
 import 'package:logger/logger.dart';
 import 'package:html/parser.dart';
 import 'package:media_kit/media_kit.dart';
@@ -59,13 +60,15 @@ class Anime1Adapter extends AdapterBase {
   }
 
   @override
-  Future<List<Episode>> getEpisodes(String seriesId) async {
+  Future<List<Source>> getSources(String seriesId) async {
     _tokens = await getVideoToken(tokenApi + seriesId);
 
-    return Future.value(_tokens.map((e) {
-      var i = _tokens.indexOf(e);
-      return Episode((i + 1).toString(), i);
-    }).toList());
+    return [
+      Source(_tokens.map((e) {
+        var i = _tokens.indexOf(e);
+        return Episode((i + 1).toString(), i);
+      }).toList())
+    ];
   }
 
   @override

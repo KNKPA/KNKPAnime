@@ -36,8 +36,8 @@ class _DanmakuSettingsWindowState extends State<DanmakuSettingsWindow> {
               child: Observer(
                 builder: (context) => ListView(
                   shrinkWrap: true,
-                  children: widget.playerController.danmakuCandidates
-                      .map((danmakuInfo) {
+                  children:
+                      widget.playerController.danmakuSources.map((danmakuInfo) {
                     return ListTile(
                       title: Text(danmakuInfo.name),
                       selected: widget.playerController.selectedDanmakuSource ==

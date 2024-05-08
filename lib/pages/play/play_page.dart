@@ -101,34 +101,70 @@ class _PlayPageState extends State<PlayPage> {
   }
 
   Widget buildPlaylistWidget() {
-    return ListView(
-      children: playerController.episodes
-          .map((episode) => Container(
-                margin: const EdgeInsets.all(8.0),
-                padding: const EdgeInsets.all(4.0),
-                decoration: BoxDecoration(
-                  color: episode == playerController.playingEpisode
-                      ? Theme.of(context).primaryColor
-                      : Theme.of(context).cardColor,
-                  borderRadius: BorderRadius.circular(10.0),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Theme.of(context).shadowColor.withOpacity(0.2),
-                      blurRadius: 3.0,
-                      spreadRadius: 1.0,
+    return Scaffold(
+      body: Observer(
+        builder: (context) => playerController.videoSources.isEmpty
+            ? Container()
+            : DefaultTabController(
+                length: playerController.videoSources.length,
+                initialIndex: playerController.selectedVideoSource,
+                child: Column(
+                  children: [
+                    TabBar(
+                      isScrollable: Utils.isDesktop() ? false : true,
+                      tabAlignment: Utils.isDesktop()
+                          ? TabAlignment.fill
+                          : TabAlignment.start,
+                      tabs: playerController.videoSources.map((source) {
+                        return Tab(
+                            text: source.sourceName ??
+                                '视频源${playerController.videoSources.indexOf(source) + 1}');
+                      }).toList(),
+                      onTap: (index) {
+                        playerController.selectedVideoSource = index;
+                      },
+                    ),
+                    Expanded(
+                      child: ListView(
+                        children: playerController
+                            .videoSources[playerController.selectedVideoSource]
+                            .episodes
+                            .map((episode) => Container(
+                                  margin: const EdgeInsets.all(8.0),
+                                  padding: const EdgeInsets.all(4.0),
+                                  decoration: BoxDecoration(
+                                    color: episode ==
+                                            playerController.playingEpisode
+                                        ? Theme.of(context).primaryColor
+                                        : Theme.of(context).cardColor,
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Theme.of(context)
+                                            .shadowColor
+                                            .withOpacity(0.2),
+                                        blurRadius: 3.0,
+                                        spreadRadius: 1.0,
+                                      ),
+                                    ],
+                                  ),
+                                  child: ListTile(
+                                    title: Text(episode.name),
+                                    onTap: () {
+                                      if (episode !=
+                                          playerController.playingEpisode) {
+                                        playerController.play(episode);
+                                      }
+                                    },
+                                  ),
+                                ))
+                            .toList(),
+                      ),
                     ),
                   ],
                 ),
-                child: ListTile(
-                  title: Text(episode.name),
-                  onTap: () {
-                    if (episode != playerController.playingEpisode) {
-                      playerController.play(episode);
-                    }
-                  },
-                ),
-              ))
-          .toList(),
+              ),
+      ),
     );
   }
 }

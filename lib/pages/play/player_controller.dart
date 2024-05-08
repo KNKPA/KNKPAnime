@@ -7,6 +7,7 @@ import 'package:knkpanime/adapters/adapter_base.dart';
 import 'package:knkpanime/models/danmaku.dart';
 import 'package:knkpanime/models/episode.dart';
 import 'package:knkpanime/models/series.dart';
+import 'package:knkpanime/models/source.dart';
 import 'package:knkpanime/pages/history/history_controller.dart';
 import 'package:knkpanime/utils/danmaku.dart';
 import 'package:knkpanime/utils/utils.dart';
@@ -31,7 +32,7 @@ abstract class _PlayerController with Store {
   @observable
   bool danmakuEnabled = true;
   @computed
-  List<DanmakuAnimeInfo> get danmakuCandidates {
+  List<DanmakuAnimeInfo> get danmakuSources {
     var temp = (selectedDanmakuSource == null
         ? <DanmakuAnimeInfo>[]
         : [selectedDanmakuSource!]);
@@ -46,13 +47,15 @@ abstract class _PlayerController with Store {
   List<DanmakuAnimeInfo> matchingAnimes = [];
   @observable
   bool showPlaylist = true;
+  @observable
+  int selectedVideoSource = 0;
 
   late final logger = Modular.get<Logger>();
   late final historyController = Modular.get<HistoryController>();
   late final player = _IntegratedPlayer();
   late final playerController = VideoController(player);
   late DanmakuController danmakuController;
-  final episodes = ObservableList<Episode>();
+  final videoSources = ObservableList<Source>();
   bool _playStateInitialized = true;
   Map<int, List<Danmaku>> danmakus = {};
   Timer updateHistoryTimer = Timer.periodic(Duration(days: 1), (timer) {});
@@ -135,9 +138,9 @@ abstract class _PlayerController with Store {
       }
     });
 
-    List<Episode> temp = [];
+    List<Source> temp = [];
     try {
-      temp = await adapter.getEpisodes(series.seriesId);
+      temp = await adapter.getSources(series.seriesId);
       logger.i(temp);
     } catch (e) {
       buildContext.mounted
@@ -146,10 +149,22 @@ abstract class _PlayerController with Store {
             ))
           : null;
     }
-    temp.sort(
-      (a, b) => a.episode - b.episode,
-    );
-    episodes.addAll(temp);
+    // We gotta do progress related computation here,
+    // otherwise, the videoSources's change will be rendered by the playlist
+    // widget, and the change of selectedVideoSource won't be refelected.
+    var progress = historyController.lastWatching(series, adapter.name);
+    if (progress != null) {
+      // Find the corresponding source
+      selectedVideoSource = temp.indexWhere(
+        (source) {
+          return source.episodes
+              .map((e) => e.episodeId)
+              .contains(progress.episode.episodeId);
+        },
+      );
+      selectedVideoSource == -1 ? selectedVideoSource = 0 : null;
+    }
+    videoSources.addAll(temp);
 
     await searchDanmaku(series.name);
     if (matchingAnimes.isNotEmpty) {
@@ -166,15 +181,17 @@ abstract class _PlayerController with Store {
         } catch (e) {
           logger.w(e);
         }
-        if (playingEpisode != episodes.last) {
-          var idx = episodes.indexOf(playingEpisode);
-          play(episodes[idx + 1]);
+        if (playingEpisode != videoSources[selectedVideoSource].episodes.last) {
+          var idx = videoSources[selectedVideoSource]
+              .episodes
+              .indexOf(playingEpisode);
+          play(videoSources[selectedVideoSource].episodes[idx + 1]);
         }
       }
     });
 
-    var progress = historyController.lastWatching(series, adapter.name);
-    play(episodes[progress?.episode.episode ?? 0]);
+    play(videoSources[selectedVideoSource]
+        .episodes[progress?.episode.episode ?? 0]);
   }
 
   Future play(Episode episode) async {

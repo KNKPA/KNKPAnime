@@ -6,6 +6,7 @@ import 'package:html/parser.dart';
 import 'package:knkpanime/adapters/adapter_base.dart';
 import 'package:knkpanime/models/episode.dart';
 import 'package:knkpanime/models/series.dart';
+import 'package:knkpanime/models/source.dart';
 import 'package:logger/logger.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:media_kit_video/media_kit_video.dart';
@@ -24,7 +25,7 @@ class GirigiriLoveAdapter extends AdapterBase {
   late final logger = Modular.get<Logger>();
 
   @override
-  Future<List<Episode>> getEpisodes(String seriesId) async {
+  Future<List<Source>> getSources(String seriesId) async {
     var resp = await dio.get(seriesApi + seriesId);
     return _parseSeries(resp.data.toString());
   }
@@ -79,13 +80,17 @@ class GirigiriLoveAdapter extends AdapterBase {
     }).toList();
   }
 
-  List<Episode> _parseSeries(String html) {
+  List<Source> _parseSeries(String html) {
     var doc = parse(html);
-    var ul = doc.querySelector('.anthology-list-play')!;
-    List<Episode> ret = [];
-    ul.querySelectorAll('li').asMap().forEach((idx, li) {
-      ret.add(
-          Episode(li.firstChild!.attributes['href']!.replaceAll('/', ''), idx));
+    var uls = doc.querySelectorAll('.anthology-list-play')!;
+    List<Source> ret = [];
+    uls.forEach((ul) {
+      List<Episode> episodes = [];
+      ul.querySelectorAll('li').asMap().forEach((idx, li) {
+        episodes.add(Episode(
+            li.firstChild!.attributes['href']!.replaceAll('/', ''), idx));
+      });
+      ret.add(Source(episodes));
     });
     return ret;
   }

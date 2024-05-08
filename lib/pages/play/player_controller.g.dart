@@ -12,11 +12,10 @@ mixin _$PlayerController on _PlayerController, Store {
   Computed<List<DanmakuAnimeInfo>>? _$danmakuCandidatesComputed;
 
   @override
-  List<DanmakuAnimeInfo> get danmakuCandidates =>
-      (_$danmakuCandidatesComputed ??= Computed<List<DanmakuAnimeInfo>>(
-              () => super.danmakuCandidates,
+  List<DanmakuAnimeInfo> get danmakuSources => (_$danmakuCandidatesComputed ??=
+          Computed<List<DanmakuAnimeInfo>>(() => super.danmakuSources,
               name: '_PlayerController.danmakuCandidates'))
-          .value;
+      .value;
 
   late final _$isFullscreenAtom =
       Atom(name: '_PlayerController.isFullscreen', context: context);
@@ -119,6 +118,22 @@ mixin _$PlayerController on _PlayerController, Store {
     });
   }
 
+  late final _$selectedVideoSourceAtom =
+      Atom(name: '_PlayerController.selectedVideoSource', context: context);
+
+  @override
+  int get selectedVideoSource {
+    _$selectedVideoSourceAtom.reportRead();
+    return super.selectedVideoSource;
+  }
+
+  @override
+  set selectedVideoSource(int value) {
+    _$selectedVideoSourceAtom.reportWrite(value, super.selectedVideoSource, () {
+      super.selectedVideoSource = value;
+    });
+  }
+
   @override
   String toString() {
     return '''
@@ -128,7 +143,8 @@ danmakuEnabled: ${danmakuEnabled},
 selectedDanmakuSource: ${selectedDanmakuSource},
 matchingAnimes: ${matchingAnimes},
 showPlaylist: ${showPlaylist},
-danmakuCandidates: ${danmakuCandidates}
+selectedVideoSource: ${selectedVideoSource},
+danmakuCandidates: ${danmakuSources}
     ''';
   }
 }

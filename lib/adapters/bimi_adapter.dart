@@ -7,6 +7,7 @@ import 'package:html/parser.dart';
 import 'package:knkpanime/adapters/adapter_base.dart';
 import 'package:knkpanime/models/episode.dart';
 import 'package:knkpanime/models/series.dart';
+import 'package:knkpanime/models/source.dart';
 import 'package:logger/logger.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:media_kit_video/media_kit_video.dart';
@@ -25,7 +26,7 @@ class BimiAdapter extends AdapterBase {
   final String playerPhpUrl = 'https://www.bimiacg4.net/static/danmu/play.php';
 
   @override
-  Future<List<Episode>> getEpisodes(String seriesId) async {
+  Future<List<Source>> getSources(String seriesId) async {
     try {
       Modular.get<Logger>().i(seriesApi + seriesId);
       var resp = await dio.get(seriesApi + seriesId);
@@ -112,7 +113,7 @@ class BimiAdapter extends AdapterBase {
     return '';
   }
 
-  List<Episode> _parseSeries(String html) {
+  List<Source> _parseSeries(String html) {
     var doc = parse(html);
     /*
       <div class="play_source_tab" id="tab">
@@ -126,10 +127,10 @@ class BimiAdapter extends AdapterBase {
           <a href="/bangumi/573/play/3/1/">第01话</a>
       </li>
     */
-    List<Episode> ret = [];
-    var count = 0;
+    List<Source> ret = [];
     doc.querySelector('#tab')!.querySelectorAll('a').asMap().forEach((idx, a) {
       var sourceName = a.text;
+      List<Episode> episodes = [];
       doc
           .querySelectorAll('.player_list')[idx]
           .querySelectorAll('li')
@@ -137,9 +138,9 @@ class BimiAdapter extends AdapterBase {
           .forEach((idx, li) {
         var href = li.querySelector('a')!.attributes['href']!;
         var name = li.querySelector('a')!.text;
-        ret.add(Episode(href, count, '$sourceName-$name'));
-        count++;
+        episodes.add(Episode(href, idx, name));
       });
+      ret.add(Source(episodes, sourceName));
     });
     return ret;
   }

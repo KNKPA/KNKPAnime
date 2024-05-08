@@ -29,6 +29,7 @@ abstract class _AdapterSearchController with Store {
       try {
         var future = adapter.search(bangumiName, keyword);
         statuses[idx] = adapter.status;
+        searchResults[idx] = [];
         searchResults[idx] = await future;
       } catch (e) {
         Modular.get<Logger>().w(e);

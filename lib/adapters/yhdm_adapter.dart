@@ -6,6 +6,7 @@ import 'package:html/parser.dart';
 import 'package:knkpanime/adapters/adapter_base.dart';
 import 'package:knkpanime/models/episode.dart';
 import 'package:knkpanime/models/series.dart';
+import 'package:knkpanime/models/source.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:media_kit_video/media_kit_video.dart';
 import 'package:knkpanime/adapters/models/yhmd_response.dart';
@@ -25,7 +26,7 @@ class YhdmAdapter extends AdapterBase {
   final String videoApi = 'https://www.iyhdmm.com/playurl';
 
   @override
-  Future<List<Episode>> getEpisodes(String seriesId) async {
+  Future<List<Source>> getSources(String seriesId) async {
     var resp = await dio.get('$seriesApi$seriesId.html');
     return _parseSeries(resp.data.toString());
   }
@@ -76,25 +77,20 @@ class YhdmAdapter extends AdapterBase {
     return ret;
   }
 
-  List<Episode> _parseSeries(String html) {
+  List<Source> _parseSeries(String html) {
     var doc = parse(html);
-    var ul;
-    int i = 0;
+    List<Source> ret = [];
     for (final div in doc.getElementsByClassName('movurl')) {
-      final temp = div.querySelector('ul');
-      if (temp?.children.isNotEmpty ?? false) {
-        ul = temp!;
-        if (i == 1) {
-          break;
-        }
-        i++;
+      final ul = div.querySelector('ul');
+      if (ul?.children.isNotEmpty ?? false) {
+        List<Episode> episodes = [];
+        ul!.querySelectorAll('li').asMap().forEach((idx, li) {
+          episodes.add(Episode(li.querySelector('a')!.attributes['href']!, idx,
+              li.querySelector('a')!.attributes['title']));
+        });
+        ret.add(Source(episodes));
       }
     }
-    List<Episode> ret = [];
-    ul!.querySelectorAll('li').asMap().forEach((idx, li) {
-      ret.add(Episode(li.querySelector('a')!.attributes['href']!, idx,
-          li.querySelector('a')!.attributes['title']));
-    });
     return ret;
   }
 
