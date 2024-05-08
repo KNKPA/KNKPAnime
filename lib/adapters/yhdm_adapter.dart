@@ -79,11 +79,15 @@ class YhdmAdapter extends AdapterBase {
   List<Episode> _parseSeries(String html) {
     var doc = parse(html);
     var ul;
+    int i = 0;
     for (final div in doc.getElementsByClassName('movurl')) {
       final temp = div.querySelector('ul');
       if (temp?.children.isNotEmpty ?? false) {
         ul = temp!;
-        break;
+        if (i == 1) {
+          break;
+        }
+        i++;
       }
     }
     List<Episode> ret = [];
@@ -168,6 +172,6 @@ class YhdmAdapter extends AdapterBase {
 
   YhdmAdapter()
       : super(
-          '樱花动漫',
+          'Sakura',
         );
 }
