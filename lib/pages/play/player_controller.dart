@@ -207,6 +207,11 @@ abstract class _PlayerController with Store {
       await adapter.play(episode.episodeId, playerController);
     } catch (e) {
       logger.w(e);
+      buildContext.mounted
+          ? ScaffoldMessenger.of(buildContext).showSnackBar(SnackBar(
+              content: Text('播放失败\n$e'),
+            ))
+          : null;
     }
 
     var progress = historyController.findProgress(

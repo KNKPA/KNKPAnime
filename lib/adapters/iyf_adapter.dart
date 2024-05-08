@@ -81,6 +81,7 @@ class IyfAdapter extends AdapterBase {
         return;
       } catch (e) {
         Modular.get<Logger>().w(e);
+        rethrow;
       }
     }
     throw '无法打开链接';
@@ -117,6 +118,7 @@ class IyfAdapter extends AdapterBase {
     } catch (e) {
       Modular.get<Logger>().w(e);
       status = SearchStatus.failed;
+      rethrow;
     }
     Modular.get<Logger>().i('Iyf adapter returns ${ret.length} results');
     return ret;

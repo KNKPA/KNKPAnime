@@ -37,8 +37,8 @@ class Anime1Adapter extends AdapterBase {
 
   @override
   Future<List<Series>> search(String bangumiName, String searchKeyword) async {
-    status = SearchStatus.pending;
     await initialized.future;
+    status = SearchStatus.pending;
     List<Anime1AnimeInfo> results = [];
     if (bangumiName.isNotEmpty) {
       results.addAll(animes.where((element) =>
@@ -91,11 +91,11 @@ class Anime1Adapter extends AdapterBase {
       for (var anime in resp.data) {
         animes.add(Anime1AnimeInfo(anime[0], anime[1]));
       }
+      initialized.complete(true);
     } catch (e) {
       Modular.get<Logger>()
           .w('Anime1 adapter initialization failed, got list: ${e.toString()}');
-    } finally {
-      initialized.complete(true);
+      status = SearchStatus.failed;
     }
   }
 
@@ -137,7 +137,7 @@ class Anime1Adapter extends AdapterBase {
       }
     } catch (e) {
       logger.i('其他错误 ${e.toString()}');
-      return token;
+      rethrow;
     }
     return token;
   }
