@@ -70,6 +70,7 @@ class YhdmAdapter extends AdapterBase {
       status = SearchStatus.success;
     } catch (e) {
       status = SearchStatus.failed;
+      rethrow;
     }
     Modular.get<Logger>().i('Fetched ${ret.length} results from yhdm');
     return ret;
@@ -77,7 +78,6 @@ class YhdmAdapter extends AdapterBase {
 
   List<Episode> _parseSeries(String html) {
     var doc = parse(html);
-    // Yhdm has multiple video sources, we use the second for now.
     var ul;
     for (final div in doc.getElementsByClassName('movurl')) {
       final temp = div.querySelector('ul');

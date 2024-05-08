@@ -52,6 +52,7 @@ class GirigiriLoveAdapter extends AdapterBase {
     } catch (e) {
       status = SearchStatus.failed;
       logger.w(e);
+      rethrow;
     }
     logger.i('Girigiri love adapter returns ${ret.length} results');
     return ret;

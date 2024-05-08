@@ -32,8 +32,8 @@ class BimiAdapter extends AdapterBase {
       return _parseSeries(resp.data.toString());
     } catch (e) {
       Modular.get<Logger>().w(e);
+      rethrow;
     }
-    return [];
   }
 
   @override
@@ -70,6 +70,7 @@ class BimiAdapter extends AdapterBase {
     } catch (e) {
       Modular.get<Logger>().w(e);
       status = SearchStatus.failed;
+      rethrow;
     }
     Modular.get<Logger>().i('Bimi adapter returns ${ret.length} results');
     return ret;
