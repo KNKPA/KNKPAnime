@@ -97,9 +97,10 @@ class GirigiriLoveAdapter extends AdapterBase {
 
   String _parsePlayLink(String html) {
     var doc = parse(html);
-    var div = doc.querySelector('.player-left')!;
+    var div = doc.querySelector('.player-left');
+    div ??= doc.querySelector('.player-top');
     var script =
-        div.querySelector('script')!.text.split(',').map((e) => e.trim());
+        div!.querySelector('script')!.text.split(',').map((e) => e.trim());
     for (var line in script) {
       if (line.contains("\"url\"")) {
         var encoded =
