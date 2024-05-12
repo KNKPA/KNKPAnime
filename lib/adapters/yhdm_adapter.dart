@@ -17,13 +17,13 @@ class YhdmAdapter extends AdapterBase {
   final dio = Dio(BaseOptions(headers: {
     'User-Agent':
         'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.3',
-    'Referer': 'https://www.iyhdmm.com/',
+    'Referer': 'https://www.yhmgo.com/',
   }));
 
-  final String searchApi = 'https://www.iyhdmm.com/s_all?ex=1&kw=';
-  final String seriesApi = 'https://www.iyhdmm.com/showp/';
+  final String searchApi = 'https://www.yhmgo.com/s_all?ex=1&kw=';
+  final String seriesApi = 'https://www.yhmgo.com/showp/';
   // https://www.iyhdmm.com/playurl?aid=22409&playindex=1&epindex=0&r=0.7238267551203132
-  final String videoApi = 'https://www.iyhdmm.com/playurl';
+  final String videoApi = 'https://www.yhmgo.com/playurl';
 
   @override
   Future<List<Source>> getSources(String seriesId) async {
