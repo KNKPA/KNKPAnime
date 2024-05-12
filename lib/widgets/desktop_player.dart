@@ -42,8 +42,14 @@ class _DesktopPlayerState extends State<DesktopPlayer> {
           MaterialCustomButton(
             onPressed: () => showDialog(
               context: context,
-              builder: (context) => DanmakuSettingsWindow(
-                  playerController: widget.playerController),
+              builder: (context) => Center(
+                child: Container(
+                  width: MediaQuery.of(context).size.width * 0.75,
+                  height: MediaQuery.of(context).size.height * 0.75,
+                  child: DanmakuSettingsWindow(
+                      playerController: widget.playerController),
+                ),
+              ),
             ),
           ),
           MaterialCustomButton(
