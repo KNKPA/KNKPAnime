@@ -78,6 +78,20 @@ abstract class _PlayerController with Store {
     updateHistoryTimer.cancel();
   }
 
+  void playNextEpisode() {
+    if (playingEpisode != videoSources[selectedVideoSource].episodes.last) {
+      play(videoSources[selectedVideoSource]
+          .episodes[playingEpisode.episode + 1]);
+    }
+  }
+
+  void playPrevEpisode() {
+    if (playingEpisode != videoSources[selectedVideoSource].episodes.first) {
+      play(videoSources[selectedVideoSource]
+          .episodes[playingEpisode.episode - 1]);
+    }
+  }
+
   void setPlaybackSpeed(double rate) {
     playbackSpeed = rate;
     player.setRate(rate);

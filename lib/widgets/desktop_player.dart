@@ -23,8 +23,11 @@ class _DesktopPlayerState extends State<DesktopPlayer> {
         topButtonBar: [
           MaterialCustomButton(
             onPressed: () {
-              widget.playerController.exitFullscreen();
-              Modular.to.pop();
+              if (widget.playerController.isFullscreen) {
+                widget.playerController.exitFullscreen();
+              } else {
+                Modular.to.pop();
+              }
             },
             icon: const Icon(Icons.arrow_back),
           ),
@@ -182,5 +185,11 @@ class _DesktopPlayerState extends State<DesktopPlayer> {
         widget.playerController.exitFullscreen,
     const SingleActivator(LogicalKeyboardKey.keyD):
         widget.playerController.toggleDanmaku,
+    const SingleActivator(LogicalKeyboardKey.keyF):
+        widget.playerController.toggleFullscreen,
+    const SingleActivator(LogicalKeyboardKey.bracketLeft):
+        widget.playerController.playPrevEpisode,
+    const SingleActivator(LogicalKeyboardKey.bracketRight):
+        widget.playerController.playNextEpisode,
   };
 }

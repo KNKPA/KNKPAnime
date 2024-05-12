@@ -54,8 +54,11 @@ class _PlayPageState extends State<PlayPage> {
         child: Stack(
           children: [
             Utils.isDesktop()
-                ? DesktopPlayer(
-                    playerController: playerController,
+                ? GestureDetector(
+                    onDoubleTap: playerController.toggleFullscreen,
+                    child: DesktopPlayer(
+                      playerController: playerController,
+                    ),
                   )
                 : MobilePlayer(
                     playerController: playerController,
@@ -79,10 +82,9 @@ class _PlayPageState extends State<PlayPage> {
             ? Row(
                 children: [
                   playerWidget,
-                  playerController.isFullscreen ||
-                          !playerController.showPlaylist
-                      ? Container()
-                      : Expanded(child: buildPlaylistWidget()),
+                  playerController.showPlaylist
+                      ? Expanded(child: buildPlaylistWidget())
+                      : Container(),
                 ],
               )
             : Column(
