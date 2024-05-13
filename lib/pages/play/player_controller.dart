@@ -97,6 +97,14 @@ abstract class _PlayerController with Store {
     player.setRate(rate);
   }
 
+  void longPressFastForwardStart() {
+    player.setRate(3);
+  }
+
+  void longPressFastForwardEnd() {
+    player.setRate(playbackSpeed);
+  }
+
   void enterFullscreen() {
     isFullscreen = true;
     if (Utils.isDesktop()) {

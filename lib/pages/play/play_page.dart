@@ -60,8 +60,15 @@ class _PlayPageState extends State<PlayPage> {
                       playerController: playerController,
                     ),
                   )
-                : MobilePlayer(
-                    playerController: playerController,
+                : GestureDetector(
+                    onLongPressStart: (_) {
+                      playerController.longPressFastForwardStart();
+                    },
+                    onLongPressEnd: (_) =>
+                        playerController.longPressFastForwardEnd(),
+                    child: MobilePlayer(
+                      playerController: playerController,
+                    ),
                   ),
             DanmakuView(
                 createdController: (e) =>
