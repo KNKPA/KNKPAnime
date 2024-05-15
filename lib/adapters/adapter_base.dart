@@ -16,7 +16,10 @@ abstract class AdapterBase {
   /// Status to reflect each search.
   SearchStatus status = SearchStatus.success;
 
-  AdapterBase(this.name, [this.description]);
+  /// Wether this adapter uses webview to get video link or other resources
+  bool useWebview;
+
+  AdapterBase(this.name, {this.description, this.useWebview = false});
 
   /// Given an anime name, search possible resources.
   /// [bangumiName] is the name provided by bgm.tv, which could be

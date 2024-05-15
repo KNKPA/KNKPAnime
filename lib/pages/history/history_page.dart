@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:knkpanime/adapters/adapter_registry.dart';
 import 'package:knkpanime/pages/history/history_controller.dart';
+import 'package:knkpanime/pages/search/adapter_search_controller.dart';
 import 'package:knkpanime/widgets/series_card.dart';
 import 'package:logger/logger.dart';
 
@@ -14,6 +15,7 @@ class HistoryPage extends StatefulWidget {
 
 class _HistoryPageState extends State<HistoryPage> {
   late var historyController = Modular.get<HistoryController>();
+  late final adapterSearchController = Modular.get<AdapterSearchController>();
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +34,7 @@ class _HistoryPageState extends State<HistoryPage> {
                     .i('Selected history:\n${history.series.toString()}');
 
                 Modular.to.pushNamed('/play/', arguments: {
-                  'adapter': adapters
+                  'adapter': adapterSearchController.adapters
                       .where((element) => element.name == history.adapterName)
                       .first,
                   'series': history.series,

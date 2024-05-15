@@ -1,7 +1,9 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:html/parser.dart';
 import 'package:knkpanime/adapters/adapter_base.dart';
@@ -73,28 +75,27 @@ class AntAdapter extends AdapterBase {
   }
 
   Future<String> _parsePlayLink(String html, String myUrl) async {
-    var doc = parse(html);
-    String? url;
-    var scriptElement =
-        doc.querySelector('.stui-player__video')!.querySelectorAll('script')[0];
-    if (scriptElement.text.contains('url')) {
-      for (var line in scriptElement.text.split(',')) {
-        if (line.contains("\"url\"")) {
-          url = line.split(':')[1].replaceAll("\"", '').replaceAll(',', '');
+    String? videoLink;
+    Completer gotVideoLink = Completer<bool>();
+    final webview = HeadlessInAppWebView(
+      initialUrlRequest: URLRequest(url: WebUri(myUrl)),
+      onLoadResource: (controller, resource) {
+        if (resource.url.toString().contains('.m3u8') ||
+            resource.url.toString().contains('.mp4') ||
+            (resource.initiatorType?.contains('video') ?? false)) {
+          videoLink = resource.url.toString();
+          gotVideoLink.complete(true);
         }
-      }
-    }
-    if (url == null) {
-      debugPrint('未找到视频资源');
-    } else {
-      debugPrint('找到视频资源 ${videoApi + url}');
-    }
-    var resp = await dio.get((videoApi + (url ?? '')));
-    html = resp.data.toString();
-    debugPrint('API返回为 $html');
-    // 后续待完成
-    var videoLink = '';
-    return videoLink;
+      },
+      shouldAllowDeprecatedTLS: (controller, challenge) async =>
+          ShouldAllowDeprecatedTLSAction.ALLOW,
+    );
+    webview.run();
+    Future.delayed(const Duration(seconds: 30)).then((value) =>
+        gotVideoLink.isCompleted ? null : gotVideoLink.complete(false));
+    await gotVideoLink.future;
+    webview.dispose();
+    return videoLink!;
   }
 
   List<Episode> _parseSeries(String html) {
@@ -138,5 +139,5 @@ class AntAdapter extends AdapterBase {
     }).toList();
   }
 
-  AntAdapter() : super('Ant', '本视频源支持番剧与影视剧');
+  AntAdapter() : super('Ant', description: '本视频源支持番剧与影视剧', useWebview: true);
 }

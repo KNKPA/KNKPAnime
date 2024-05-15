@@ -9,35 +9,50 @@ part of 'adapter_search_controller.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$AdapterSearchController on _AdapterSearchController, Store {
-  late final _$searchResultsAtom =
-      Atom(name: '_AdapterSearchController.searchResults', context: context);
+  Computed<List<List<Series>>>? _$searchResultsComputed;
 
   @override
-  ObservableList<List<Series>> get searchResults {
-    _$searchResultsAtom.reportRead();
-    return super.searchResults;
+  List<List<Series>> get searchResults => (_$searchResultsComputed ??=
+          Computed<List<List<Series>>>(() => super.searchResults,
+              name: '_AdapterSearchController.searchResults'))
+      .value;
+  Computed<List<SearchStatus>>? _$statusesComputed;
+
+  @override
+  List<SearchStatus> get statuses =>
+      (_$statusesComputed ??= Computed<List<SearchStatus>>(() => super.statuses,
+              name: '_AdapterSearchController.statuses'))
+          .value;
+
+  late final _$_searchResultsAtom =
+      Atom(name: '_AdapterSearchController._searchResults', context: context);
+
+  @override
+  ObservableList<List<Series>> get _searchResults {
+    _$_searchResultsAtom.reportRead();
+    return super._searchResults;
   }
 
   @override
-  set searchResults(ObservableList<List<Series>> value) {
-    _$searchResultsAtom.reportWrite(value, super.searchResults, () {
-      super.searchResults = value;
+  set _searchResults(ObservableList<List<Series>> value) {
+    _$_searchResultsAtom.reportWrite(value, super._searchResults, () {
+      super._searchResults = value;
     });
   }
 
-  late final _$statusesAtom =
-      Atom(name: '_AdapterSearchController.statuses', context: context);
+  late final _$_statusesAtom =
+      Atom(name: '_AdapterSearchController._statuses', context: context);
 
   @override
-  ObservableList<SearchStatus> get statuses {
-    _$statusesAtom.reportRead();
-    return super.statuses;
+  ObservableList<SearchStatus> get _statuses {
+    _$_statusesAtom.reportRead();
+    return super._statuses;
   }
 
   @override
-  set statuses(ObservableList<SearchStatus> value) {
-    _$statusesAtom.reportWrite(value, super.statuses, () {
-      super.statuses = value;
+  set _statuses(ObservableList<SearchStatus> value) {
+    _$_statusesAtom.reportWrite(value, super._statuses, () {
+      super._statuses = value;
     });
   }
 

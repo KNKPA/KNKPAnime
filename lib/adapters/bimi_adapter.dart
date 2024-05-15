@@ -178,5 +178,5 @@ class BimiAdapter extends AdapterBase {
     }).toList();
   }
 
-  BimiAdapter() : super('Bimi', '该视频源目前仅能解析部分视频，如果长时间加载可考虑换源。');
+  BimiAdapter() : super('Bimi', description: '该视频源目前仅能解析部分视频，如果长时间加载可考虑换源。');
 }

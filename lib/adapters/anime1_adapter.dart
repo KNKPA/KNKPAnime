@@ -84,7 +84,7 @@ class Anime1Adapter extends AdapterBase {
     controller.player.open(Media(resp['link'], httpHeaders: headers));
   }
 
-  Anime1Adapter() : super('Anime1', desc) {
+  Anime1Adapter() : super('Anime1', description: desc) {
     init();
   }
 

@@ -17,6 +17,7 @@ class SettingsController {
   bool get hideBottomDanmakus => prefs.getBool('hideBottomDanmakus') ?? false;
   bool get alwaysOnTop => prefs.getBool('alwaysOnTop') ?? false;
   bool get disableGithubProxy => prefs.getBool('disableGithubProxy') ?? false;
+  bool get useWebViewAdapters => prefs.getBool('useWebViewAdapters') ?? true;
 
   set fontSize(double size) {
     prefs.setDouble('fontSize', size);
@@ -57,6 +58,11 @@ class SettingsController {
   set disableGithubProxy(bool value) {
     prefs.setBool('disableGithubProxy', value);
     logger.i('disableGithubProxy set to $value');
+  }
+
+  set useWebViewAdapters(bool value) {
+    prefs.setBool('useWebViewAdapters', value);
+    logger.i('useWebViewAdapters set to $value');
   }
 
   SettingsController() {

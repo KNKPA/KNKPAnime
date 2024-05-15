@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:knkpanime/adapters/adapter_base.dart';
-import 'package:knkpanime/adapters/adapter_registry.dart';
 import 'package:knkpanime/pages/history/history_controller.dart';
 import 'package:knkpanime/pages/search/adapter_search_controller.dart';
 import 'package:knkpanime/utils/utils.dart';
@@ -21,9 +20,11 @@ class _AdapterSearchPageState extends State<AdapterSearchPage>
     with SingleTickerProviderStateMixin {
   late final adapterSearchController = Modular.get<AdapterSearchController>();
   late TabController _tabController;
+  late final List<AdapterBase> adapters;
 
   @override
   void initState() {
+    adapters = adapterSearchController.adapters;
     _tabController = TabController(length: adapters.length, vsync: this);
     adapterSearchController.clear();
     super.initState();

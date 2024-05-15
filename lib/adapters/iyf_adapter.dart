@@ -142,7 +142,7 @@ class IyfAdapter extends AdapterBase {
         .join('&');
   }
 
-  IyfAdapter() : super('Iyf', '其实... 这是个电视剧源\n该源不支持Bangumi搜索。') {
+  IyfAdapter() : super('Iyf', description: '其实... 这是个电视剧源\n该源不支持Bangumi搜索。') {
     init();
   }
 

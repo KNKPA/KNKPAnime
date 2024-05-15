@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:knkpanime/adapters/adapter_base.dart';
-import 'package:knkpanime/adapters/adapter_registry.dart';
 import 'package:knkpanime/models/series.dart';
 import 'package:knkpanime/models/anime_info.dart';
 import 'package:knkpanime/pages/search/adapter_search_controller.dart';
@@ -35,10 +34,12 @@ class _SourceSelectionWindowState extends State<SourceSelectionWindow>
   late TabController _tabController;
   var selectedSource = 0;
   late final adapterSearchController = Modular.get<AdapterSearchController>();
+  late final List<AdapterBase> adapters;
 
   @override
   void initState() {
     super.initState();
+    adapters = adapterSearchController.adapters;
     _tabController = TabController(length: adapters.length, vsync: this);
     _tabController.addListener(() {
       setState(() {
@@ -149,11 +150,11 @@ class _SourceSelectionWindowState extends State<SourceSelectionWindow>
               borderRadius: BorderRadius.circular(8.0),
               child: CachedNetworkImage(
                 placeholder: (context, url) => Image.asset(
-                    width: 100.0,
-                    height: 150.0,
-                    fit: BoxFit.cover,
-                    'assets/images/placeholder.jpg',
-                  ),
+                  width: 100.0,
+                  height: 150.0,
+                  fit: BoxFit.cover,
+                  'assets/images/placeholder.jpg',
+                ),
                 imageUrl: anime.images?['large'] ?? '',
                 width: 100.0,
                 height: 150.0,

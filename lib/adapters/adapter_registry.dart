@@ -12,5 +12,5 @@ final adapters = <AdapterBase>[
   YhdmAdapter(),
   Anime1Adapter(),
   IyfAdapter(),
-  //AntAdapter(),
+  AntAdapter(),
 ];

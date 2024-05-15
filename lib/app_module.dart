@@ -18,12 +18,12 @@ class AppModule extends Module {
   @override
   void binds(i) {
     i.addInstance(Logger());
+    i.addSingleton(SettingsController.new);
     i.addSingleton(CalendarController.new);
     i.addSingleton(BangumiSearchController.new);
     i.addSingleton(HistoryController.new);
     i.addSingleton(FavoriteController.new);
-    i.addSingleton(AdapterSearchController.new);
-    i.addSingleton(SettingsController.new);
+    i.addLazySingleton(AdapterSearchController.new);
   }
 
   @override
