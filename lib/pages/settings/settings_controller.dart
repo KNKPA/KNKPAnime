@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:knkpanime/utils/utils.dart';
 import 'package:logger/logger.dart';
@@ -17,7 +19,8 @@ class SettingsController {
   bool get hideBottomDanmakus => prefs.getBool('hideBottomDanmakus') ?? false;
   bool get alwaysOnTop => prefs.getBool('alwaysOnTop') ?? false;
   bool get disableGithubProxy => prefs.getBool('disableGithubProxy') ?? false;
-  bool get useWebViewAdapters => prefs.getBool('useWebViewAdapters') ?? true;
+  bool get useWebViewAdapters =>
+      Platform.isWindows ? false : prefs.getBool('useWebViewAdapters') ?? true;
 
   set fontSize(double size) {
     prefs.setDouble('fontSize', size);
