@@ -25,7 +25,7 @@ class _BangumiSearchPageState extends State<BangumiSearchPage> {
     // TODO: Remove this popup window and related pref in future versions.
     // It's so fxxking ugly to put it here. But I don't want to all new packages and this will be removed soon... so whatever.
     final prefs = Modular.get<SettingsController>().prefs;
-    if (true || (prefs.getBool('showNewChanges') ?? true)) {
+    if (prefs.getBool('showNewChanges') ?? true) {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
