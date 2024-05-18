@@ -21,6 +21,7 @@ class SettingsController {
   bool get disableGithubProxy => prefs.getBool('disableGithubProxy') ?? false;
   bool get useWebViewAdapters =>
       Platform.isWindows ? false : prefs.getBool('useWebViewAdapters') ?? true;
+  List<String> get jsAdapters => prefs.getStringList('jsAdapters') ?? [];
 
   set fontSize(double size) {
     prefs.setDouble('fontSize', size);
@@ -66,6 +67,10 @@ class SettingsController {
   set useWebViewAdapters(bool value) {
     prefs.setBool('useWebViewAdapters', value);
     logger.i('useWebViewAdapters set to $value');
+  }
+
+  set jsAdapters(List<String> value) {
+    prefs.setStringList('jsAdapters', value);
   }
 
   SettingsController() {

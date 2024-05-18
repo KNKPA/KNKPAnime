@@ -39,7 +39,7 @@ class _SourceSelectionWindowState extends State<SourceSelectionWindow>
   @override
   void initState() {
     super.initState();
-    adapters = adapterSearchController.adapters;
+    adapters = adapterSearchController.availableAdapters;
     _tabController = TabController(length: adapters.length, vsync: this);
     _tabController.addListener(() {
       setState(() {

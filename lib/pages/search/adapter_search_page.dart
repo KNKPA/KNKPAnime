@@ -24,7 +24,7 @@ class _AdapterSearchPageState extends State<AdapterSearchPage>
 
   @override
   void initState() {
-    adapters = adapterSearchController.adapters;
+    adapters = adapterSearchController.availableAdapters;
     _tabController = TabController(length: adapters.length, vsync: this);
     adapterSearchController.clear();
     super.initState();

@@ -148,6 +148,14 @@ class _SettingsPageState extends State<SettingsPage> {
                       () => settingsController.useWebViewAdapters = value),
                 ),
               ),
+
+            ListTile(
+              title: const Row(
+                children: [Text('管理JavaScript适配器')],
+              ),
+              trailing: const Icon(Icons.keyboard_arrow_right),
+              onTap: () => Modular.to.pushNamed('jsAdapterConfig'),
+            )
           ],
         ),
       ),

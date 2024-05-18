@@ -25,6 +25,12 @@ class Series {
 
   Series(this.seriesId, this.name, {this.description, this.image});
 
+  Series.fromDynamicJson(dynamic json)
+      : seriesId = json['seriesId']!,
+        name = json['name']!,
+        description = json['description'],
+        image = json['image'];
+
   @override
   String toString() {
     return 'Name: $name\nId: $seriesId\nDescription: $description';

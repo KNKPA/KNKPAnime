@@ -23,6 +23,13 @@ mixin _$AdapterSearchController on _AdapterSearchController, Store {
       (_$statusesComputed ??= Computed<List<SearchStatus>>(() => super.statuses,
               name: '_AdapterSearchController.statuses'))
           .value;
+  Computed<List<JSAdapter>>? _$jsAdaptersComputed;
+
+  @override
+  List<JSAdapter> get jsAdapters => (_$jsAdaptersComputed ??=
+          Computed<List<JSAdapter>>(() => super.jsAdapters,
+              name: '_AdapterSearchController.jsAdapters'))
+      .value;
 
   late final _$_searchResultsAtom =
       Atom(name: '_AdapterSearchController._searchResults', context: context);
@@ -56,11 +63,28 @@ mixin _$AdapterSearchController on _AdapterSearchController, Store {
     });
   }
 
+  late final _$_adaptersAtom =
+      Atom(name: '_AdapterSearchController._adapters', context: context);
+
+  @override
+  ObservableList<AdapterBase> get _adapters {
+    _$_adaptersAtom.reportRead();
+    return super._adapters;
+  }
+
+  @override
+  set _adapters(ObservableList<AdapterBase> value) {
+    _$_adaptersAtom.reportWrite(value, super._adapters, () {
+      super._adapters = value;
+    });
+  }
+
   @override
   String toString() {
     return '''
 searchResults: ${searchResults},
-statuses: ${statuses}
+statuses: ${statuses},
+jsAdapters: ${jsAdapters}
     ''';
   }
 }

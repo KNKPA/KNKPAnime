@@ -34,7 +34,7 @@ class _HistoryPageState extends State<HistoryPage> {
                     .i('Selected history:\n${history.series.toString()}');
 
                 Modular.to.pushNamed('/play/', arguments: {
-                  'adapter': adapterSearchController.adapters
+                  'adapter': adapterSearchController.availableAdapters
                       .where((element) => element.name == history.adapterName)
                       .first,
                   'series': history.series,

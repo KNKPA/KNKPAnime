@@ -20,4 +20,9 @@ class Episode {
   String get name => episodeName ?? '第${episode + 1}集';
 
   Episode(this.episodeId, this.episode, [this.episodeName]);
+
+  Episode.fromDynamicJson(dynamic json)
+      : episodeId = json['episodeId']!,
+        episode = json['episode']!,
+        episodeName = json['episodeName'];
 }

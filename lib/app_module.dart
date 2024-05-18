@@ -23,7 +23,7 @@ class AppModule extends Module {
     i.addSingleton(BangumiSearchController.new);
     i.addSingleton(HistoryController.new);
     i.addSingleton(FavoriteController.new);
-    i.addLazySingleton(AdapterSearchController.new);
+    i.addSingleton(AdapterSearchController.new);
   }
 
   @override
