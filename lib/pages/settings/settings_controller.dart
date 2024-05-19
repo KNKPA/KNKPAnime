@@ -19,8 +19,7 @@ class SettingsController {
   bool get hideBottomDanmakus => prefs.getBool('hideBottomDanmakus') ?? false;
   bool get alwaysOnTop => prefs.getBool('alwaysOnTop') ?? false;
   bool get disableGithubProxy => prefs.getBool('disableGithubProxy') ?? false;
-  bool get useWebViewAdapters =>
-      Platform.isWindows ? false : prefs.getBool('useWebViewAdapters') ?? true;
+  bool get useWebViewAdapters => prefs.getBool('useWebViewAdapters') ?? true;
   List<String> get jsAdapters => prefs.getStringList('jsAdapters') ?? [];
 
   set fontSize(double size) {
