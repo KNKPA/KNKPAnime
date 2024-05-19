@@ -10,6 +10,7 @@ import 'package:knkpanime/adapters/adapter_base.dart';
 import 'package:flutter_js/flutter_js.dart';
 import 'package:knkpanime/models/series.dart';
 import 'package:knkpanime/models/source.dart';
+import 'package:knkpanime/utils/webview.dart';
 import 'package:logger/logger.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:media_kit_video/media_kit_video.dart';
@@ -46,8 +47,8 @@ class JSAdapter extends AdapterBase {
     jsEngine.executePendingJob();
     final result = await jsEngine.handlePromise(promise);
     if (useWebview) {
-      controller.player
-          .open(Media(await _getVideoResourceWithWebview(result.stringResult)));
+      controller.player.open(
+          Media((await Webview.getVideoResourceUrl(result.stringResult))!));
     } else {
       controller.player.open(Media(result.stringResult));
     }
@@ -85,30 +86,6 @@ class JSAdapter extends AdapterBase {
     logger.i('$name adapter returns ${ret.length} results');
 
     return ret;
-  }
-
-  Future<String> _getVideoResourceWithWebview(String url) async {
-    String? videoLink;
-    Completer gotVideoLink = Completer<bool>();
-    final webview = HeadlessInAppWebView(
-      initialUrlRequest: URLRequest(url: WebUri(url)),
-      onLoadResource: (controller, resource) {
-        if (resource.url.toString().contains('.m3u8') ||
-            resource.url.toString().contains('.mp4') ||
-            (resource.initiatorType?.contains('video') ?? false)) {
-          videoLink = resource.url.toString();
-          gotVideoLink.complete(true);
-        }
-      },
-      shouldAllowDeprecatedTLS: (controller, challenge) async =>
-          ShouldAllowDeprecatedTLSAction.ALLOW,
-    );
-    webview.run();
-    Future.delayed(const Duration(seconds: 30)).then((value) =>
-        gotVideoLink.isCompleted ? null : gotVideoLink.complete(false));
-    await gotVideoLink.future;
-    webview.dispose();
-    return videoLink!;
   }
 
   JSAdapter(this.sourceUrl) : super('') {
