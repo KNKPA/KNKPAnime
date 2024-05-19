@@ -323,8 +323,8 @@ packages:
     description:
       path: flutter_inappwebview
       ref: master
-      resolved-ref: "4c58653113573558ea5be880aca931e85b23da7e"
-      url: "https://github.com/pichillilorenzo/flutter_inappwebview"
+      resolved-ref: "57aaf237a014d70126dff843a05709c81c24de02"
+      url: "https://github.com/songbirdzz/flutter_inappwebview"
     source: git
     version: "6.0.0"
   flutter_inappwebview_android:
@@ -332,8 +332,8 @@ packages:
     description:
       path: flutter_inappwebview_android
       ref: master
-      resolved-ref: "4c58653113573558ea5be880aca931e85b23da7e"
-      url: "https://github.com/pichillilorenzo/flutter_inappwebview"
+      resolved-ref: "57aaf237a014d70126dff843a05709c81c24de02"
+      url: "https://github.com/songbirdzz/flutter_inappwebview"
     source: git
     version: "1.0.13"
   flutter_inappwebview_internal_annotations:
@@ -349,8 +349,8 @@ packages:
     description:
       path: flutter_inappwebview_ios
       ref: master
-      resolved-ref: "4c58653113573558ea5be880aca931e85b23da7e"
-      url: "https://github.com/pichillilorenzo/flutter_inappwebview"
+      resolved-ref: "57aaf237a014d70126dff843a05709c81c24de02"
+      url: "https://github.com/songbirdzz/flutter_inappwebview"
     source: git
     version: "1.0.13"
   flutter_inappwebview_macos:
@@ -358,8 +358,8 @@ packages:
     description:
       path: flutter_inappwebview_macos
       ref: master
-      resolved-ref: "4c58653113573558ea5be880aca931e85b23da7e"
-      url: "https://github.com/pichillilorenzo/flutter_inappwebview"
+      resolved-ref: "57aaf237a014d70126dff843a05709c81c24de02"
+      url: "https://github.com/songbirdzz/flutter_inappwebview"
     source: git
     version: "1.0.11"
   flutter_inappwebview_platform_interface:
@@ -367,8 +367,8 @@ packages:
     description:
       path: flutter_inappwebview_platform_interface
       ref: master
-      resolved-ref: "4c58653113573558ea5be880aca931e85b23da7e"
-      url: "https://github.com/pichillilorenzo/flutter_inappwebview"
+      resolved-ref: "57aaf237a014d70126dff843a05709c81c24de02"
+      url: "https://github.com/songbirdzz/flutter_inappwebview"
     source: git
     version: "1.0.11"
   flutter_inappwebview_web:
@@ -376,8 +376,8 @@ packages:
     description:
       path: flutter_inappwebview_web
       ref: master
-      resolved-ref: "4c58653113573558ea5be880aca931e85b23da7e"
-      url: "https://github.com/pichillilorenzo/flutter_inappwebview"
+      resolved-ref: "57aaf237a014d70126dff843a05709c81c24de02"
+      url: "https://github.com/songbirdzz/flutter_inappwebview"
     source: git
     version: "1.0.8"
   flutter_inappwebview_windows:
@@ -385,8 +385,8 @@ packages:
     description:
       path: flutter_inappwebview_windows
       ref: master
-      resolved-ref: "4c58653113573558ea5be880aca931e85b23da7e"
-      url: "https://github.com/pichillilorenzo/flutter_inappwebview"
+      resolved-ref: "57aaf237a014d70126dff843a05709c81c24de02"
+      url: "https://github.com/songbirdzz/flutter_inappwebview"
     source: git
     version: "1.0.11"
   flutter_launcher_icons:
@@ -1345,10 +1345,10 @@ packages:
     dependency: "direct main"
     description:
       name: window_manager
-      sha256: b3c895bdf936c77b83c5254bec2e6b3f066710c1f89c38b20b8acc382b525494
+      sha256: "8699323b30da4cdbe2aa2e7c9de567a6abd8a97d9a5c850a3c86dcd0b34bbfbf"
       url: "https://pub.dev"
     source: hosted
-    version: "0.3.8"
+    version: "0.3.9"
   xdg_directories:
     dependency: transitive
     description:
