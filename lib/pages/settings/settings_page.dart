@@ -123,31 +123,29 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
             ),
 
-            if (!Platform.isWindows)
-              ListTile(
-                title: Row(
-                  children: [
-                    const Text('使用WebView源'),
-                    Tooltip(
-                      richMessage: WidgetSpan(
-                        child: Container(
-                          constraints: BoxConstraints(
-                              maxWidth:
-                                  MediaQuery.of(context).size.width * 0.5),
-                          child: const Text(
-                              '部分播放源会使用WebView，也就是使用一个隐藏的浏览器，来解析视频链接。这些源在进入视频页面时会暂时消耗较多资源。'),
-                        ),
+            ListTile(
+              title: Row(
+                children: [
+                  const Text('使用WebView源'),
+                  Tooltip(
+                    richMessage: WidgetSpan(
+                      child: Container(
+                        constraints: BoxConstraints(
+                            maxWidth: MediaQuery.of(context).size.width * 0.5),
+                        child: const Text(
+                            '部分播放源会使用WebView，也就是使用一个隐藏的浏览器，来解析视频链接。这些源在进入视频页面时会暂时消耗较多资源。'),
                       ),
-                      child: const Icon(Icons.info),
-                    )
-                  ],
-                ),
-                trailing: Switch(
-                  value: settingsController.useWebViewAdapters,
-                  onChanged: (value) => setState(
-                      () => settingsController.useWebViewAdapters = value),
-                ),
+                    ),
+                    child: const Icon(Icons.info),
+                  )
+                ],
               ),
+              trailing: Switch(
+                value: settingsController.useWebViewAdapters,
+                onChanged: (value) => setState(
+                    () => settingsController.useWebViewAdapters = value),
+              ),
+            ),
 
             ListTile(
               title: const Row(

@@ -10,6 +10,7 @@ import 'package:knkpanime/adapters/adapter_base.dart';
 import 'package:knkpanime/models/episode.dart';
 import 'package:knkpanime/models/series.dart';
 import 'package:knkpanime/models/source.dart';
+import 'package:knkpanime/utils/webview.dart';
 import 'package:logger/logger.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:media_kit_video/media_kit_video.dart';
@@ -75,27 +76,7 @@ class AntAdapter extends AdapterBase {
   }
 
   Future<String> _parsePlayLink(String html, String myUrl) async {
-    String? videoLink;
-    Completer gotVideoLink = Completer<bool>();
-    final webview = HeadlessInAppWebView(
-      initialUrlRequest: URLRequest(url: WebUri(myUrl)),
-      onLoadResource: (controller, resource) {
-        if (resource.url.toString().contains('.m3u8') ||
-            resource.url.toString().contains('.mp4') ||
-            (resource.initiatorType?.contains('video') ?? false)) {
-          videoLink = resource.url.toString();
-          gotVideoLink.complete(true);
-        }
-      },
-      shouldAllowDeprecatedTLS: (controller, challenge) async =>
-          ShouldAllowDeprecatedTLSAction.ALLOW,
-    );
-    webview.run();
-    Future.delayed(const Duration(seconds: 30)).then((value) =>
-        gotVideoLink.isCompleted ? null : gotVideoLink.complete(false));
-    await gotVideoLink.future;
-    webview.dispose();
-    return videoLink!;
+    return (await Webview.getVideoResourceUrl(myUrl))!;
   }
 
   List<Episode> _parseSeries(String html) {
@@ -141,3 +122,18 @@ class AntAdapter extends AdapterBase {
 
   AntAdapter() : super('Ant', description: '本视频源支持番剧与影视剧', useWebview: true);
 }
+
+const String _script = """(function() {
+              var observer = new PerformanceObserver(function(list) { 
+                 list.getEntries().forEach(function(entry) {
+                  var resource = {
+                     'url': entry.name,
+                     'initiatorType': entry.initiatorType,
+                     'startTime': entry.startTime,
+                     'duration': entry.duration
+                   };
+                   window.flutter_inappwebview.callHandler('onLoadResource', resource);
+                 });
+             });
+             observer.observe({entryTypes: ['resource']});
+          })();""";

@@ -29,10 +29,10 @@ packages:
     dependency: transitive
     description:
       name: archive
-      sha256: "22600aa1e926be775fa5fe7e6894e7fb3df9efda8891c73f70fb3262399a432d"
+      sha256: ecf4273855368121b1caed0d10d4513c7241dfc813f7d3c8933b36622ae9b265
       url: "https://pub.dev"
     source: hosted
-    version: "3.4.10"
+    version: "3.5.1"
   args:
     dependency: transitive
     description:
@@ -229,10 +229,10 @@ packages:
     dependency: "direct main"
     description:
       name: cupertino_icons
-      sha256: d57953e10f9f8327ce64a508a355f0b1ec902193f66288e8cb5070e7c47eeb2d
+      sha256: ba631d1c7f7bef6b729a622b7b752645a2d076dba9976925b8f25725a30e1ee6
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.6"
+    version: "1.0.8"
   dart_style:
     dependency: transitive
     description:
@@ -321,18 +321,20 @@ packages:
   flutter_inappwebview:
     dependency: "direct main"
     description:
-      name: flutter_inappwebview
-      sha256: "3e9a443a18ecef966fb930c3a76ca5ab6a7aafc0c7b5e14a4a850cf107b09959"
-      url: "https://pub.dev"
-    source: hosted
+      path: flutter_inappwebview
+      ref: master
+      resolved-ref: "57aaf237a014d70126dff843a05709c81c24de02"
+      url: "https://github.com/songbirdzz/flutter_inappwebview"
+    source: git
     version: "6.0.0"
   flutter_inappwebview_android:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
-      name: flutter_inappwebview_android
-      sha256: d247f6ed417f1f8c364612fa05a2ecba7f775c8d0c044c1d3b9ee33a6515c421
-      url: "https://pub.dev"
-    source: hosted
+      path: flutter_inappwebview_android
+      ref: master
+      resolved-ref: "57aaf237a014d70126dff843a05709c81c24de02"
+      url: "https://github.com/songbirdzz/flutter_inappwebview"
+    source: git
     version: "1.0.13"
   flutter_inappwebview_internal_annotations:
     dependency: transitive
@@ -343,37 +345,50 @@ packages:
     source: hosted
     version: "1.1.1"
   flutter_inappwebview_ios:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
-      name: flutter_inappwebview_ios
-      sha256: f363577208b97b10b319cd0c428555cd8493e88b468019a8c5635a0e4312bd0f
-      url: "https://pub.dev"
-    source: hosted
+      path: flutter_inappwebview_ios
+      ref: master
+      resolved-ref: "57aaf237a014d70126dff843a05709c81c24de02"
+      url: "https://github.com/songbirdzz/flutter_inappwebview"
+    source: git
     version: "1.0.13"
   flutter_inappwebview_macos:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
-      name: flutter_inappwebview_macos
-      sha256: b55b9e506c549ce88e26580351d2c71d54f4825901666bd6cfa4be9415bb2636
-      url: "https://pub.dev"
-    source: hosted
+      path: flutter_inappwebview_macos
+      ref: master
+      resolved-ref: "57aaf237a014d70126dff843a05709c81c24de02"
+      url: "https://github.com/songbirdzz/flutter_inappwebview"
+    source: git
     version: "1.0.11"
   flutter_inappwebview_platform_interface:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
-      name: flutter_inappwebview_platform_interface
-      sha256: "545fd4c25a07d2775f7d5af05a979b2cac4fbf79393b0a7f5d33ba39ba4f6187"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.10"
+      path: flutter_inappwebview_platform_interface
+      ref: master
+      resolved-ref: "57aaf237a014d70126dff843a05709c81c24de02"
+      url: "https://github.com/songbirdzz/flutter_inappwebview"
+    source: git
+    version: "1.0.11"
   flutter_inappwebview_web:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
-      name: flutter_inappwebview_web
-      sha256: d8c680abfb6fec71609a700199635d38a744df0febd5544c5a020bd73de8ee07
-      url: "https://pub.dev"
-    source: hosted
+      path: flutter_inappwebview_web
+      ref: master
+      resolved-ref: "57aaf237a014d70126dff843a05709c81c24de02"
+      url: "https://github.com/songbirdzz/flutter_inappwebview"
+    source: git
     version: "1.0.8"
+  flutter_inappwebview_windows:
+    dependency: "direct main"
+    description:
+      path: flutter_inappwebview_windows
+      ref: master
+      resolved-ref: "57aaf237a014d70126dff843a05709c81c24de02"
+      url: "https://github.com/songbirdzz/flutter_inappwebview"
+    source: git
+    version: "1.0.11"
   flutter_js:
     dependency: "direct main"
     description:
@@ -548,10 +563,10 @@ packages:
     dependency: transitive
     description:
       name: json_annotation
-      sha256: b10a7b2ff83d83c777edba3c6a0f97045ddadd56c944e1a23a3fdf43a1bf4467
+      sha256: "1ce844379ca14835a50d2f019a3099f419082cfdd231cd86a142af94dd5c6bb1"
       url: "https://pub.dev"
     source: hosted
-    version: "4.8.1"
+    version: "4.9.0"
   leak_tracker:
     dependency: transitive
     description:
@@ -588,10 +603,10 @@ packages:
     dependency: "direct main"
     description:
       name: logger
-      sha256: "8c94b8c219e7e50194efc8771cd0e9f10807d8d3e219af473d89b06cc2ee4e04"
+      sha256: af05cc8714f356fd1f3888fb6741cbe9fbe25cdb6eedbab80e1a6db21047d4a4
       url: "https://pub.dev"
     source: hosted
-    version: "2.2.0"
+    version: "2.3.0"
   logging:
     dependency: transitive
     description:
@@ -741,10 +756,10 @@ packages:
     description:
       path: "."
       ref: master
-      resolved-ref: "684845744918b72f1aaae2e4a8bc300a8390f312"
+      resolved-ref: "3de993740ae1cb63a6cf4c1c8f8ce7cfe9803e9e"
       url: "https://github.com/songbirdzz/flutter_ns_danmaku"
     source: git
-    version: "0.0.5"
+    version: "0.0.6"
   octo_image:
     dependency: transitive
     description:
@@ -805,10 +820,10 @@ packages:
     dependency: transitive
     description:
       name: path_provider_foundation
-      sha256: "5a7999be66e000916500be4f15a3633ebceb8302719b47b9cc49ce924125350f"
+      sha256: f234384a3fdd67f989b4d54a5d73ca2a6c422fa55ae694381ae0f4375cd1ea16
       url: "https://pub.dev"
     source: hosted
-    version: "2.3.2"
+    version: "2.4.0"
   path_provider_linux:
     dependency: transitive
     description:
@@ -857,14 +872,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.8"
-  pointycastle:
-    dependency: transitive
-    description:
-      name: pointycastle
-      sha256: "70fe966348fe08c34bf929582f1d8247d9d9408130723206472b4687227e4333"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.8.0"
   pool:
     dependency: transitive
     description:
@@ -997,10 +1004,10 @@ packages:
     dependency: transitive
     description:
       name: shared_preferences_foundation
-      sha256: "7708d83064f38060c7b39db12aefe449cb8cdc031d6062280087bc4cdb988f5c"
+      sha256: "0a8a893bf4fd1152f93fec03a415d11c27c74454d96e2318a7ac38dd18683ab7"
       url: "https://pub.dev"
     source: hosted
-    version: "2.3.5"
+    version: "2.4.0"
   shared_preferences_linux:
     dependency: transitive
     description:
@@ -1090,10 +1097,10 @@ packages:
     dependency: transitive
     description:
       name: sqflite
-      sha256: "5ce2e1a15e822c3b4bfb5400455775e421da7098eed8adc8f26298ada7c9308c"
+      sha256: a43e5a27235518c03ca238e7b4732cf35eabe863a369ceba6cbefa537a66f16d
       url: "https://pub.dev"
     source: hosted
-    version: "2.3.3"
+    version: "2.3.3+1"
   sqflite_common:
     dependency: transitive
     description:
@@ -1226,10 +1233,10 @@ packages:
     dependency: transitive
     description:
       name: url_launcher_ios
-      sha256: "9149d493b075ed740901f3ee844a38a00b33116c7c5c10d7fb27df8987fb51d5"
+      sha256: "7068716403343f6ba4969b4173cbf3b84fc768042124bc2c011e5d782b24fe89"
       url: "https://pub.dev"
     source: hosted
-    version: "6.2.5"
+    version: "6.3.0"
   url_launcher_linux:
     dependency: transitive
     description:
@@ -1242,10 +1249,10 @@ packages:
     dependency: transitive
     description:
       name: url_launcher_macos
-      sha256: b7244901ea3cf489c5335bdacda07264a6e960b1c1b1a9f91e4bc371d9e68234
+      sha256: "9a1a42d5d2d95400c795b2914c36fdcb525870c752569438e4ebb09a2b5d90de"
       url: "https://pub.dev"
     source: hosted
-    version: "3.1.0"
+    version: "3.2.0"
   url_launcher_platform_interface:
     dependency: transitive
     description:
@@ -1306,10 +1313,10 @@ packages:
     dependency: transitive
     description:
       name: wakelock_plus
-      sha256: c8b7cc80f045533b40a0e6c9109905494e3cf32c0fbd5c62616998e0de44003f
+      sha256: "14758533319a462ffb5aa3b7ddb198e59b29ac3b02da14173a1715d65d4e6e68"
       url: "https://pub.dev"
     source: hosted
-    version: "1.2.4"
+    version: "1.2.5"
   wakelock_plus_platform_interface:
     dependency: transitive
     description:
@@ -1346,18 +1353,18 @@ packages:
     dependency: transitive
     description:
       name: win32
-      sha256: "0a989dc7ca2bb51eac91e8fd00851297cfffd641aa7538b165c62637ca0eaa4a"
+      sha256: "0eaf06e3446824099858367950a813472af675116bf63f008a4c2a75ae13e9cb"
       url: "https://pub.dev"
     source: hosted
-    version: "5.4.0"
+    version: "5.5.0"
   window_manager:
     dependency: "direct main"
     description:
       name: window_manager
-      sha256: b3c895bdf936c77b83c5254bec2e6b3f066710c1f89c38b20b8acc382b525494
+      sha256: "8699323b30da4cdbe2aa2e7c9de567a6abd8a97d9a5c850a3c86dcd0b34bbfbf"
       url: "https://pub.dev"
     source: hosted
-    version: "0.3.8"
+    version: "0.3.9"
   xdg_directories:
     dependency: transitive
     description:
