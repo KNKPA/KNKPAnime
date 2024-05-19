@@ -65,6 +65,7 @@ dependencies:
       url: https://github.com/songbirdzz/flutter_inappwebview
       path: flutter_inappwebview_windows
       ref: master
+  flutter_js: ^0.8.0
 
 dependency_overrides:
   flutter_inappwebview_platform_interface:
@@ -97,7 +98,6 @@ dependency_overrides:
       url: https://github.com/songbirdzz/flutter_inappwebview
       path: flutter_inappwebview_windows
       ref: master
-  flutter_js: ^0.8.0
 
 dev_dependencies:
   flutter_test:
