@@ -68,6 +68,8 @@ rm -rf KNKPAnime flutter flutter.zip
 
 通过使用[flutter_js](https://github.com/abner/flutter_js)，软件内置了一个JavaScript runtime，可以用来即时执行JS代码。利用这个JS runtime，我们可以随时获取互联网上的适配器并添加到软件中。虽然损失了一些性能，但毕竟搜索和解析视频都是相对不频繁的操作（相对于UI等等耗能大户来说），因此不会造成太大影响。
 
+关于如何定义自己的适配器，请参见[KNKPAnime-js-adapters](https://github.com/KNKPA/KNKPAnime-js-adapters)。
+
 **请从您信任的来源添加适配器**
 
 ### 解析形式
