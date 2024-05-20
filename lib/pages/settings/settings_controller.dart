@@ -73,6 +73,9 @@ class SettingsController {
   }
 
   SettingsController() {
-    SharedPreferences.getInstance().then((v) => prefs = v);
+    SharedPreferences.getInstance().then((v) {
+      prefs = v;
+      prefs.remove('showNewChanges');
+    });
   }
 }
