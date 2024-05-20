@@ -70,12 +70,23 @@ jobs:
       - run: flutter build windows
 
       - run: Compress-Archive -Path build/windows/x64/runner/Release -DestinationPath knkpanime-windows.zip
-      - run: Ren build/app/outputs/flutter-apk/app-release.apk knkpanime-android.apk
       - name: Download MacOS build
         uses: actions/download-artifact@v4
         with:
           name: macos-build
       - run: Compress-Archive -Path knkpanime-macOS.app -DestinationPath knkpanime-macOS.zip
+      - uses: r0adkll/sign-android-release@v1
+        name: Sign app APK
+        id: sign_app
+        with:
+          releaseDirectory: build/app/outputs/apk/release
+          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
+          alias: ${{ secrets.ALIAS }}
+          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
+        env:
+          BUILD_TOOLS_VERSION: "34.0.0"
+      - run: Ren ${{ steps.sign_app.outputs.signedReleaseFile }} knkpanime-android.apk
+
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
@@ -84,7 +95,7 @@ jobs:
           title: "预览版"
           files: |
             knkpanime-windows.zip
-            build/app/outputs/flutter-apk/knkpanime-android.apk
+            build/app/outputs/apk/release/knkpanime-android.apk
             knkpanime-macOS.zip
       - name: Upload outputs
         uses: actions/upload-artifact@v4
@@ -92,5 +103,5 @@ jobs:
           name: outputs
           path: |
             knkpanime-windows.zip
-            build/app/outputs/flutter-apk/knkpanime-android.apk
+            build/app/outputs/apk/release/knkpanime-android.apk
             knkpanime-macOS.zip
