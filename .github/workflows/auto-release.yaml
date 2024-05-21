@@ -43,18 +43,28 @@ jobs:
 
 
       - run: Compress-Archive build/windows/x64/runner/Release knkpanime-windows.zip
-      - run: Ren build/app/outputs/flutter-apk/app-release.apk knkpanime-android.apk
+      - uses: r0adkll/sign-android-release@v1
+        name: Sign app APK
+        id: sign_app
+        with:
+          releaseDirectory: build/app/outputs/apk/release
+          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
+          alias: ${{ secrets.ALIAS }}
+          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
+        env:
+          BUILD_TOOLS_VERSION: "34.0.0"
+      - run: Ren ${{ steps.sign_app.outputs.signedReleaseFile }} knkpanime-android.apk
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           prerelease: false
           files: |
             knkpanime-windows.zip
-            build/app/outputs/flutter-apk/knkpanime-android.apk
+            build/app/outputs/apk/release/knkpanime-android.apk
       - name: Upload outputs
         uses: actions/upload-artifact@v4
         with:
           name: outputs
           path: |
             knkpanime-windows.zip
-            build/app/outputs/flutter-apk/knkpanime-android.apk
+            build/app/outputs/apk/release/knkpanime-android.apk
