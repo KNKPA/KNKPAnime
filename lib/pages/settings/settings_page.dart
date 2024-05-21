@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:knkpanime/main.dart';
 import 'package:knkpanime/pages/settings/settings_controller.dart';
 import 'package:knkpanime/utils/utils.dart';
 
@@ -153,7 +154,10 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
               trailing: const Icon(Icons.keyboard_arrow_right),
               onTap: () => Modular.to.pushNamed('jsAdapterConfig'),
-            )
+            ),
+            ListTile(
+              title: Text('App版本：$version'),
+            ),
           ],
         ),
       ),

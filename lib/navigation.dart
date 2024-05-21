@@ -5,7 +5,6 @@ import 'package:knkpanime/app_module.dart';
 import 'package:knkpanime/pages/settings/settings_controller.dart';
 import 'package:logger/logger.dart';
 import 'package:mobx/mobx.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 bool _checkedForUpdate = false;
@@ -43,9 +42,8 @@ void checkForUpdate(BuildContext context) async {
       return;
     }
   }
-  var localVersion = (await PackageInfo.fromPlatform()).version;
-  Modular.get<Logger>().i(localVersion);
-  if (resp.data!['tag_name'] != localVersion) {
+  Modular.get<Logger>().i(version);
+  if (resp.data!['tag_name'] != version) {
     Modular.get<Logger>().i('Found new version: ${resp.data!["tag_name"]}');
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
