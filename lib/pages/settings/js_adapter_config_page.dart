@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:knkpanime/pages/search/adapter_search_controller.dart';
+import 'package:logger/logger.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class JsAdapterConfigPage extends StatefulWidget {
@@ -37,8 +38,15 @@ class _JsAdapterConfigPageState extends State<JsAdapterConfigPage> {
                 labelText: '添加适配器URL',
               ),
               onSubmitted: (url) {
-                adapterSearchController.addJsAdapter(url);
-                textEditingController.clear();
+                try {
+                  adapterSearchController.addJsAdapter(url);
+                  textEditingController.clear();
+                } catch (e) {
+                  Modular.get<Logger>().w(e);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('添加失败：\n$e')),
+                  );
+                }
               },
             ),
           ),

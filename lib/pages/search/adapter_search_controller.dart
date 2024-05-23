@@ -79,15 +79,14 @@ abstract class _AdapterSearchController with Store {
     final adapter = JSAdapter(sourceUrl);
     await adapter.completer.future;
     Modular.get<Logger>().i('Initialized, success: ${adapter.initialized}');
-    if (adapter.initialized) {
+    if (adapter.initialized &&
+        !_adapters.map((adapter) => adapter.name).contains(adapter.name)) {
       _adapters.add(adapter);
       _statuses.add(adapter.status);
       _searchResults.add([]);
       final stored = settingsController.jsAdapters;
-      if (stored.contains(sourceUrl)) {
-        stored.add(sourceUrl);
-        settingsController.jsAdapters = stored;
-      }
+      stored.add(sourceUrl);
+      settingsController.jsAdapters = stored;
     }
   }
 
