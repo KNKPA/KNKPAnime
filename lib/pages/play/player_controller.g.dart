@@ -134,6 +134,22 @@ mixin _$PlayerController on _PlayerController, Store {
     });
   }
 
+  late final _$danmakuEpisodeAtom =
+      Atom(name: '_PlayerController.danmakuEpisode', context: context);
+
+  @override
+  int get danmakuEpisode {
+    _$danmakuEpisodeAtom.reportRead();
+    return super.danmakuEpisode;
+  }
+
+  @override
+  set danmakuEpisode(int value) {
+    _$danmakuEpisodeAtom.reportWrite(value, super.danmakuEpisode, () {
+      super.danmakuEpisode = value;
+    });
+  }
+
   @override
   String toString() {
     return '''
@@ -144,6 +160,7 @@ selectedDanmakuSource: ${selectedDanmakuSource},
 matchingAnimes: ${matchingAnimes},
 showPlaylist: ${showPlaylist},
 selectedVideoSource: ${selectedVideoSource},
+danmakuEpisode: ${danmakuEpisode},
 danmakuSources: ${danmakuSources}
     ''';
   }

@@ -49,6 +49,8 @@ abstract class _PlayerController with Store {
   bool showPlaylist = true;
   @observable
   int selectedVideoSource = 0;
+  @observable
+  int danmakuEpisode = 0;
 
   late final logger = Modular.get<Logger>();
   late final historyController = Modular.get<HistoryController>();
@@ -237,6 +239,7 @@ abstract class _PlayerController with Store {
     // This function will be called when entering video page or change to another episode
     updateHistoryTimer.cancel();
     danmakuController.clear();
+    danmakuEpisode += (episode.episode - playingEpisode.episode);
     playingEpisode = episode;
     if (selectedDanmakuSource != null) {
       loadDanmakus(selectedDanmakuSource!);
@@ -289,8 +292,7 @@ abstract class _PlayerController with Store {
     danmakus.clear();
     selectedDanmakuSource = info;
     try {
-      var dmks =
-          await DanmakuRequest.getDanmakus(info.id, playingEpisode.episode);
+      var dmks = await DanmakuRequest.getDanmakus(info.id, danmakuEpisode);
       logger.i('Danmaku count: ${dmks.length}');
       dmks.forEach((element) {
         danmakus[element.offset.floor()] == null
