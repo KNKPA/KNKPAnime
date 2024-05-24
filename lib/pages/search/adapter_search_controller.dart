@@ -103,14 +103,12 @@ abstract class _AdapterSearchController with Store {
   }
 
   _AdapterSearchController() {
-    try {
-      Dio()
-          .get(
-              'https://raw.githubusercontent.com/KNKPA/KNKPAnime-js-adapters/main/registry.json')
-          .then((resp) => (jsonDecode(resp.data) as List)
-              .forEach((url) => addJsAdapter(url)));
-    } catch (e) {
-      Modular.get<Logger>().w(e);
-    }
+    Dio()
+        .get(
+            'https://raw.githubusercontent.com/KNKPA/KNKPAnime-js-adapters/main/registry.json')
+        .then((resp) =>
+            (jsonDecode(resp.data) as List).forEach((url) => addJsAdapter(url)))
+        .whenComplete(() =>
+            settingsController.jsAdapters.forEach((url) => addJsAdapter(url)));
   }
 }
