@@ -85,8 +85,10 @@ abstract class _AdapterSearchController with Store {
       _statuses.add(adapter.status);
       _searchResults.add([]);
       final stored = settingsController.jsAdapters;
-      stored.add(sourceUrl);
-      settingsController.jsAdapters = stored;
+      if (!stored.contains(sourceUrl)) {
+        stored.add(sourceUrl);
+        settingsController.jsAdapters = stored;
+      }
     }
   }
 
