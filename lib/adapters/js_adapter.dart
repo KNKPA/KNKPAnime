@@ -17,7 +17,7 @@ import 'package:media_kit_video/media_kit_video.dart';
 
 class JSAdapter extends AdapterBase {
   late final jsEngine = getJavascriptRuntime();
-  late final jsSource;
+  late final String jsSource;
   final completer = Completer<bool>();
   bool initialized = false;
   late final logger = Modular.get<Logger>();
