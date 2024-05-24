@@ -109,5 +109,5 @@ class NyafunAdapter extends AdapterBase {
     return '';
   }
 
-  NyafunAdapter() : super('Nyafun');
+  NyafunAdapter() : super('Nyafun', useWebview: true);
 }
