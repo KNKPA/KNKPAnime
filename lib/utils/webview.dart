@@ -8,13 +8,17 @@ class Webview {
   static Future<String?> getVideoResourceUrl(String pageUrl) async {
     String? videoResourceUrl;
     final completer = Completer();
-    List<String> iframes = [];
+    _Node currentNode = _Node(pageUrl);
+    List<String> history = [];
     final webview = HeadlessInAppWebView(
       initialUrlRequest: URLRequest(url: WebUri(pageUrl)),
-      onLoadStart: (controller, url) => iframes.clear(),
+      onLoadStart: (controller, url) {
+        Modular.get<Logger>().i('Loading $url');
+        history.add(url.toString());
+      },
       onLoadResource: (controller, resource) {
         if (resource.url.toString().contains('.m3u8') ||
-            resource.url.toString().contains('.mp4') ||
+            //resource.url.toString().contains('.mp4') ||
             (resource.initiatorType?.contains('video') ?? false)) {
           videoResourceUrl = resource.url.toString();
           completer.complete(true);
@@ -22,22 +26,32 @@ class Webview {
           // For Windows webviews (and maybe macOS as well), onLoadResource
           // can't capture requests sent within iframes. Therefore we store
           // and them for later use.
-          iframes.add(resource.url.toString());
+          currentNode.children
+              .add(_Node(resource.url.toString(), parent: currentNode));
         }
       },
       onLoadStop: (controller, url) async {
         if (completer.isCompleted) return;
-        if (iframes.isNotEmpty) {
-          // I don't know why but delaying for 1 sec can solve 403 forbidden problems...
-          // Maybe some cookies or other things aren't set at this moment
-          // TODO: request all the iframes
-          Future.delayed(
-              const Duration(seconds: 1),
-              () => controller.evaluateJavascript(
-                  source: "window.location.href='${iframes.first}';"));
-        } else {
-          // No more iframes to request and didn't get video resource either
-          completer.complete(false);
+        // This timer seems redundant, however I do have seen some onLoadResource
+        // calls after onLoadStop. So we use a timer here to ensure maxium compatibility
+
+        while (!currentNode.isRoot &&
+            currentNode.children
+                .where((node) => !history.contains(node.url))
+                .isEmpty) {
+          await controller.evaluateJavascript(
+              source: "window.location.href='${currentNode.parent!.url}';");
+          currentNode = currentNode.parent!;
+        }
+        if (currentNode.children
+            .where((node) => !history.contains(node.url))
+            .isNotEmpty) {
+          final node = currentNode.children
+              .where((node) => !history.contains(node.url))
+              .first;
+          currentNode = node;
+          await controller.evaluateJavascript(
+              source: "window.location.href='${node.url}';");
         }
       },
       shouldAllowDeprecatedTLS: (controller, challenge) async =>
@@ -53,4 +67,13 @@ class Webview {
     Modular.get<Logger>().i('Cannot find any video in $pageUrl');
     return null;
   }
+}
+
+class _Node {
+  final String url;
+  final _Node? parent;
+  final List<_Node> children = [];
+  bool get isRoot => parent == null;
+
+  _Node(this.url, {this.parent});
 }
