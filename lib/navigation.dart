@@ -98,7 +98,11 @@ class _SideMenuState extends State<SideMenu> {
     var listContent = <Widget>[];
     listContent
         .addAll(routes.where((e) => !(e['bottom'] as bool)).map((e) => ListTile(
-              title: Text(e['name'] as String),
+              title: Text(e['name'] as String,
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyLarge
+                      ?.copyWith(color: Colors.white)),
               leading: e['icon'] as Widget,
               onTap: () {
                 _onItemTapped(routes.indexOf(e));
@@ -109,7 +113,11 @@ class _SideMenuState extends State<SideMenu> {
     listContent.add(const Spacer());
     listContent
         .addAll(routes.where((e) => e['bottom'] as bool).map((e) => ListTile(
-              title: Text(e['name'] as String),
+              title: Text(e['name'] as String,
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyLarge
+                      ?.copyWith(color: Colors.white)),
               leading: e['icon'] as Widget,
               onTap: () {
                 _onItemTapped(routes.indexOf(e));

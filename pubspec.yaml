@@ -55,6 +55,7 @@ dependencies:
   media_kit: ^1.1.10
   media_kit_video: ^1.2.4
   media_kit_libs_video: ^1.0.4
+  google_fonts: ^6.2.1
   flutter_inappwebview: 
     git:
       url: https://github.com/songbirdzz/flutter_inappwebview
@@ -124,6 +125,7 @@ flutter:
   assets:
     - assets/
     - assets/images/
+    - assets/fonts/
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

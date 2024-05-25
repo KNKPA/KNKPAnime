@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:knkpanime/navigation.dart';
 import 'package:knkpanime/utils/utils.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
@@ -29,8 +30,10 @@ class _AppWidgetState extends State<AppWidget> {
       } catch (_) {}
     }
     return AdaptiveTheme(
-        light: ThemeData.light(useMaterial3: true),
-        dark: ThemeData.dark(useMaterial3: true),
+        light: ThemeData.light(useMaterial3: true)
+            .copyWith(textTheme: GoogleFonts.notoSerifHkTextTheme()),
+        dark: ThemeData.dark(useMaterial3: true)
+            .copyWith(textTheme: GoogleFonts.notoSerifHkTextTheme()),
         initial: AdaptiveThemeMode.light,
         builder: (theme, darkTheme) => MaterialApp.router(
             title: "KNKP Anime",
