@@ -110,6 +110,7 @@ abstract class _PlayerController with Store {
   void enterFullscreen() {
     isFullscreen = true;
     if (Utils.isDesktop()) {
+      showPlaylist = false;
       windowManager.setFullScreen(true);
     } else {
       SystemChrome.setPreferredOrientations([

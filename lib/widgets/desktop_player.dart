@@ -33,9 +33,15 @@ class _DesktopPlayerState extends State<DesktopPlayer> {
           ),
         ],
         bottomButtonBar: [
-          const MaterialDesktopSkipPreviousButton(),
+          MaterialCustomButton(
+            onPressed: widget.playerController.playPrevEpisode,
+            icon: const Icon(Icons.skip_previous),
+          ),
           const MaterialDesktopPlayOrPauseButton(),
-          const MaterialDesktopSkipNextButton(),
+          MaterialCustomButton(
+            onPressed: widget.playerController.playNextEpisode,
+            icon: const Icon(Icons.skip_next),
+          ),
           const MaterialDesktopVolumeButton(),
           const MaterialDesktopPositionIndicator(),
           const Spacer(),
@@ -167,7 +173,8 @@ class _DesktopPlayerState extends State<DesktopPlayer> {
       final rate =
           widget.playerController.playerController.player.state.position -
               const Duration(seconds: 10);
-      widget.playerController.playerController.player.seek(rate);
+      widget.playerController.playerController.player
+          .seek(rate < Duration.zero ? Duration.zero : rate);
     },
     const SingleActivator(LogicalKeyboardKey.arrowRight): () {
       final rate =
