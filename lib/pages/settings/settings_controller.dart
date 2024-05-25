@@ -21,6 +21,7 @@ class SettingsController {
   bool get disableGithubProxy => prefs.getBool('disableGithubProxy') ?? false;
   bool get useWebViewAdapters => prefs.getBool('useWebViewAdapters') ?? true;
   List<String> get jsAdapters => prefs.getStringList('jsAdapters') ?? [];
+  bool get danmakuEnabled => prefs.getBool('danmakuEnabled') ?? true;
 
   set fontSize(double size) {
     prefs.setDouble('fontSize', size);
@@ -70,6 +71,10 @@ class SettingsController {
 
   set jsAdapters(List<String> value) {
     prefs.setStringList('jsAdapters', value);
+  }
+
+  set danmakuEnabled(bool value) {
+    prefs.setBool('danmakuEnabled', value);
   }
 
   SettingsController() {

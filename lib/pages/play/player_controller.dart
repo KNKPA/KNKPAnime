@@ -9,6 +9,7 @@ import 'package:knkpanime/models/episode.dart';
 import 'package:knkpanime/models/series.dart';
 import 'package:knkpanime/models/source.dart';
 import 'package:knkpanime/pages/history/history_controller.dart';
+import 'package:knkpanime/pages/settings/settings_controller.dart';
 import 'package:knkpanime/utils/danmaku.dart';
 import 'package:knkpanime/utils/utils.dart';
 import 'package:logger/logger.dart';
@@ -30,7 +31,7 @@ abstract class _PlayerController with Store {
   @observable
   late Episode playingEpisode = Episode('', 0);
   @observable
-  bool danmakuEnabled = true;
+  late bool danmakuEnabled = settingsController.danmakuEnabled;
   @computed
   List<DanmakuAnimeInfo> get danmakuSources {
     var temp = (selectedDanmakuSource == null
@@ -56,6 +57,7 @@ abstract class _PlayerController with Store {
   late final historyController = Modular.get<HistoryController>();
   late final player = _IntegratedPlayer();
   late final playerController = VideoController(player);
+  late final settingsController = Modular.get<SettingsController>();
   late DanmakuController danmakuController;
   final videoSources = ObservableList<Source>();
   bool _playStateInitialized = true;
@@ -314,6 +316,7 @@ abstract class _PlayerController with Store {
   void toggleDanmaku() {
     danmakuController.clear();
     danmakuEnabled = !danmakuEnabled;
+    settingsController.danmakuEnabled = danmakuEnabled;
   }
 
   void setDanmakuController(DanmakuController c) {
