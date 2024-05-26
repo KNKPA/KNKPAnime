@@ -20,30 +20,32 @@ class _DanmakuSettingsWindowState extends State<DanmakuSettingsWindow> {
     final children = <Widget>[
       Expanded(
         child: SingleChildScrollView(
-          child: Wrap(
-            spacing: 16.0,
-            runSpacing: 16.0,
-            children: List.generate(
-                widget.playerController.selectedDanmakuSource?.episodeCount ??
-                    0,
-                (index) => Observer(
-                      builder: (context) => ElevatedButton(
-                        onPressed: () {
-                          widget.playerController.danmakuEpisode = index;
-                          widget.playerController.loadDanmakus(
-                              widget.playerController.selectedDanmakuSource!);
-                        },
-                        style: ElevatedButton.styleFrom(
-                          minimumSize: const Size(120, 50),
-                          foregroundColor: Colors.black,
-                          backgroundColor:
-                              widget.playerController.danmakuEpisode == index
-                                  ? Theme.of(context).primaryColor
-                                  : Theme.of(context).cardColor,
+          child: Observer(
+            builder: (context) => Wrap(
+              spacing: 16.0,
+              runSpacing: 16.0,
+              children: List.generate(
+                  widget.playerController.selectedDanmakuSource?.episodeCount ??
+                      0,
+                  (index) => Observer(
+                        builder: (context) => ElevatedButton(
+                          onPressed: () {
+                            widget.playerController.danmakuEpisode = index;
+                            widget.playerController.loadDanmakus(
+                                widget.playerController.selectedDanmakuSource!);
+                          },
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: const Size(120, 50),
+                            foregroundColor: Colors.black,
+                            backgroundColor:
+                                widget.playerController.danmakuEpisode == index
+                                    ? Theme.of(context).primaryColor
+                                    : Theme.of(context).cardColor,
+                          ),
+                          child: Text('第${index + 1}集'),
                         ),
-                        child: Text('第${index + 1}集'),
-                      ),
-                    )),
+                      )),
+            ),
           ),
         ),
       ),
