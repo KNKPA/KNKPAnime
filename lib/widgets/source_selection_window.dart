@@ -75,13 +75,18 @@ class _SourceSelectionWindowState extends State<SourceSelectionWindow>
                           Text(adapter.name),
                           const SizedBox(width: 5.0),
                           Container(
-                            width: 8.0,
-                            height: 8.0,
+                            width: 16.0,
+                            height: 16.0,
                             decoration: BoxDecoration(
                               color: Utils.getColorFromStatus(
                                   adapterSearchController
                                       .statuses[adapters.indexOf(adapter)]),
                               shape: BoxShape.circle,
+                            ),
+                            alignment: Alignment.center,
+                            child: Text(
+                              '${adapterSearchController.searchResults[adapters.indexOf(adapter)].length}',
+                              style: const TextStyle(fontSize: 12),
                             ),
                           ),
                         ],
