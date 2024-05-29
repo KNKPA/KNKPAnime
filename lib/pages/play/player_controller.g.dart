@@ -62,10 +62,14 @@ mixin _$PlayerController on _PlayerController, Store {
     return super.danmakuEnabled;
   }
 
+  bool _danmakuEnabledIsInitialized = false;
+
   @override
   set danmakuEnabled(bool value) {
-    _$danmakuEnabledAtom.reportWrite(value, super.danmakuEnabled, () {
+    _$danmakuEnabledAtom.reportWrite(
+        value, _danmakuEnabledIsInitialized ? super.danmakuEnabled : null, () {
       super.danmakuEnabled = value;
+      _danmakuEnabledIsInitialized = true;
     });
   }
 
@@ -150,6 +154,22 @@ mixin _$PlayerController on _PlayerController, Store {
     });
   }
 
+  late final _$danmakuOffsetAtom =
+      Atom(name: '_PlayerController.danmakuOffset', context: context);
+
+  @override
+  double get danmakuOffset {
+    _$danmakuOffsetAtom.reportRead();
+    return super.danmakuOffset;
+  }
+
+  @override
+  set danmakuOffset(double value) {
+    _$danmakuOffsetAtom.reportWrite(value, super.danmakuOffset, () {
+      super.danmakuOffset = value;
+    });
+  }
+
   @override
   String toString() {
     return '''
@@ -161,6 +181,7 @@ matchingAnimes: ${matchingAnimes},
 showPlaylist: ${showPlaylist},
 selectedVideoSource: ${selectedVideoSource},
 danmakuEpisode: ${danmakuEpisode},
+danmakuOffset: ${danmakuOffset},
 danmakuSources: ${danmakuSources}
     ''';
   }

@@ -28,68 +28,6 @@ class _SettingsPageState extends State<SettingsPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('弹幕字号'),
-            Slider(
-              value: settingsController.fontSize,
-              min: 10,
-              max: 50,
-              divisions: 40,
-              label: settingsController.fontSize.round().toString(),
-              onChanged: (value) =>
-                  setState(() => settingsController.fontSize = value),
-            ),
-
-            // Danmaku Area Section
-            const Text('弹幕区域'),
-            Slider(
-              value: settingsController.danmakuArea,
-              min: 0,
-              max: 1,
-              divisions: 10,
-              label: '${(settingsController.danmakuArea * 100).round()}%',
-              onChanged: (value) =>
-                  setState(() => settingsController.danmakuArea = value),
-            ),
-
-            // Danmaku Area Section
-            const Text('弹幕不透明度'),
-            Slider(
-              value: settingsController.danmakuOpacity,
-              min: 0,
-              max: 1,
-              divisions: 100,
-              label: '${(settingsController.danmakuOpacity * 100).round()}%',
-              onChanged: (value) =>
-                  setState(() => settingsController.danmakuOpacity = value),
-            ),
-
-            ListTile(
-              title: const Text('隐藏滚动弹幕'),
-              trailing: Switch(
-                value: settingsController.hideScrollDanmakus,
-                onChanged: (value) => setState(
-                    () => settingsController.hideScrollDanmakus = value),
-              ),
-            ),
-
-            ListTile(
-              title: const Text('隐藏顶部弹幕'),
-              trailing: Switch(
-                value: settingsController.hideTopDanmakus,
-                onChanged: (value) =>
-                    setState(() => settingsController.hideTopDanmakus = value),
-              ),
-            ),
-
-            ListTile(
-              title: const Text('隐藏底部弹幕'),
-              trailing: Switch(
-                value: settingsController.hideBottomDanmakus,
-                onChanged: (value) => setState(
-                    () => settingsController.hideBottomDanmakus = value),
-              ),
-            ),
-
             if (Utils.isDesktop())
               ListTile(
                 title: const Text('置顶窗口'),
@@ -99,7 +37,6 @@ class _SettingsPageState extends State<SettingsPage> {
                       setState(() => settingsController.alwaysOnTop = value),
                 ),
               ),
-
             ListTile(
               title: Row(
                 children: [
@@ -123,7 +60,6 @@ class _SettingsPageState extends State<SettingsPage> {
                     () => settingsController.disableGithubProxy = value),
               ),
             ),
-
             ListTile(
               title: Row(
                 children: [
@@ -147,7 +83,6 @@ class _SettingsPageState extends State<SettingsPage> {
                     () => settingsController.useWebViewAdapters = value),
               ),
             ),
-
             ListTile(
               title: const Row(
                 children: [Text('管理JavaScript适配器')],

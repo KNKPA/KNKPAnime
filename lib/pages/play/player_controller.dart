@@ -52,6 +52,8 @@ abstract class _PlayerController with Store {
   int selectedVideoSource = 0;
   @observable
   int danmakuEpisode = 0;
+  @observable
+  double danmakuOffset = 0;
 
   late final logger = Modular.get<Logger>();
   late final historyController = Modular.get<HistoryController>();
@@ -109,6 +111,17 @@ abstract class _PlayerController with Store {
     player.setRate(playbackSpeed);
   }
 
+  void updateDanmakuConfig() {
+    danmakuController.updateOption(DanmakuOption(
+      fontSize: settingsController.fontSize,
+      area: settingsController.danmakuArea,
+      opacity: settingsController.danmakuOpacity,
+      hideBottom: settingsController.hideBottomDanmakus,
+      hideScroll: settingsController.hideScrollDanmakus,
+      hideTop: settingsController.hideTopDanmakus,
+    ));
+  }
+
   void enterFullscreen() {
     isFullscreen = true;
     if (Utils.isDesktop()) {
@@ -153,7 +166,7 @@ abstract class _PlayerController with Store {
                   milliseconds: idx *
                       1000 /
                       playbackSpeed ~/
-                      danmakus[danmakuPosition]!.length),
+                      danmakus[danmakuPosition + danmakuOffset]!.length),
               () =>
                   danmakuEnabled && buildContext.mounted && player.state.playing
                       ? danmakuController.addItems([
@@ -294,6 +307,7 @@ abstract class _PlayerController with Store {
     logger.i('Loading danmaku with id ${info.id}');
     danmakus.clear();
     selectedDanmakuSource = info;
+    danmakuOffset = 0;
     try {
       var dmks = await DanmakuRequest.getDanmakus(info.id, danmakuEpisode);
       logger.i('Danmaku count: ${dmks.length}');
