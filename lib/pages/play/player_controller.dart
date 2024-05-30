@@ -159,14 +159,14 @@ abstract class _PlayerController with Store {
 
     player.stream.position.listen((event) {
       if (event.inSeconds != danmakuPosition) {
-        danmakuPosition = event.inSeconds;
+        danmakuPosition = event.inSeconds + danmakuOffset.toInt();
         danmakus[danmakuPosition]?.asMap().forEach((idx, danmaku) async {
           await Future.delayed(
               Duration(
                   milliseconds: idx *
                       1000 /
                       playbackSpeed ~/
-                      danmakus[danmakuPosition + danmakuOffset]!.length),
+                      danmakus[danmakuPosition]!.length),
               () =>
                   danmakuEnabled && buildContext.mounted && player.state.playing
                       ? danmakuController.addItems([
