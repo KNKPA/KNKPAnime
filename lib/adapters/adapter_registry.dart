@@ -10,7 +10,7 @@ import 'package:knkpanime/adapters/yhdm_adapter.dart';
 final adapters = <AdapterBase>[
   GirigiriLoveAdapter(),
   BimiAdapter(),
-  YhdmAdapter(),
+  //YhdmAdapter(),
   Anime1Adapter(),
   IyfAdapter(),
   AntAdapter(),
