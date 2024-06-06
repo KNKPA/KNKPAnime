@@ -31,9 +31,9 @@ class _AppWidgetState extends State<AppWidget> {
     }
     return AdaptiveTheme(
         light: ThemeData.light(useMaterial3: true)
-            .copyWith(textTheme: GoogleFonts.notoSerifHkTextTheme()),
+            .copyWith(textTheme: GoogleFonts.notoSansScTextTheme()),
         dark: ThemeData.dark(useMaterial3: true)
-            .copyWith(textTheme: GoogleFonts.notoSerifHkTextTheme()),
+            .copyWith(textTheme: GoogleFonts.notoSansScTextTheme()),
         initial: AdaptiveThemeMode.light,
         builder: (theme, darkTheme) => MaterialApp.router(
             title: "KNKP Anime",
