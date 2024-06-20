@@ -23,6 +23,7 @@ class _DanmakuSettingsWindowState extends State<DanmakuSettingsWindow> {
   Widget build(BuildContext context) {
     final children = <Widget>[
       Expanded(
+        flex: Utils.isDesktop() ? 1 : 2,
         child: SingleChildScrollView(
           child: Observer(
             builder: (context) => Wrap(
