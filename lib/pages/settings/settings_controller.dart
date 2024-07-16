@@ -22,6 +22,18 @@ class SettingsController {
   bool get useWebViewAdapters => prefs.getBool('useWebViewAdapters') ?? true;
   List<String> get jsAdapters => prefs.getStringList('jsAdapters') ?? [];
   bool get danmakuEnabled => prefs.getBool('danmakuEnabled') ?? true;
+  bool get darkModeEnabled => prefs.getBool('darkModeEnabled') ?? false;
+  bool get useDefaultFont => prefs.getBool('useDefaultFont') ?? true;
+
+  set useDefaultFont(bool value) {
+    prefs.setBool('useDefaultFont', value);
+    logger.i('Use default font set to $value');
+  }
+
+  set darkModeEnabled(bool value) {
+    prefs.setBool('darkModeEnabled', value);
+    logger.i('Dark mode set to $value');
+  }
 
   set fontSize(double size) {
     prefs.setDouble('fontSize', size);

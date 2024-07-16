@@ -1,9 +1,11 @@
 import 'dart:io';
 
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:knkpanime/main.dart';
 import 'package:knkpanime/pages/settings/settings_controller.dart';
 import 'package:knkpanime/utils/utils.dart';
@@ -81,6 +83,53 @@ class _SettingsPageState extends State<SettingsPage> {
                 value: settingsController.useWebViewAdapters,
                 onChanged: (value) => setState(
                     () => settingsController.useWebViewAdapters = value),
+              ),
+            ),
+            ListTile(
+              title: Row(
+                children: [
+                  const Text('使用系统默认字体'),
+                  Tooltip(
+                    richMessage: WidgetSpan(
+                      child: Container(
+                        constraints: BoxConstraints(
+                            maxWidth: MediaQuery.of(context).size.width * 0.5),
+                        child: const Text('若关闭此选项，将会使用App内置的字体。'),
+                      ),
+                    ),
+                    child: const Icon(Icons.info),
+                  )
+                ],
+              ),
+              trailing: Switch(
+                value: settingsController.useDefaultFont,
+                onChanged: (value) {
+                  setState(() => settingsController.useDefaultFont = value);
+                  AdaptiveTheme.of(context).setTheme(
+                    light: ThemeData.light(useMaterial3: true).copyWith(
+                        textTheme:
+                            value ? null : GoogleFonts.notoSerifHkTextTheme()),
+                    dark: ThemeData.dark(useMaterial3: true).copyWith(
+                        textTheme:
+                            value ? null : GoogleFonts.notoSerifHkTextTheme()),
+                  );
+                },
+              ),
+            ),
+            ListTile(
+              title: const Row(
+                children: [
+                  Text('启用暗黑模式'),
+                ],
+              ),
+              trailing: Switch(
+                value: settingsController.darkModeEnabled,
+                onChanged: (value) {
+                  setState(() => settingsController.darkModeEnabled = value);
+                  value
+                      ? AdaptiveTheme.of(context).setDark()
+                      : AdaptiveTheme.of(context).setLight();
+                },
               ),
             ),
             ListTile(
