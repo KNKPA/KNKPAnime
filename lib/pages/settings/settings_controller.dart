@@ -7,7 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:window_manager/window_manager.dart';
 
 class SettingsController {
-  late final SharedPreferences prefs;
+  static late final SharedPreferences prefs;
   late final logger = Modular.get<Logger>();
 
   double get fontSize =>
@@ -89,7 +89,7 @@ class SettingsController {
     prefs.setBool('danmakuEnabled', value);
   }
 
-  SettingsController() {
+  static init() async {
     SharedPreferences.getInstance().then((v) {
       prefs = v;
       prefs.remove('showNewChanges');
