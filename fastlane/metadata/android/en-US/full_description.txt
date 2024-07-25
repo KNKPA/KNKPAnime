@@ -1,0 +1,1 @@
+A anime app which supports multiple anime source and danmaku. You can even add custom website adaptor!
