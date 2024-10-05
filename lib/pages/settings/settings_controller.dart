@@ -24,6 +24,12 @@ class SettingsController {
   bool get danmakuEnabled => prefs.getBool('danmakuEnabled') ?? true;
   bool get darkModeEnabled => prefs.getBool('darkModeEnabled') ?? false;
   bool get useDefaultFont => prefs.getBool('useDefaultFont') ?? true;
+  String get themeMode => prefs.getString('themeMode') ?? '跟随系统';
+
+  set themeMode(String value) {
+    prefs.setString('themeMode', value);
+    logger.i('System theme mode set to $value');
+  }
 
   set useDefaultFont(bool value) {
     prefs.setBool('useDefaultFont', value);

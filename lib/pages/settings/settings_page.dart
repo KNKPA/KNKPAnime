@@ -119,17 +119,32 @@ class _SettingsPageState extends State<SettingsPage> {
             ListTile(
               title: const Row(
                 children: [
-                  Text('启用暗黑模式'),
+                  Text('App颜色模式'),
                 ],
               ),
-              trailing: Switch(
-                value: settingsController.darkModeEnabled,
-                onChanged: (value) {
-                  setState(() => settingsController.darkModeEnabled = value);
-                  value
-                      ? AdaptiveTheme.of(context).setDark()
-                      : AdaptiveTheme.of(context).setLight();
+              trailing: DropdownButton<String>(
+                value: settingsController.themeMode,
+                onChanged: (String? value) {
+                  setState(() => settingsController.themeMode = value!);
+                  switch (value) {
+                    case '跟随系统':
+                      AdaptiveTheme.of(context).setSystem();
+                      break;
+                    case '深色':
+                      AdaptiveTheme.of(context).setDark();
+                      break;
+                    case '浅色':
+                      AdaptiveTheme.of(context).setLight();
+                      break;
+                  }
                 },
+                items: <String>['跟随系统', '深色', '浅色']
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
               ),
             ),
             ListTile(
