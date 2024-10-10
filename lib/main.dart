@@ -11,11 +11,15 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:window_manager/window_manager.dart';
+import 'package:flutter/services.dart';
 
 late String version;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    statusBarColor: Colors.transparent,
+  ));
   Modular.setInitialRoute('/search/bangumi');
   await Hive.initFlutter('${(await getApplicationSupportDirectory()).path}/v1');
   await Storage.init();
