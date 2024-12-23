@@ -42,7 +42,7 @@ jobs:
       - run: flutter build windows
 
       # Substitute DLLs
-      - run: xcopy ".github/dlls/*.dll" "build/windows/x64/runner/Release/" /Y
+      - run: xcopy ".github\dlls\*.dll" "build\windows\x64\runner\Release\" /Y
 
       - run: Compress-Archive build/windows/x64/runner/Release knkpanime-windows.zip
       - uses: r0adkll/sign-android-release@v1
