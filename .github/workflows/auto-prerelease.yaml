@@ -69,6 +69,9 @@ jobs:
       - run: flutter build apk
       - run: flutter build windows
 
+      # Substitute DLLs
+      - run: xcopy ".github/dlls/*.dll" "build/windows/x64/runner/Release\" /Y
+
       - run: Compress-Archive -Path build/windows/x64/runner/Release -DestinationPath knkpanime-windows.zip
       - name: Download MacOS build
         uses: actions/download-artifact@v4

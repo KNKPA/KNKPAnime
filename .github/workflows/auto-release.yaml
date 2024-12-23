@@ -8,9 +8,9 @@ on:
   workflow_dispatch:
     inputs:
       logLevel:
-        description: 'Log level'     
+        description: "Log level"
         required: true
-        default: 'warning'
+        default: "warning"
 
 jobs:
   flutter-build:
@@ -35,12 +35,14 @@ jobs:
       - name: Set up Java
         uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
-          java-version: '18'
+          distribution: "temurin"
+          java-version: "18"
       - run: flutter pub get
       - run: flutter build apk
       - run: flutter build windows
 
+      # Substitute DLLs
+      - run: xcopy ".github/dlls/*.dll" "build/windows/x64/runner/Release\" /Y
 
       - run: Compress-Archive build/windows/x64/runner/Release knkpanime-windows.zip
       - uses: r0adkll/sign-android-release@v1
