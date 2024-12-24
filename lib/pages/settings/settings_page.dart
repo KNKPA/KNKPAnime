@@ -8,6 +8,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:knkpanime/main.dart';
 import 'package:knkpanime/pages/settings/settings_controller.dart';
+import 'package:knkpanime/utils/storage.dart';
 import 'package:knkpanime/utils/utils.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -153,6 +154,24 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
               trailing: const Icon(Icons.keyboard_arrow_right),
               onTap: () => Modular.to.pushNamed('jsAdapterConfig'),
+            ),
+            ListTile(
+              title: const Row(
+                children: [Text('选择图片组')],
+              ),
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(SettingsController().customImageSet ?? '默认图片组'),
+                  const Icon(Icons.keyboard_arrow_right),
+                ],
+              ),
+              onTap: () async {
+                await Modular.to.pushNamed('imageSetConfig');
+                setState(() {
+                  // Refresh the list of image sets
+                });
+              },
             ),
             ListTile(
               title: Text('App版本：$version'),

@@ -4,6 +4,7 @@ import 'package:knkpanime/models/anime_info.dart';
 import 'package:knkpanime/pages/favorite/favorite_controller.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:logger/logger.dart';
+import 'package:knkpanime/utils/storage.dart';
 
 class AnimeCard extends StatefulWidget {
   final AnimeInfo anime;
@@ -29,11 +30,11 @@ class _AnimeCardState extends State<AnimeCard> {
             ClipRRect(
               borderRadius: BorderRadius.circular(8.0),
               child: CachedNetworkImage(
-                placeholder: (context, url) => Image.asset(
+                placeholder: (context, url) => Image.memory(
                   width: 100.0,
                   height: 150.0,
                   fit: BoxFit.cover,
-                  'assets/images/placeholder.jpg',
+                  Storage.imageSet.coverPlaceholder,
                 ),
                 imageUrl: widget.anime.images?['large'] ?? '',
                 width: 100.0,
@@ -44,11 +45,11 @@ class _AnimeCardState extends State<AnimeCard> {
                 // filterQuality: FilterQuality.low,
                 errorWidget: (context, error, stackTrace) {
                   Modular.get<Logger>().w(error);
-                  return Image.asset(
+                  return Image.memory(
                     width: 100.0,
                     height: 150.0,
                     fit: BoxFit.cover,
-                    'assets/images/no_image.jpg',
+                    Storage.imageSet.coverNoImage,
                   );
                 },
               ),

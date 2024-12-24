@@ -22,8 +22,8 @@ void main() async {
   ));
   Modular.setInitialRoute('/search/bangumi');
   await Hive.initFlutter('${(await getApplicationSupportDirectory()).path}/v1');
-  await Storage.init();
   await SettingsController.init();
+  await Storage.init();
   MediaKit.ensureInitialized();
   version = (await PackageInfo.fromPlatform()).version;
   if (Utils.isDesktop()) {

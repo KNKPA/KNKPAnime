@@ -7,6 +7,8 @@ import 'package:knkpanime/pages/settings/settings_controller.dart';
 import 'package:logger/logger.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
+import 'utils/storage.dart';
+
 bool _checkedForUpdate = false;
 
 class SideMenu extends StatefulWidget {
@@ -131,12 +133,12 @@ class _SideMenuState extends State<SideMenu> {
           borderRadius: BorderRadius.vertical(),
         ),
         child: Container(
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/images/sidemenu_background.jpg'),
+                image: Image.memory(Storage.imageSet.sideMenuBackground).image,
                 fit: BoxFit.cover,
               ),
-              color: Color.fromRGBO(0, 0, 0, 0.3),
+              color: const Color.fromRGBO(0, 0, 0, 0.3),
             ),
             child: Theme(
               data: ThemeData.dark(useMaterial3: true),

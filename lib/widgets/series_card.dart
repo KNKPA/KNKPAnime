@@ -6,6 +6,8 @@ import 'package:knkpanime/utils/utils.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:logger/logger.dart';
 
+import '../utils/storage.dart';
+
 class SeriesCard extends StatelessWidget {
   final Series series;
   final Progress? progress;
@@ -27,11 +29,11 @@ class SeriesCard extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(8.0),
               child: CachedNetworkImage(
-                placeholder: (context, url) => Image.asset(
+                placeholder: (context, url) => Image.memory(
                   width: 100.0,
                   height: 150.0,
                   fit: BoxFit.cover,
-                  'assets/images/placeholder.jpg',
+                  Storage.imageSet.coverPlaceholder,
                 ),
                 imageUrl: series.image ?? '',
                 width: 100.0,
@@ -42,11 +44,11 @@ class SeriesCard extends StatelessWidget {
                 // filterQuality: FilterQuality.low,
                 errorWidget: (context, error, stackTrace) {
                   Modular.get<Logger>().w(error);
-                  return Image.asset(
+                  return Image.memory(
                     width: 100.0,
                     height: 150.0,
                     fit: BoxFit.cover,
-                    'assets/images/no_image.jpg',
+                    Storage.imageSet.coverNoImage,
                   );
                 },
               ),

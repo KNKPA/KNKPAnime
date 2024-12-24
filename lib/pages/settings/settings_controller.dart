@@ -25,6 +25,17 @@ class SettingsController {
   bool get darkModeEnabled => prefs.getBool('darkModeEnabled') ?? false;
   bool get useDefaultFont => prefs.getBool('useDefaultFont') ?? true;
   String get themeMode => prefs.getString('themeMode') ?? '跟随系统';
+  String? get customImageSet => prefs.getString('customImageSet');
+
+  set customImageSet(String? value) {
+    if (value == null) {
+      prefs.remove('customImageSet');
+      logger.i('Image set is set to default');
+      return;
+    }
+    prefs.setString('customImageSet', value!);
+    logger.i('Image set is set to $value');
+  }
 
   set themeMode(String value) {
     prefs.setString('themeMode', value);
@@ -96,9 +107,8 @@ class SettingsController {
   }
 
   static init() async {
-    SharedPreferences.getInstance().then((v) {
-      prefs = v;
-      prefs.remove('showNewChanges');
-    });
+    final p = await SharedPreferences.getInstance();
+    prefs = p;
+    prefs.remove('showNewChanges');
   }
 }

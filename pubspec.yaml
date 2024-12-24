@@ -67,6 +67,7 @@ dependencies:
       path: flutter_inappwebview_windows
       ref: master
   flutter_js: ^0.8.0
+  image_picker: ^1.1.2
 
 dependency_overrides:
   flutter_inappwebview_platform_interface:
