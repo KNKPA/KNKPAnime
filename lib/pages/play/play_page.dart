@@ -144,7 +144,7 @@ class _PlayPageState extends State<PlayPage> {
                                   decoration: BoxDecoration(
                                     color: episode ==
                                             playerController.playingEpisode
-                                        ? Theme.of(context).primaryColor
+                                        ? Theme.of(context).focusColor
                                         : Theme.of(context).cardColor,
                                     borderRadius: BorderRadius.circular(10.0),
                                     boxShadow: [
