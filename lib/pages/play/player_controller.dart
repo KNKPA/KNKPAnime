@@ -255,6 +255,7 @@ abstract class _PlayerController with Store {
     // This function will be called when entering video page or change to another episode
     updateHistoryTimer.cancel();
     danmakuController.clear();
+    player.pause();
     danmakuEpisode += (episode.episode - playingEpisode.episode);
     playingEpisode = episode;
     if (selectedDanmakuSource != null) {
