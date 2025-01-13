@@ -6,6 +6,10 @@
 
 ## 下载
 
+[<img src="https://f-droid.org/badge/get-it-on-zh-cn.png"
+    alt="Get it on F-Droid"
+    height="80">](https://f-droid.org/packages/com.example.knkpanime)
+
 [下载链接](https://github.com/KNKPA/KNKPAnime/releases/latest)
 
 另：macOS版可以在[预览版](https://github.com/KNKPA/KNKPAnime/releases/tag/latest)中下载，但不知为什么，github workflow编译的macOS版在我的mac上打开视频播放页时会崩溃（目前猜测是libmpv问题），而本地编译的则不会。如果mac用户想用但在github的release中下载的软件打不开的话，可以尝试自行编译：
