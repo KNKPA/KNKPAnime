@@ -12,6 +12,10 @@ on:
         required: true
         default: "warning"
 
+env:
+  APP_ID: ${{ secrets.APP_ID }}
+  APP_SECRET: ${{ secrets.APP_SECRET }}
+
 jobs:
   flutter-build-macos:
     name: "Build MacOS"
@@ -31,7 +35,7 @@ jobs:
           pub-cache-key: "flutter-pub:os:-:channel:-:version:-:arch:-:hash:" # optional, change this to force refresh cache of dart pub get dependencies
           pub-cache-path: "${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:" # optional, change this to specify the cache path
       - run: flutter pub get
-      - run: flutter build macos --release --verbose
+      - run: flutter build macos --release --verbose --dart-define=APP_ID=${{ secrets.APP_ID }} --dart-define=APP_SECRET=${{ secrets.APP_SECRET }}
       - run: mkdir upload
       - run: mv build/macos/Build/Products/Release/knkpanime.app upload/knkpanime-macOS.app
       - run: ls
@@ -66,8 +70,8 @@ jobs:
           distribution: "temurin"
           java-version: "18"
       - run: flutter pub get
-      - run: flutter build apk
-      - run: flutter build windows
+      - run: flutter build apk --dart-define=APP_ID=${{ secrets.APP_ID }} --dart-define=APP_SECRET=${{ secrets.APP_SECRET }}
+      - run: flutter build windows --dart-define=APP_ID=${{ secrets.APP_ID }} --dart-define=APP_SECRET=${{ secrets.APP_SECRET }}
 
       # Substitute DLLs
       - run: xcopy ".github\dlls\*.dll" "build\windows\x64\runner\Release\" /Y

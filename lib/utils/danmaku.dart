@@ -18,8 +18,8 @@ class DanmakuRequest {
   static const _searchAnimeApi = '/api/v2/search/anime';
   static const _searchEpisodeApi = '/api/v2/bangumi/';
   static const _getDanmakuApi = '/api/v2/comment/';
-  static final String _secret = Platform.environment['APP_SECRET']!;
-  static final String _appId = Platform.environment['APP_ID']!;
+  static const String _secret = String.fromEnvironment('APP_SECRET');
+  static const String _appId = String.fromEnvironment('APP_ID');
 
   static Future<List<DanmakuAnimeInfo>> getMatchingAnimes(
       String animeName) async {

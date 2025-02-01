@@ -12,6 +12,10 @@ on:
         required: true
         default: "warning"
 
+env:
+  APP_ID: ${{ secrets.APP_ID }}
+  APP_SECRET: ${{ secrets.APP_SECRET }}
+  
 jobs:
   flutter-build:
     name: "Release"

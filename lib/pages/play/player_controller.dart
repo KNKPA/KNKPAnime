@@ -206,13 +206,9 @@ abstract class _PlayerController with Store {
     }
     videoSources.addAll(temp);
 
-    try {
-      await searchDanmaku(series.name);
-      if (matchingAnimes.isNotEmpty) {
-        selectedDanmakuSource = matchingAnimes[0];
-      }
-    } catch (e) {
-      logger.w(e);
+    await searchDanmaku(series.name);
+    if (matchingAnimes.isNotEmpty) {
+      selectedDanmakuSource = matchingAnimes[0];
     }
 
     player.stream.completed.listen((event) {
@@ -328,7 +324,15 @@ abstract class _PlayerController with Store {
 
   Future searchDanmaku(String keyword) async {
     logger.i('Getting danmaku for ${keyword}');
-    matchingAnimes = await DanmakuRequest.getMatchingAnimes(keyword);
+    try {
+      matchingAnimes = await DanmakuRequest.getMatchingAnimes(keyword);
+    } catch (e) {
+      buildContext.mounted
+          ? ScaffoldMessenger.of(buildContext).showSnackBar(SnackBar(
+              content: Text('弹幕信息获取失败\n$e'),
+            ))
+          : null;
+    }
     logger.i('Found ${matchingAnimes.length} matchings');
   }
 
