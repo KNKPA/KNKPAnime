@@ -206,9 +206,13 @@ abstract class _PlayerController with Store {
     }
     videoSources.addAll(temp);
 
-    await searchDanmaku(series.name);
-    if (matchingAnimes.isNotEmpty) {
-      selectedDanmakuSource = matchingAnimes[0];
+    try {
+      await searchDanmaku(series.name);
+      if (matchingAnimes.isNotEmpty) {
+        selectedDanmakuSource = matchingAnimes[0];
+      }
+    } catch (e) {
+      logger.w(e);
     }
 
     player.stream.completed.listen((event) {

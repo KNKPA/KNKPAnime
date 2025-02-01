@@ -1,9 +1,13 @@
+import 'dart:convert';
 import 'dart:ffi';
+import 'dart:io';
+import 'package:crypto/crypto.dart';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:knkpanime/models/danmaku.dart';
 import 'package:knkpanime/utils/utils.dart';
+import 'package:media_kit/ffi/src/utf8.dart';
 import 'package:ns_danmaku/ns_danmaku.dart';
 
 import '../models/danmaku.dart';
@@ -11,19 +15,16 @@ import '../models/danmaku.dart';
 class DanmakuRequest {
   static var _cachedAnimeId = 0;
   static var _cachedEpisodes = <int>[];
-  static final _dio = Dio(BaseOptions(headers: {
-    "User-Agent": 'KNKPA/KNKPAnime',
-  }));
-
-  static const _searchAnimeApi =
-      'https://api.dandanplay.net/api/v2/search/anime';
-  static const _searchEpisodeApi = 'https://api.dandanplay.net/api/v2/bangumi/';
-  static const _getDanmakuApi = 'https://api.dandanplay.net/api/v2/comment/';
+  static const _searchAnimeApi = '/api/v2/search/anime';
+  static const _searchEpisodeApi = '/api/v2/bangumi/';
+  static const _getDanmakuApi = '/api/v2/comment/';
+  static final String _secret = Platform.environment['APP_SECRET']!;
+  static final String _appId = Platform.environment['APP_ID']!;
 
   static Future<List<DanmakuAnimeInfo>> getMatchingAnimes(
       String animeName) async {
     try {
-      var resp = await _dio.get(_searchAnimeApi, queryParameters: {
+      var resp = await fetch(_searchAnimeApi, queryParameters: {
         'keyword': animeName,
       });
       List<DanmakuAnimeInfo> ret = [];
@@ -58,8 +59,8 @@ class DanmakuRequest {
         animeId.toString() + (episode + 1).toString().padLeft(4, '0'));
 
     try {
-      var resp = await _dio
-          .get(_getDanmakuApi + episodeId.toString(), queryParameters: {
+      var resp =
+          await fetch(_getDanmakuApi + episodeId.toString(), queryParameters: {
         'withRelated': true,
       });
       var ret = <Danmaku>[];
@@ -80,6 +81,25 @@ class DanmakuRequest {
     } catch (e) {
       rethrow;
     }
+  }
+
+  static Future<Response> fetch(String path,
+      {Map<String, dynamic>? queryParameters}) {
+    final dio = Dio(BaseOptions(
+      headers: {
+        "User-Agent": 'KNKPA/KNKPAnime',
+        "X-AppId": _appId,
+        "X-Timestamp": DateTime.now().millisecondsSinceEpoch ~/ 1000,
+      },
+      baseUrl: 'https://api.dandanplay.net',
+    ));
+    final temp = _appId +
+        (DateTime.now().millisecondsSinceEpoch ~/ 1000).toString() +
+        path +
+        _secret;
+    dio.options.headers['X-Signature'] =
+        base64.encode(sha256.convert(utf8.encode(temp)).bytes);
+    return dio.get(path, queryParameters: queryParameters);
   }
 
   DanmakuRequest._();
