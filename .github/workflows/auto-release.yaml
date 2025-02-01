@@ -42,8 +42,8 @@ jobs:
           distribution: "temurin"
           java-version: "18"
       - run: flutter pub get
-      - run: flutter build apk
-      - run: flutter build windows
+      - run: flutter build apk --dart-define=APP_ID=${{ secrets.APP_ID }} --dart-define=APP_SECRET=${{ secrets.APP_SECRET }}
+      - run: flutter build windows --dart-define=APP_ID=${{ secrets.APP_ID }} --dart-define=APP_SECRET=${{ secrets.APP_SECRET }}
 
       # Substitute DLLs
       - run: xcopy ".github\dlls\*.dll" "build\windows\x64\runner\Release\" /Y
